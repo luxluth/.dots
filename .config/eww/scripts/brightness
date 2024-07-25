@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Get the current brightness value
+get() {
+    _NOW=$(brightnessctl get)
+    _MAX=$(brightnessctl max)
+    _PERCENT=$(echo "$_NOW * 100 / $_MAX" | bc)
+    echo "$_PERCENT"
+}
+
+# Set the brightness value
+set() {
+    _MAX=$(brightnessctl max)
+    _VAL=$(echo "$1 * $_MAX / 100" | bc -l)
+    brightnessctl set "$_VAL"
+}
+
+
+case $1 in
+    get)
+        get
+        ;;
+    set)
+        set $2
+        ;;
+    *)
+        echo "Usage: $0 {get|set}"
+        exit 2
+esac

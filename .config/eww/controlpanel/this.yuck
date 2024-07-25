@@ -1,0 +1,165 @@
+;-------------- Polls
+(defvar user "luxluth")
+(defvar userimg "images/gojo.jpg")
+(defpoll uptime :interval "1s" `uptime -p`)
+(deflisten mpd_time `playerctl metadata --format '{{ duration(position) }}' --follow`)
+(deflisten mpd_artist `playerctl metadata --format '{{ artist }}' --follow`)
+(deflisten mpd_title `playerctl metadata --format '{{ title }}' --follow`)
+(deflisten mpd_album `playerctl metadata --format '{{ album }}' --follow`)
+(deflisten mpd_art `playerctl metadata mpris:artUrl --follow`)
+(defvar NO_ART "images/no-art.png")
+
+
+(defpoll notifications :interval "1s" `python3 ~/.config/eww/scripts/notifications.py`)
+
+;-------------- Widgets
+(defwidget notifw []
+  (box
+    :class "side"
+    :orientation "v" 
+    :space-evenly false 
+    :halign "center" 
+    :hexpand true
+    :width 695
+
+    (scroll
+      :vscroll true
+      :hscroll false
+      :height 350
+      :width 695
+      
+      (literal
+        :content notifications
+      )
+    )
+  )
+)
+
+
+(defwidget album_art []
+  (box 
+    :class "album_art" 
+    :vexpand false
+    :hexpand false
+    :tooltip {mpd_album}
+    :style "background-image: url('${mpd_art == "" ? NO_ART : mpd_art}');"
+  )
+)
+
+(defwidget mpd_infos []
+  (box 
+    :class "mpd_infos" 
+    :vexpand false
+    :hexpand false
+    :orientation "v"
+    :space-evenly false
+    :spacing 2
+    :halign: "start"
+    
+    (label :class "mpd_title" :xalign 0 :limit-width 30 :text "${mpd_title == "" ? "No title" : "${mpd_title}"}")
+    (label :class "mpd_artist" :xalign 0 :limit-width 35 :text "${mpd_artist == "" ? "No Artist" : "${mpd_artist}"}")
+    (label :class "mpd_time" :xalign 0 :limit-width 25 :text "${mpd_time == "" ? "--:--" : "${mpd_time}"}")
+  )
+)
+
+(defwidget mpris []
+  (box 
+    :orientation "h"
+    :class "mpris"
+    :space-evenly false
+    :spacing 2
+    
+    (album_art)
+    (mpd_infos)
+  )
+)
+
+(defwidget headimg []
+  (box
+    :class "headimg"
+    :vexpand false
+    :hexpand true
+    :orientation "h"
+    :space-evenly false
+
+    (box 
+      :class "userimg"
+      :style "background-image: url('${EWW_CONFIG_DIR}/${userimg}');"
+    )
+
+    (box
+      :orientation "v" 
+      :space-evenly false 
+      :vexpand false 
+      :hexpand false 
+      (label :class "username" :text "${user}" :xalign 0 :yalign 0)
+      (label :class "uptime" :text "${uptime}" :xalign 0 :yalign 0)
+    )
+  )
+)
+
+(defwidget timew []
+  (label
+    :class "time"
+    :text "${formattime(EWW_TIME, "%I:%M %p", "Europe/Brussels")}"
+    :xalign 0.5 :yalign 1
+  )
+)
+
+(defwidget head []
+
+  (box 
+    :vexpand false
+    :hexpand false
+    :orientation "h"
+    :space-evenly false
+    :class "head"
+
+    (headimg) 
+    (timew)
+  )
+)
+
+(defwidget container []
+
+  (box
+    :class "container"
+    :orientation "v"
+    :vexpand false
+    :hexpand false 
+    :space-evenly false 
+    
+    (head)
+    (label :text "mpris" :xalign 0  :class "title")
+    (mpris)
+    (box
+
+      :orientation "h"
+      :hexpand true
+      :space-evenly false
+
+      (label :text "notifications" :xalign 0  :class "title")
+      (button
+        :class "action"
+        :tooltip "Clear All"
+        :onclick "dunstctl history-clear && dunstctl history > /tmp/dunst-history.json"
+        
+        (image :path "./icons/trash.svg")
+      )
+    )
+    (notifw)
+  )
+)
+
+(defwindow controlpanel
+           :monitor 0
+           :geometry (geometry :x "0%"
+                               :y "0%"
+                               :width "40%"
+                               :height "60%"
+                               :anchor "center center")
+           :stacking "overlay"
+           :windowtype "dock"
+           :exclusive false
+
+(container))

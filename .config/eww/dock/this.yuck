@@ -1,0 +1,14 @@
+;-------------- Dock
+(defwindow dock
+           :orientation "v"
+           :monitor 0
+           :geometry (geometry :x "0px"
+                               :y "0px"
+                               :width "25px"
+                               :height "70px"
+                               :anchor "center center")
+           :stacking "fg"
+           :wm-ignore false
+           :windowtype "dock"
+
+           "dock")

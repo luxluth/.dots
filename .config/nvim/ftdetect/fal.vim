@@ -1,0 +1,1 @@
+/home/luxluth/Code/Projects/fal/editor/vim/ftdetect/fal.vim

@@ -1,0 +1,60 @@
+mpd_host = localhost
+mpd_port = 6600
+
+# dir
+ncmpcpp_directory = ~/.config/ncmpcpp
+lyrics_directory  = ~/.config/ncmpcpp/lyrics
+mpd_music_dir     = ~/Music/
+
+# behaviour
+external_editor                  = nvim
+message_delay_time               = 1
+playlist_disable_highlight_delay = 2
+autocenter_mode                  = "yes"
+centered_cursor                  = "yes"
+ignore_leading_the               = "yes"
+allow_for_physical_item_deletion = "no"
+startup_screen = playlist
+# follow_now_playing_lyrics = "yes"
+locked_screen_width_part = "60"
+
+
+# appearance
+colors_enabled        = "yes"
+# playlist_display_mode = "columns"
+user_interface        = classic 
+
+
+volume_color          = "white"
+header_visibility = no
+statusbar_visibility = yes
+empty_tag_color = "black"
+main_window_color = "default"
+enable_window_title = "yes"
+playlist_display_mode = "classic"
+
+# window
+song_window_title_format = "{%a} - {%t}"
+titles_visibility        = "yes"
+
+# progress bar
+# progressbar_look = "▨▨□"
+progressbar_look = "---"
+progressbar_elapsed_color = "230"
+progressbar_color = "251"
+statusbar_color = "255"
+
+
+# song list
+song_status_format= "$(230)%t"
+song_list_format = "$(232)%l  $(14)%t $R$8%a"
+song_columns_list_format = "(6)[]{} (23)[red]{a} (26)[yellow]{t|f} (40)[green]{b} (4)[blue]{l}"
+
+song_library_format = {{%a - %t} (%b)}|{%f}
+
+
+# colors
+current_item_prefix = "> "
+current_item_suffix = ""
+
+execute_on_song_change = ~/.config/ncmpcpp/scripts/songinfo

@@ -1,0 +1,8 @@
+[global]
+enable_blur = false
+lang = "ja"
+theme = "light"
+
+[network]
+port = 7700
+host = "localhost"
