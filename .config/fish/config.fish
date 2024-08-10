@@ -376,5 +376,9 @@ set -gx PATH $HOME/.cabal/bin $PATH /home/luxluth/.ghcup/bin # ghcup-env
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 
+# fly.io
+set --export FLYCTL_INSTALL "$HOME/.fly"
+set --export PATH "$FLYCTL_INSTALL/bin" $PATH
+
 # # dbus-launch
 # export $(dbus-launch)

@@ -1,7 +1,7 @@
 [global]
 enable_blur = false
-lang = "ja"
-theme = "light"
+lang = "fr"
+theme = "auto"
 
 [network]
 port = 7700
