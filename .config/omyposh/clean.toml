@@ -1,0 +1,66 @@
+#:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+
+version = 2
+final_space = true
+console_title_template = '{{ .PWD }}'
+
+
+[[blocks]]
+type = "rprompt"
+overflow = "hidden"
+
+[[blocks.segments]]
+type = "executiontime"
+style = "plain"
+background = 'transparent'
+template = '{{ .FormattedMs }}'
+
+[blocks.segments.properties]
+threshold = 5000
+
+
+[[blocks]]
+type = 'prompt'
+alignment = 'left'
+
+[[blocks.segments]]
+type = 'path'
+style = 'plain'
+background = 'transparent'
+template = '{{ .Path }} '
+[blocks.segments.properties]
+style = 'letter'
+
+[[blocks.segments]]
+type = 'git'
+style = 'plain'
+foreground = 'default'
+background = 'transparent'
+template = "{{ if or (.Working.Changed) (.Staging.Changed)}}*{{end}}{{ .HEAD }}<cyan>{{if gt .Behind 0}} {{ end }}{{if gt .Ahead 0}} {{ end }}</> "
+
+[blocks.segments.properties]
+branch_icon = ""
+fetch_status = true
+commit_icon = '@'
+
+
+[[blocks.segments]]
+type = 'text'
+style = 'plain'
+template = '[{{ .UserName }}'
+background = 'transparent'
+foreground = 'yellow'
+
+[[blocks.segments]]
+type = 'status'
+style = 'plain'
+template = '|{{ .String }}'
+foreground = 'red'
+background = 'transparent'
+
+[[blocks.segments]]
+type = 'text'
+style = 'plain'
+template = ']'
+background = 'transparent'
+foreground = 'yellow'
