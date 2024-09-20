@@ -265,6 +265,14 @@ function test-wall --description "Test A Wallpaper"
     end
 end
 
+function dotnew --description "Create a new dotnet console project"
+    if test -z $argv[1]
+        echo "Usage: dotnew <project_name>"
+    else
+        dotnet new console -o $argv[1]
+    end
+end
+
 function ccc --description "Conventional Commits Cheatsheet"
     echo "# Quick examples
 * `feat: new feature`
@@ -365,12 +373,16 @@ set_pkg_cfg_path
 # pnpm
 set -gx PNPM_HOME "/home/luxluth/.local/share/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
-  set -gx PATH "$PNPM_HOME" $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
 
-set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
-set -gx PATH $HOME/.cabal/bin $PATH /home/luxluth/.ghcup/bin # ghcup-env
+set -gx DOTNET_CLI_TELEMETRY_OPTOUT 1
+
+# set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
+# set -gx PATH $HOME/.cabal/bin $PATH /home/luxluth/.ghcup/bin # ghcup-env
+
+set -gx PATH $PATH $HOME/.dotnet/tools # dotnet_tools
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
