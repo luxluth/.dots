@@ -12,3 +12,11 @@ if vim.g.neovide then
   vim.g.neovide_padding_right = 10
   vim.g.neovide_padding_left = 10
 end
+
+vim.filetype.add({
+  extension = {
+    c3 = "c3",
+    c3i = "c3",
+    c3t = "c3",
+  },
+})

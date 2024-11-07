@@ -356,7 +356,6 @@ set -gx GOPATH $HOME/go
 set -gx N2T_DIR $HOME/Softwares/nand2tetris/tools
 
 set -gx LESS -R
-set -gx LESSOPEN '|~/.lessfilter %s'
 
 set -gx GPG_TTY (tty)
 
