@@ -6,10 +6,11 @@
     "lazyvim.plugins.extras.editor.harpoon2",
     "lazyvim.plugins.extras.editor.mini-move",
     "lazyvim.plugins.extras.ui.mini-indentscope",
+    "lazyvim.plugins.extras.ui.treesitter-context",
     "lazyvim.plugins.extras.util.mini-hipatterns"
   ],
   "news": {
-    "NEWS.md": "6520"
+    "NEWS.md": "7107"
   },
-  "version": 6
+  "version": 7
 }
