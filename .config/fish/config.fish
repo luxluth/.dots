@@ -18,6 +18,8 @@ alias vim="nvim"
 alias nv="neovide"
 set -gx EDITOR nvim
 
+alias zj="zellij"
+
 ## exa
 alias ls="exa --icons"
 alias ll="exa -l --icons"
@@ -205,6 +207,24 @@ function add-font-usage
     echo ""
 end
 
+function acnew
+    if test -z $argv[1]
+        echo "acnew <sketch_name>"
+    else
+        arduino-cli sketch new $argv[1]
+    end
+end
+
+function acup
+    if test -z $argv[1]
+        echo "acup <sketch_name>"
+    else
+        arduino-cli board attach $argv[1] -b arduino:avr:uno --port /dev/ttyUSB0
+        arduino-cli compile $argv[1]
+        arduino-cli upload $argv[1]
+    end
+end
+
 function add-font --description "Add a font to the user fonts directory"
     set add_fontFontDir /usr/local/share/fonts/
     set add_fontFonDirOtf /usr/local/share/fonts/otf/
@@ -330,7 +350,6 @@ function set_pkg_cfg_path
 end
 
 set -gx PATH $HOME/.local/bin $PATH
-set -gx PATH $HOME/.cargo/bin $PATH
 set -gx PATH $HOME/.config/emacs/bin $PATH
 
 # set -gx RUST_LOG trace
@@ -342,8 +361,7 @@ set -gx PATH $HOME/.config/emacs/bin $PATH
 # set -gx BUN_INSTALL $HOME/.bun
 # set -gx PATH $BUN_INSTALL/bin $PATH
 
-set -gx SOFTWARES_DIR $HOME/Softwares
-set -gx PATH $SOFTWARES_DIR/bin $PATH
+set -gx SOFTWARES_DIR $HOME/.bin/
 
 # set -gx TUMUXIFIER_BIN $HOME/.config/tmux/plugins/tmuxifier/bin
 # set -gx PATH $TUMUXIFIER_BIN $PATH
