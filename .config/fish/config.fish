@@ -17,6 +17,7 @@ alias wifi="nmtui"
 alias vim="nvim"
 alias nv="neovide"
 set -gx EDITOR nvim
+set -gx MANPAGER "nvim +Man!"
 
 alias zj="zellij"
 
@@ -289,7 +290,7 @@ function dotnew --description "Create a new dotnet console project"
     if test -z $argv[1]
         echo "Usage: dotnew <project_name>"
     else
-        dotnet new console -o $argv[1]
+        dotnet new console -o $argv[1] && cd $argv[1] && slngen
     end
 end
 
