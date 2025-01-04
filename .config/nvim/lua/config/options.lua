@@ -5,8 +5,7 @@
 vim.opt.colorcolumn = "80"
 
 if vim.g.neovide then
-  vim.o.guifont = "CaskaydiaCove NFM:h12"
-  vim.g.neovide_transparency = 0.97
+  vim.o.guifont = "IosevkaTerm Nerd Font Mono:h12"
   vim.g.neovide_padding_top = 10
   vim.g.neovide_padding_bottom = 10
   vim.g.neovide_padding_right = 10
