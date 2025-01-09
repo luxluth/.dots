@@ -1,6 +1,7 @@
 return {
-  "jiriks74/presence.nvim",
-  event = "UIEnter",
+  "vyfor/cord.nvim",
+  build = "./build || .\\build",
+  event = "VeryLazy",
   opts = {
     main_image = "file",
   },
