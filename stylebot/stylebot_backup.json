@@ -1,9 +1,9 @@
 {
   "www.youtube.com": {
-    "css": ".ytp-caption-segment {\n  /* #fabd2f; */\n  color: #fff;\n  font-weight: bolder;\n  background: none;\n  font-family: sans-serif;\n}\n\n.caption-window {\n  border-radius: 1em;\n  padding: .5%;\n  background: #000000;\n}",
+    "css": ".ytp-caption-segment {\n  /* #fabd2f; */\n  color: #fff;\n  font-weight: bold;\n  background: none;\n  font-family: monospace;\n}\n\n.caption-window {\n  border-radius: .5em;\n  padding: .5%;\n  background: #000000;\n}",
     "readability": false,
     "enabled": true,
-    "modifiedTime": "2024-05-19T19:02:39.834+02:00"
+    "modifiedTime": "2024-12-22T15:30:18.862+01:00"
   },
   "www.primevideo.com": {
     "css": ".atvwebplayersdk-captions-text {\n  font-family: sans-serif;\n  border-radius: 10px;\n}",
@@ -28,6 +28,18 @@
     "readability": false,
     "enabled": true,
     "modifiedTime": "2024-05-25T23:07:55.220+02:00"
+  },
+  "www.viki.com": {
+    "css": ".vjs-text-track-cue {\n  bottom: 3em;\n}",
+    "readability": false,
+    "enabled": true,
+    "modifiedTime": "2024-10-26T19:19:52.085+02:00"
+  },
+  "www.wordreference.com": {
+    "css": "#rightcolumn {\n  display: none;\n}\n\n#forumapi {\n  display: none;\n}",
+    "readability": false,
+    "enabled": true,
+    "modifiedTime": "2024-11-14T12:36:00.127+01:00"
   }
 }
 
