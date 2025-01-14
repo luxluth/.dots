@@ -2,6 +2,6 @@
 
 _simple archlinux dots_
 
-*VM* Hyprland
+*WM* Hyprland
 
 image::assets/image.png["fastfetch"]
