@@ -3,7 +3,10 @@ if status is-interactive
 end
 
 function fish_greeting
-    fortune -as | cowsay -f eyes
+    if set -q PIPENV_ACTIVE
+    else
+        fortune -as | cowsay -f eyes
+    end
 end
 
 ######################################### Alias #########################################
