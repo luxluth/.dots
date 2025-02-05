@@ -3,6 +3,7 @@ if status is-interactive
 end
 
 function fish_greeting
+    fortune -as | cowsay -f eyes
 end
 
 ######################################### Alias #########################################
@@ -121,49 +122,6 @@ end
 
 alias cbin="compareBin"
 alias cbinh="compareBinH"
-
-function extract --description "Extract archives"
-    if test -z $argv[1]
-        echo "Usage: extract [-v] [-d <destination>] [-f] <files>"
-        echo "Extract archives"
-        echo ""
-        echo "Options:"
-        echo "     -v: verbose"
-        echo "     -d: destination if not specified, it will"
-        echo "         extract in a folder with the same name"
-        echo "         as the archive"
-        echo "     -f: force"
-        echo "     can take multiple files as arguments"
-        echo ""
-    else
-        for file in $argv
-            switch $file
-                case *.tar.gz
-                    if contains -q -- -v $argv
-                        echo "Extracting $file"
-                    end
-                    if contains -q -- -d $argv
-                        tar -xzvf $file -C (string match -r -- '-d ([^ ]+)' $argv | string replace -r -- '-d ([^ ]+)' '$1')
-                    else
-                        tar -xzvf $file
-                    end
-                case *.zip
-                    if contains -q -- -v $argv
-                        echo "Extracting $file"
-                    end
-                    if contains -q -- -d $argv
-                        unzip $file -d (string match -r -- '-d ([^ ]+)' $argv | string replace -r -- '-d ([^ ]+)' '$1')
-                    else
-                        unzip $file
-                    end
-                    # Add cases for other archive formats here
-                    # ...
-                case '*'
-                    echo "Unknown file extension for $file"
-            end
-        end
-    end
-end
 
 function mkcd --description "Create a directory and cd into it"
     if test -z $argv[1]
