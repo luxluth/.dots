@@ -1,8 +1,8 @@
 font-family  = "IosevkaTerm Nerd Font Mono"
 font-size    = 13
-font-feature = +dlig
+# font-feature = +dlig
 
-theme = light:dayfox,dark:GruvboxDark
+theme = light:dawnfox,dark:GruvboxDark
 
 window-padding-x = 12
 window-padding-y = 12

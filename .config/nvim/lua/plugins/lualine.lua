@@ -3,20 +3,38 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     local lualine = require("lualine")
+    local colors = {}
+    local scheme =
+      vim.system({ "gsettings", "get", "org.gnome.desktop.interface", "color-scheme" }, { text = true }):wait().stdout
+    if scheme ~= nil and scheme:sub(0, scheme:len() - 1) ~= "'prefer-dark'" then
+      -- dawnfox
+      colors = {
+        blue = "#286983",
+        green = "#618774",
+        violet = "#d685af",
+        yellow = "#eea846",
+        red = "#b4637a",
+        cream = "#4c4769",
+        black = "#ebe5df",
+        grey = "#ebe0df",
+        dark = "#faf4ed",
+      }
+    else
+      -- gruv material
+      colors = {
+        blue = "#83a598",
+        green = "#8ec07c",
+        violet = "#d3869b",
+        yellow = "#d8a657",
+        red = "#FF4A4A",
+        cream = "#fff4d2",
+        black = "#1d1d1d",
+        grey = "#393939",
+        dark = "#292929",
+      }
+    end
 
-    local colors = {
-      blue = "#83a598",
-      green = "#8ec07c",
-      violet = "#d3869b",
-      yellow = "#d8a657",
-      red = "#FF4A4A",
-      cream = "#fff4d2",
-      black = "#1d1d1d",
-      grey = "#393939",
-      dark = "#292929",
-    }
-
-    local gruv_material = {
+    local theme = {
       normal = {
         a = { bg = colors.dark, fg = colors.cream, gui = "bold" },
         b = { bg = colors.grey, fg = colors.cream, gui = "bold" },
@@ -47,7 +65,7 @@ return {
     -- configure lualine with modified theme
     lualine.setup({
       options = {
-        theme = gruv_material,
+        theme = theme,
         component_separators = { left = "│", right = "│" },
         section_separators = { left = "", right = "" },
       },

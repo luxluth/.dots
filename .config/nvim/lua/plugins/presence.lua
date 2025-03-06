@@ -1,9 +1,14 @@
 return {
   "vyfor/cord.nvim",
-  build = "./build || .\\build",
+  build = ":Cord update",
   event = "VeryLazy",
   opts = {
-    main_image = "file",
+    display = {
+      flavor = "accent",
+    },
+    editor = {
+      client = "neovim",
+    },
     assets = {
       fasm = {
         name = "assembler",
@@ -11,6 +16,13 @@ return {
         tooltip = "flat assembler 1",
         type = "language",
       },
+
+      ["Cargo.toml"] = {
+        text = "Managing dependencies",
+      },
+    },
+    plugins = {
+      "cord.plugins.diagnostics",
     },
   },
 }
