@@ -5,7 +5,7 @@ end
 function fish_greeting
     if set -q PIPENV_ACTIVE
     else
-        fortune -as | cowsay -f eyes
+        fortune -as
     end
 end
 
@@ -25,12 +25,10 @@ set -gx MANPAGER "nvim +Man!"
 
 alias zj="zellij"
 
-## exa
-alias ls="exa --icons"
-alias ll="exa -l --icons"
-alias la="exa -la --icons"
-alias l="exa -l --icons"
-alias lla="exa -la --icons"
+## eza
+alias ls="eza --icons"
+alias lla="eza --icons -la"
+
 
 # line count lc
 alias lc="wc -l"
@@ -179,10 +177,29 @@ end
 
 function acup
     if test -z $argv[1]
-        echo "acup <sketch_name>"
+        echo "acup <sketch_name> [arch] [port]"
     else
-        arduino-cli board attach $argv[1] -b arduino:avr:uno --port /dev/ttyUSB0
+        set -x arch "arduino:avr:uno"
+        set -x port /dev/ttyUSB0
+
+        if test -z $argv[2]
+        else
+            set arch $argv[2]
+        end
+        if test -z $argv[3]
+        else
+            set port $argv[3]
+        end
+
+        if test -e sketch.yaml
+        else
+            echo "...[GENERATING SKETCH CONFIGURATION]"
+            arduino-cli board attach $argv[1] -b "$arch" --port $port
+        end
+
+        echo "...[COMPILING] $argv[1]"
         arduino-cli compile $argv[1]
+        echo "...[UPLOADING] $argv[1]"
         arduino-cli upload $argv[1]
     end
 end
@@ -316,14 +333,10 @@ set -gx PATH $HOME/.config/emacs/bin $PATH
 
 # set -gx RUST_LOG trace
 
-# if test -s "/home/luxluth/.bun/_bun"
-#     source "/home/luxluth/.bun/_bun"
-# end
-#
-# set -gx BUN_INSTALL $HOME/.bun
-# set -gx PATH $BUN_INSTALL/bin $PATH
+set -gx BUN_INSTALL $HOME/.bun
+set -gx PATH $BUN_INSTALL/bin $PATH
 
-set -gx SOFTWARES_DIR $HOME/.bin/
+# set -gx SOFTWARES_DIR $HOME/.bin/
 
 # set -gx TUMUXIFIER_BIN $HOME/.config/tmux/plugins/tmuxifier/bin
 # set -gx PATH $TUMUXIFIER_BIN $PATH
