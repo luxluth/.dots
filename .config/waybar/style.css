@@ -5,6 +5,11 @@
   font-weight: bold;
 }
 
+tooltip {
+  background-color: #181818;
+  border: 1px solid #333333;
+}
+
 window#waybar {
   background-color: #181818;
   color: #ffffff;
@@ -147,11 +152,20 @@ label:focus {
 }
 
 #network {
-  color: #2980b9;
+  color: #1e90ff;
 }
 
 #network.disconnected {
-  color: #f53c3c;
+  color: #595959;
+}
+
+#bluetooth {
+  color: #ffffff;
+  padding-left: 4px;
+}
+
+#bluetooth.disabled {
+  color: #595959;
 }
 
 #wireplumber {
