@@ -1,4 +1,4 @@
-@define-color cc-bg rgb(24, 24, 24);
+@define-color cc-bg rgb(34, 34, 34);
 @define-color noti-border-color rgba(255, 255, 255, 0.15);
 @define-color noti-bg rgba(48, 48, 48, 0.8);
 @define-color noti-bg-opaque rgb(48, 48, 48);
@@ -364,7 +364,8 @@
 .control-center {
   /* The Control Center which contains the old notifications + widgets */
   background: @cc-bg;
-  border: 1px solid #222222;
+  border: 1px solid #595959;
+  box-shadow: 0px 0px 0px 2px #181818;
   color: @text-color;
   border-radius: 12px;
 }
