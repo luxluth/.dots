@@ -1,0 +1,146 @@
+window {
+  background: #242424;
+  color: #ffffff;
+}
+
+window {
+  padding: 2.5px;
+}
+
+window.gnome {
+  border: 2px solid #333333;
+  border-radius: 12px;
+}
+
+inputBox,
+completionBox {
+  padding-right: 10px;
+  padding-left: 10px;
+  transition: ease-in-out 0.25s all;
+}
+
+completionLabel {
+  opacity: 0.5;
+}
+
+input,
+completionLabel {
+  caret-color: #ffffff;
+  font-size: 32px;
+}
+
+input.has_input {
+  border-bottom: 1px solid #303030;
+}
+
+input placeholder {
+  opacity: 0.3;
+}
+
+entry {
+  margin: 10px;
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
+  padding: 5px;
+  background: #292929;
+  border-radius: 8px;
+  transition: background 0.1s ease-out;
+}
+
+entry:hover {
+  background: #303030;
+}
+
+entryIcon {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+entryName {
+  font-weight: bold;
+}
+
+entryDescription {
+  opacity: 0.5;
+  font-size: 0.875em;
+}
+
+title {
+  font-weight: bold;
+  font-size: 1.5em;
+  padding: 10px;
+}
+
+tip {
+  font-weight: bold;
+  font-style: italic;
+  opacity: 0.7;
+  padding: 10px;
+}
+
+mathResult {
+  background-color: #303030;
+  border-radius: 8px;
+  padding: 5px;
+}
+
+mathResult .head {
+  opacity: 0.5;
+  font-weight: bold;
+}
+
+mathResult .answer_box {
+  padding: 10px;
+}
+
+mathResult .answer_box .answer {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+resultBox {
+  padding: 5px;
+}
+
+inputBox.macro_mode {
+  padding-left: 2px;
+}
+
+macroHint {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 30px;
+  text-transform: capitalize;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #fabb05;
+  font-family: "Product Sans";
+  color: #222222;
+}
+
+macroHint.sh {
+  background-color: #181818;
+  color: #ffffff;
+}
+
+macroHint.google {
+  background-color: #1e90ff;
+  color: #ffffff;
+}
+
+macroHint.ddg {
+  background-color: #de5833;
+  color: #ffffff;
+}
+
+macroHint.ytb {
+  background-color: #ff0033;
+  color: #ffffff;
+}
+
+macroHint.twitch {
+  background-color: #a970ff;
+  color: #ffffff;
+}
