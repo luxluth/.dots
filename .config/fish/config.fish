@@ -29,21 +29,20 @@ alias zj="zellij"
 alias ls="eza --icons"
 alias lla="eza --icons -la"
 
-
 # line count lc
 alias lc="wc -l"
 # back
 alias b="cd -"
 
 function lsd --description "ls that display folder first"
-    exa -l --group-directories-first $argv --icons
+    eza -l --group-directories-first $argv --icons
 end
 
 function lt --description "Dispaly tree like format for 'ls'"
     if test -z $argv[1]
-        exa -T --level=1 --icons
+        eza -T --level=1 --icons
     else
-        exa -T --icons --level=$argv[1] $argv[2]
+        eza -T --icons --level=$argv[1] $argv[2]
     end
 end
 
@@ -253,7 +252,6 @@ function vmrss --description "Show the memory usage of a process"
         end
     end
 end
-
 
 function test-wall --description "Test A Wallpaper"
     if test -z $argv[1]
