@@ -217,6 +217,7 @@ label:focus {
 }
 
 #idle_inhibitor.activated {
+  opacity: 1;
   color: #ecf0f1;
 }
 
