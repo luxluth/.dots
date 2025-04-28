@@ -12,9 +12,17 @@ tooltip {
 }
 
 window#waybar {
-  background-color: #181818;
+  background-color: transparent;
   color: #ffffff;
-  transition-property: background-color;
+  transition-property: background-color, color;
+  transition-duration: 0.5s;
+}
+
+window#waybar > box {
+  background-color: #181818;
+  margin: 2px;
+  padding-left: 2px;
+  transition-property: background-color, color;
   transition-duration: 0.5s;
 }
 
@@ -22,10 +30,15 @@ window#waybar.hidden {
   opacity: 0.2;
 }
 
-/*
-window#waybar.empty {
-    background-color: transparent;
+window#waybar.empty > box {
+  background-color: transparent;
 }
+
+window#waybar.empty * {
+  color: #ffffff;
+}
+
+/*
 window#waybar.solo {
     background-color: #FFFFFF;
 }
@@ -50,10 +63,16 @@ button:hover {
   box-shadow: inset 0 -3px #ffffff;
 }
 
+#workspaces {
+  transition: all ease-in-out 300ms;
+}
+
 #workspaces button {
+  transition: all ease-in-out 300ms;
   padding: 0 5px;
   background-color: transparent;
-  color: #595959;
+  color: #ffffff;
+  opacity: 0.5;
 }
 
 #workspaces button:hover {
@@ -65,7 +84,8 @@ button:hover {
 }
 
 #workspaces button.active {
-  color: #ffffff;
+  font-weight: bold;
+  opacity: 1;
 }
 
 #clock,
@@ -157,7 +177,7 @@ label:focus {
 }
 
 #network.disconnected {
-  color: #595959;
+  opacity: 0.3;
 }
 
 #bluetooth {
@@ -166,7 +186,7 @@ label:focus {
 }
 
 #bluetooth.disabled {
-  color: #595959;
+  opacity: 0.3;
 }
 
 #wireplumber {
@@ -193,7 +213,7 @@ label:focus {
 }
 
 #idle_inhibitor {
-  color: #595959;
+  opacity: 0.3;
 }
 
 #idle_inhibitor.activated {
