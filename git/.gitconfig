@@ -1,0 +1,16 @@
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[init]
+	defaultBranch = master
+[user]
+	signingkey = 269FB706AF9364CD
+	email = delphin.blehoussi93@gmail.com
+	name = luxluth
+[commit]
+	gpgsign = true
+[push]
+	autoSetupRemote = true
