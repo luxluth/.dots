@@ -107,6 +107,7 @@
       "reboot": "systemctl reboot",
       "suspend": "systemctl suspend",
       "hibernate": "systemctl hibernate",
+      "firm": "systemctl reboot --firmware-setup",
     },
   },
 }

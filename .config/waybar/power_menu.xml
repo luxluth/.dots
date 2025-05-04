@@ -7,9 +7,12 @@
       </object>
     </child>
     <child>
+      <object class="GtkSeparatorMenuItem" id="delimiter1"/>
+    </child>
+    <child>
       <object class="GtkMenuItem" id="suspend">
         <property name="label">Suspend</property>
-      </object> 
+      </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="hibernate">
@@ -22,11 +25,13 @@
       </object>
     </child>
     <child>
-      <object class="GtkSeparatorMenuItem" id="delimiter1"/>
-    </child>
-    <child>
       <object class="GtkMenuItem" id="reboot">
         <property name="label">Reboot</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="firm">
+        <property name="label">Firmware setup</property>
       </object>
     </child>
   </object>
