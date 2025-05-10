@@ -20,10 +20,10 @@ window#waybar {
 
 window#waybar > box {
   background-color: #181818;
-  margin: 2px;
+  margin: 0px;
   padding-left: 2px;
-  transition-property: background-color, color;
-  transition-duration: 0.5s;
+  transition-property: background-color, color, margin;
+  transition-duration: 0.1s;
 }
 
 window#waybar.hidden {
@@ -31,7 +31,11 @@ window#waybar.hidden {
 }
 
 window#waybar.empty > box {
-  background-color: transparent;
+  margin: 5px;
+  margin-left: 200px;
+  margin-right: 200px;
+  border-radius: 6px;
+  border: 1px solid #333333;
 }
 
 window#waybar.empty * {
