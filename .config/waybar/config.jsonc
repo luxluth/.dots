@@ -14,8 +14,8 @@
     "power-profiles-daemon",
     "backlight",
     "battery",
-    "clock",
     "tray",
+    "clock",
   ],
 
   "idle_inhibitor": {

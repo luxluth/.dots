@@ -112,6 +112,11 @@ button:hover {
   color: #ffffff;
 }
 
+#tray {
+  padding-left: 10px;
+  padding-right: 0px;
+}
+
 #window,
 #workspaces {
   margin: 0 4px;
