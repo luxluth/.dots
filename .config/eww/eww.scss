@@ -1,7 +1,36 @@
-@import "./styles/apply.scss";
-@import "./styles/variables.scss";
+$muted: #595959;
 
-@import "./logoutmenu/this.scss";
-@import "./controlpanel/this.scss";
-@import "./dock/this.scss";
-@import "./osd/this.scss";
+.volume {
+  border: 1px solid #595959;
+  background-color: #181818;
+  font-weight: bold;
+}
+
+.boundery {
+  padding: 2px;
+}
+
+progressbar > trough {
+  background-color: #222;
+  border-radius: 0px;
+  min-height: 28px;
+}
+
+progressbar > trough > progress {
+  background-color: white;
+  border-radius: 0px;
+  min-height: 28px;
+  transition: all 0.1s ease-in-out;
+}
+
+progressbar.muted trough > progress {
+  background-color: $muted;
+}
+
+label {
+  transition: all 0.1s ease-in-out;
+}
+
+label.muted {
+  color: $muted;
+}
