@@ -10,6 +10,7 @@ use hd::job::{SchedulerMessage, Task, TaskScheduler};
 use tokio::{io::AsyncReadExt, net::UnixListener};
 
 static VOLUME_TASK_ID: AtomicUsize = AtomicUsize::new(0);
+static BRIGHTNESS_TASK_ID: AtomicUsize = AtomicUsize::new(0);
 
 fn run(cmd: &mut Command) {
     match cmd.spawn() {
@@ -20,6 +21,31 @@ fn run(cmd: &mut Command) {
             eprintln!("[error]: unable to run this command: {e}");
         }
     }
+}
+
+fn update_brightness_widget(
+    sx: tokio::sync::mpsc::UnboundedSender<SchedulerMessage>,
+    value: usize,
+) {
+    use SchedulerMessage::*;
+    if BRIGHTNESS_TASK_ID.load(Ordering::Relaxed) == 0 {
+        run(Command::new("eww").args(["update", format!("brightness-level={value}").as_str()]));
+        run(Command::new("eww").args(["open", "brightness"]));
+    } else {
+        let _ = sx.send(RemoveTask(BRIGHTNESS_TASK_ID.load(Ordering::Relaxed)));
+        run(Command::new("eww").args(["update", format!("brightness-level={value}").as_str()]));
+    }
+
+    let task = Task::new(
+        || {
+            run(Command::new("eww").args(["close", "brightness"]));
+            BRIGHTNESS_TASK_ID.store(0, Ordering::Relaxed);
+        },
+        Duration::new(1, 200000000),
+    );
+
+    BRIGHTNESS_TASK_ID.store(task.id, Ordering::Relaxed);
+    let _ = sx.send(AddTask(task));
 }
 
 fn update_volume_widget(sx: tokio::sync::mpsc::UnboundedSender<SchedulerMessage>, value: usize) {
@@ -104,7 +130,11 @@ async fn main() {
                                     }
                                 }
                             },
-                            "BRIGHTNESS" => {}
+                            "BRIGHTNESS" => {
+                                if let Ok(value) = value.parse() {
+                                    update_brightness_widget(tx.clone(), value);
+                                }
+                            }
                             _ => {
                                 eprintln!("[warn]: unkown command `{cmd}`");
                             }

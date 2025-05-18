@@ -1,6 +1,8 @@
 $muted: #595959;
+$sun: #f5c74a;
 
-.volume {
+.volume,
+.brightness {
   border: 1px solid #595959;
   background-color: #181818;
   font-weight: bold;
@@ -29,8 +31,17 @@ progressbar.muted trough > progress {
 
 label {
   transition: all 0.1s ease-in-out;
+  font-weight: bold;
 }
 
 label.muted {
   color: $muted;
+}
+
+label.brightness-label {
+  color: $sun;
+}
+
+progressbar.brightness-progress trough > progress {
+  background-color: $sun;
 }
