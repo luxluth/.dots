@@ -192,14 +192,18 @@ function acup
 
         if test -e sketch.yaml
         else
-            echo "...[GENERATING SKETCH CONFIGURATION]"
+            echo ">> GENERATING SKETCH CONFIGURATION"
             arduino-cli board attach $argv[1] -b "$arch" --port $port
         end
 
-        echo "...[COMPILING] $argv[1]"
-        arduino-cli compile $argv[1]
-        echo "...[UPLOADING] $argv[1]"
-        arduino-cli upload $argv[1]
+        echo ">> COMPILING - $argv[1]"
+        arduino-cli compile $argv[1] --build-path=./build --verbose | tee build.log
+        echo ">> UPLOADING - $argv[1]"
+        arduino-cli upload $argv[1] --build-path=./build --verbose --verify
+        echo ">> UPDATATING COMPILE FLAGS"
+        grep -oP '(?<=\bg\+\+ ).*' build.log | head -n 1 | tr ' ' '\n' >compile_flags.txt
+
+        rm -rf build.log
     end
 end
 
