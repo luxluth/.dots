@@ -12,7 +12,7 @@ return {
     assets = {
       fasm = {
         name = "assembler",
-        icon = "asm",
+        icon = "assembly",
         tooltip = "flat assembler 1",
         type = "language",
       },

@@ -3,7 +3,8 @@
 -- Add any additional options here
 
 vim.opt.colorcolumn = "80"
-vim.opt.smoothscroll = true
+vim.opt.smoothscroll = false
+vim.opt.showmode = false
 
 if vim.g.neovide then
   vim.o.guifont = "IosevkaTerm Nerd Font Mono:h12"
