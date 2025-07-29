@@ -36,5 +36,27 @@ return {
   -- },
   opts = {
     style = "fg",
+    components = {
+      left = {
+        "mode",
+        "recording",
+        "git",
+      },
+      center = {},
+      right = {
+        "path",
+        "diagnostics",
+        "filetype_lsp",
+        "progress",
+      },
+    },
+    configs = {
+      recording = {
+        icon = "RECORDING @",
+        hl = {
+          primary = "Special",
+        },
+      },
+    },
   },
 }
