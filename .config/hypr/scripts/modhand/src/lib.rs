@@ -1,5 +1,4 @@
 pub mod job {
-
     use std::{
         sync::{
             Arc,
