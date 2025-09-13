@@ -1,0 +1,36 @@
+(
+    layerrules: true,
+    launcher: None,
+    windows: (
+        size_factor: 5.5,
+        workspaces_per_row: 5,
+        strip_html_from_workspace_title: true,
+        overview: (
+            open: (
+                modifier: alt,
+                key: "Tab",
+            ),
+            navigate: (
+                forward: "tab",
+                reverse: Mod(shift),
+            ),
+            other: (
+                hide_filtered: false,
+                filter_by: [],
+            ),
+        ),
+        switch: (
+            open: (
+                modifier: super,
+            ),
+            navigate: (
+                forward: "tab",
+                reverse: Mod(shift),
+            ),
+            other: (
+                hide_filtered: true,
+                filter_by: [],
+            ),
+        ),
+    ),
+)

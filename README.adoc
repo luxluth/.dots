@@ -1,0 +1,7 @@
+= dotties
+
+_simple archlinux dots_
+
+*WM* Hyprland
+
+image::assets/image.png["fastfetch"]

@@ -1,0 +1,62 @@
+:root {
+    --border-color: rgba(90, 90, 120, 0.4);
+    --border-color-active: rgba(239, 9, 9, 0.9);
+
+    --bg-color: rgba(20, 20, 20, 1);
+    --bg-color-hover: rgba(40, 40, 50, 1);
+
+    --border-radius: 12px;
+    --border-size: 3px;
+    --border-style: solid;
+
+    --text-color: rgba(245, 245, 245, 1);
+    --launcher-animation-speed: 0.4s;
+}
+
+/* ----------------------------------------------- */
+
+.monitor {
+    padding: 2px;
+}
+
+.workspace {
+    font-size: 2rem;
+    font-weight: bolder;
+}
+
+.client {
+    font-size: 1.2rem;
+    font-weight: normal;
+}
+
+.client-image {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+/* ----------------------------------------------- */
+
+.launcher {
+    padding: 2px;
+}
+
+.launcher-input {
+    font-size: 1.5rem;
+    margin: 6px;
+    padding: 4px 12px;
+}
+
+.launcher-results {
+    font-size: 1.5rem;
+    margin: 0 2px 2px 2px;
+}
+
+.launcher-item {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.launcher-exec {
+    font-size: 1rem;
+    font-family: monospace;
+}

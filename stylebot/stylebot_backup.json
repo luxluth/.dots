@@ -1,0 +1,45 @@
+{
+  "www.youtube.com": {
+    "css": ".ytp-caption-segment {\n  /* #fabd2f; */\n  color: #fff;\n  font-weight: bold;\n  background: none;\n  font-family: monospace;\n}\n\n.caption-window {\n  border-radius: .5em;\n  padding: .5%;\n  background: #000000;\n}",
+    "readability": false,
+    "enabled": true,
+    "modifiedTime": "2024-12-22T15:30:18.862+01:00"
+  },
+  "www.primevideo.com": {
+    "css": ".atvwebplayersdk-captions-text {\n  font-family: sans-serif;\n  border-radius: 10px;\n}",
+    "readability": false,
+    "enabled": true,
+    "modifiedTime": "2023-11-21T04:57:32.043+01:00"
+  },
+  "www.w3.org": {
+    "css": ":root {\n  background-color: black;\n  color: white;\n}\n\na {\n  color: #fabd2f;  \n}\na:hover {\n  color: white;\n}",
+    "readability": false,
+    "enabled": true,
+    "modifiedTime": "2023-11-26T21:14:49.398+01:00"
+  },
+  "adventofcode.com": {
+    "css": "* {\n  font-family: monospace;\n}",
+    "readability": false,
+    "enabled": true,
+    "modifiedTime": "2023-11-29T02:03:23.500+01:00"
+  },
+  "www.netflix.com": {
+    "css": "/*\n.player-timedtext-text-container span {\n  font-family: sans-serif;\n}\n*/",
+    "readability": false,
+    "enabled": true,
+    "modifiedTime": "2024-05-25T23:07:55.220+02:00"
+  },
+  "www.viki.com": {
+    "css": ".vjs-text-track-cue {\n  bottom: 3em;\n}",
+    "readability": false,
+    "enabled": true,
+    "modifiedTime": "2024-10-26T19:19:52.085+02:00"
+  },
+  "www.wordreference.com": {
+    "css": "#rightcolumn {\n  display: none;\n}\n\n#forumapi {\n  display: none;\n}",
+    "readability": false,
+    "enabled": true,
+    "modifiedTime": "2024-11-14T12:36:00.127+01:00"
+  }
+}
+
