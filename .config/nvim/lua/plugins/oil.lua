@@ -13,6 +13,6 @@ return {
     prompt_save_on_select_new_entry = false,
   },
   -- Optional dependencies
-  dependencies = { { "echasnovski/mini.icons", opts = {} } },
+  dependencies = { { "nvim-mini/mini.icons", opts = {} } },
   -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
 }

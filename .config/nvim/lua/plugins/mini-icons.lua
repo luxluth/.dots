@@ -1,5 +1,5 @@
 return {
-  "echasnovski/mini.icons",
+  "nvim-mini/mini.icons",
   opts = {
     extension = {
       ["svelte.js"] = { glyph = "", hl = "MiniIconsYellow" },
