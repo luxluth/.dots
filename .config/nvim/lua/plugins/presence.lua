@@ -4,6 +4,7 @@ return {
   event = "VeryLazy",
   opts = {
     display = {
+      theme = "classic",
       flavor = "accent",
     },
     editor = {

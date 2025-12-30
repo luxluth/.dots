@@ -3,3 +3,4 @@
 -- Add any additional keymaps here
 
 vim.keymap.set("n", "<M-e>", "<cmd>Oil<cr>", { silent = true })
+vim.keymap.set("n", "<leader>cD", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })

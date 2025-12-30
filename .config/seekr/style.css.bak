@@ -1,10 +1,6 @@
-* {
-  font-family: "Fantasque Sans Mono", "IosevkaTerm NFP";
-}
-
 window {
-  background: #f7f7f7;
-  color: #181818;
+  background: #242424;
+  color: #ffffff;
 }
 
 window {
@@ -29,12 +25,12 @@ completionLabel {
 
 input,
 completionLabel {
-  caret-color: #181818;
+  caret-color: #ffffff;
   font-size: 32px;
 }
 
 input.has_input {
-  border-bottom: 1px solid #595959;
+  border-bottom: 1px solid #303030;
 }
 
 input placeholder {
@@ -47,18 +43,18 @@ file {
   margin-top: 2.5px;
   margin-bottom: 2.5px;
   padding: 5px;
-  background: #f0f0f0;
+  background: #292929;
   border-radius: 8px;
   transition: background 0.1s ease-out;
 }
 
 entry:hover,
 file:hover {
-  background: #f5f5f5;
+  background: #303030;
 }
 
 file.focused {
-  box-shadow: inset 0px 0px 0px 2px beige;
+  box-shadow: inset 0px 0px 0px 2px white;
 }
 
 entryIcon,
@@ -92,7 +88,7 @@ tip {
 }
 
 mathResult {
-  background-color: #f0f0f0;
+  background-color: #303030;
   border-radius: 8px;
   padding: 5px;
 }
@@ -171,14 +167,14 @@ infoBox .info_title {
 }
 
 infoBox .info_body {
-  background: #f0f0f0;
+  background: #303030;
   padding: 1em;
   border-radius: 8px;
   font-family: "IosevkaTerm NFP", monospace;
 }
 
 consoleBox .console_view {
-  background-color: #f0f0f0;
+  background-color: #303030;
   font-family: "IosevkaTerm NFP", monospace;
   font-weight: bold;
   padding: 1em;

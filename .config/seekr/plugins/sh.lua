@@ -1,0 +1,1 @@
+/home/luxluth/Code/Projects/seekr/plugins/shell.lua
