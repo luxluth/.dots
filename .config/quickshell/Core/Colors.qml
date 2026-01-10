@@ -13,7 +13,7 @@ Item {
     property color green: "#26a65b"
     property color red: "#f53c3c"
 
-    property color pearleBlue: ctx.theme === "prefer-dark" ? "#6269E5" : "#A7ABF1"
+    property color pearleBlue: ctx.theme === "prefer-dark" ? "#6269E5" : "#A0BFFF"
     property color pearleBlueStroke: ctx.theme === "prefer-dark" ? "#7A80E7" : "#7E83E7"
 
     Behavior on bg {

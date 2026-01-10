@@ -88,8 +88,21 @@ Rectangle {
                 }
                 StateButton {
                     title: "Power Profile"
-                    icon: Icons.scale
+                    icon: {
+                        if (ctx.power.profile == 0)
+                            return Icons.scale;
+                        if (ctx.power.profile == 1)
+                            return Icons.zap;
+                        if (ctx.power.profile == 2)
+                            return Icons.sproot;
+                    }
                     expansion: false
+                    isActive: ctx.power.profile > 0
+                    details: ctx.power.profileToText(ctx.power.profile).replace("-", " ").toUpperCase()
+
+                    onClicked: () => {
+                        ctx.power.cycle();
+                    }
                 }
             }
         }

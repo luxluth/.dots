@@ -83,7 +83,7 @@ PanelWindow {
                         bold: true
                     }
 
-                    Layout.maximumWidth: 300
+                    Layout.maximumWidth: 600
                     elide: Text.ElideRight
                 }
 
