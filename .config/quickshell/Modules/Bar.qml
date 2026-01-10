@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell
+import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.SystemTray
@@ -362,6 +363,14 @@ PanelWindow {
                     anchors.fill: parent
                     hoverEnabled: true
                     onClicked: ccBtn.clicked()
+                }
+
+                IpcHandler {
+                    target: "cc"
+
+                    function toogle(): void {
+                        ccBtn.clicked();
+                    }
                 }
 
                 signal clicked
