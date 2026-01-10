@@ -9,6 +9,10 @@ return {
         enabled = false,
         mason = false,
       },
+
+      qmlls = {
+        cmd = { "qmlls", "-E" },
+      },
     },
   },
 }
