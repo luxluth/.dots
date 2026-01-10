@@ -61,6 +61,16 @@ PanelWindow {
                         }
                     }
                 }
+
+                MouseArea {
+                    anchors.fill: parent
+                    propagateComposedEvents: true
+                    onWheel: wheel => {
+                        const step = wheel.angleDelta.y / 120;
+                        if (step !== 0)
+                            ctx.compositor.gotoWorkspaceStep(-step);
+                    }
+                }
             }
 
             Rectangle {

@@ -17,12 +17,26 @@ Item {
         Hyprland.dispatch(`workspace ${wid}`);
     }
 
+    function gotoWorkspaceStep(dt) {
+        let target = focusedWorkspace.id + dt;
+
+        if (target < 1)
+            target = workspaces[workspaces.length - 1].id;
+
+        if (!workspaceIds.includes(target))
+            return;
+
+        if (target === focusedWorkspace.id)
+            return;
+        gotoWorkspace(target);
+    }
+
     Connections {
         target: Hyprland
         function onRawEvent(event) {
             if (compositor.firstRun) {
                 getWorkspaces.running = true;
-                focusedWorkspace.running = true;
+                focusedWorkspaceProc.running = true;
                 setFocused.running = true;
                 compositor.firstRun = false;
             }
@@ -30,7 +44,7 @@ Item {
                 compositor.focused = event.parse(2);
             } else if (event.name == "workspace") {
                 getWorkspaces.running = true;
-                focusedWorkspace.running = true;
+                focusedWorkspaceProc.running = true;
             }
         }
     }
@@ -59,7 +73,7 @@ Item {
     }
 
     Process {
-        id: focusedWorkspace
+        id: focusedWorkspaceProc
         command: ["hyprctl", "activeworkspace", "-j"]
         stdout: StdioCollector {
             onStreamFinished: {
