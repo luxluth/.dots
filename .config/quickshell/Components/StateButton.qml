@@ -80,6 +80,7 @@ Rectangle {
 
             MouseArea {
                 anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
                 onClicked: root.clicked()
             }
         }
@@ -107,6 +108,7 @@ Rectangle {
 
             MouseArea {
                 anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
                 onClicked: root.arrowClicked()
             }
         }

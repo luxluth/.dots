@@ -56,6 +56,7 @@ PanelWindow {
 
                         MouseArea {
                             anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
                             onClicked: ctx.compositor.gotoWorkspace(ws.id)
                         }
                     }
@@ -174,7 +175,7 @@ PanelWindow {
                         Layout.preferredHeight: trayRoot.iconSize + 8
 
                         radius: 4
-                        color: "transparent"
+                        color: itemMouse.containsMouse ? colors.muted : "transparent"
 
                         Image {
                             id: trayIcon
@@ -216,7 +217,8 @@ PanelWindow {
                             }
                         }
                         Tip {
-                            rootWindow: root // Ensure this ID matches your main Bar window
+                            rootWindow: root
+                            watcher: itemMouse
                             targetItem: trayItemWrapper
                             text: trayItemWrapper.modelData.title || trayItemWrapper.modelData.id
                         }
@@ -234,6 +236,7 @@ PanelWindow {
                 Tip {
                     rootWindow: root
                     targetItem: idleItem
+                    watcher: idleMouseArea
                     text: ctx.inhibitor.state.enabled ? "Activated" : "Deactivated"
                 }
 
@@ -254,6 +257,8 @@ PanelWindow {
                 MouseArea {
                     id: idleMouseArea
                     anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
                     onClicked: ctx.inhibitor.state.enabled = !ctx.inhibitor.state.enabled
                 }
             }
@@ -281,6 +286,7 @@ PanelWindow {
                 color: "transparent"
 
                 MouseArea {
+                    id: batMouse
                     anchors.fill: parent
                     hoverEnabled: true
                 }
@@ -294,6 +300,7 @@ PanelWindow {
                     Tip {
                         rootWindow: root
                         targetItem: batItem
+                        watcher: batMouse
                         text: ctx.power.batteryAlternateText
                     }
 
@@ -362,6 +369,7 @@ PanelWindow {
                     id: ccHover
                     anchors.fill: parent
                     hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
                     onClicked: ccBtn.clicked()
                 }
 

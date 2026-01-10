@@ -6,19 +6,33 @@ PopupWindow {
 
     required property PanelWindow rootWindow
     required property Item targetItem
+    required property MouseArea watcher
 
     property string text: ""
     property int delay: 500
     property int padding: 8
 
     property bool _timerFinished: false
-    visible: targetMouse.containsMouse && _timerFinished
+    visible: watcher.containsMouse && _timerFinished
 
     Timer {
-        running: targetMouse.containsMouse && !root._timerFinished
+        running: root.watcher.containsMouse && !root._timerFinished
         interval: root.delay
 
-        onTriggered: root._timerFinished = true
+        onTriggered: {
+            const pos = root.targetItem.mapToItem(root.rootWindow.contentItem, 0, 0);
+            root.calculatedRect = Qt.rect(pos.x, pos.y, root.targetItem.width, root.targetItem.height);
+            root._timerFinished = true;
+        }
+    }
+
+    Connections {
+        target: root.watcher
+        function onContainsMouseChanged() {
+            if (!root.watcher.containsMouse) {
+                root._timerFinished = false;
+            }
+        }
     }
 
     property rect calculatedRect: Qt.rect(0, 0, 0, 0)
@@ -32,26 +46,6 @@ PopupWindow {
     implicitWidth: content.width
     implicitHeight: content.height
     color: "transparent"
-
-    MouseArea {
-        id: targetMouse
-        parent: root.targetItem
-        anchors.fill: parent
-        hoverEnabled: true
-
-        acceptedButtons: Qt.NoButton
-
-        onEntered: {
-            const pos = root.targetItem.mapToItem(root.rootWindow.contentItem, 0, 0);
-            root.calculatedRect = Qt.rect(pos.x, pos.y, root.targetItem.width, root.targetItem.height);
-        }
-
-        onContainsMouseChanged: {
-            if (!containsMouse) {
-                root._timerFinished = false;
-            }
-        }
-    }
 
     Rectangle {
         id: content
