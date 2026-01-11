@@ -1,4 +1,5 @@
 import QtQuick
+import Quickshell
 import Quickshell.Io
 
 Item {
@@ -26,7 +27,7 @@ Item {
     Process {
         id: daemon
         running: true
-        command: ["/home/luxluth/.config/quickshell/tools/network-watcher/target/release/network-watcher"]
+        command: [Quickshell.shellPath("tools/network-watcher/target/release/network-watcher")]
         onExited: (code, status) => {
             console.log("Network watcher exited with code " + code);
             restartTimer.start();
@@ -41,7 +42,7 @@ Item {
 
     Socket {
         id: sock
-        path: "/home/luxluth/.config/quickshell/.net.sock"
+        path: Quickshell.shellPath(".net.sock")
 
         connected: daemon.running
 

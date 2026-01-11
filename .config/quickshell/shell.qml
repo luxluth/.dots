@@ -12,6 +12,7 @@ ShellRoot {
     }
     Colors {
         id: colors
+        context: ctx
     }
 
     PopupWindow {
@@ -33,6 +34,8 @@ ShellRoot {
         ControlCenter {
             id: dashboard
             anchors.fill: parent
+            context: ctx
+            colors: colors
             onClosed: dashboardWindow.visible = false
         }
     }
@@ -54,5 +57,8 @@ ShellRoot {
 
     Bar {
         id: bar
+        context: ctx
+        colors: colors
+        cc: dashboardWindow
     }
 }

@@ -8,9 +8,14 @@ import Quickshell.Services.SystemTray
 
 import "../Components"
 import "../Assets"
+import "../Core"
 
 PanelWindow {
     id: root
+
+    required property Context context
+    required property Colors colors
+    required property PopupWindow cc
 
     anchors.top: true
     anchors.left: true
@@ -38,7 +43,7 @@ PanelWindow {
                 }
 
                 Repeater {
-                    model: ctx.compositor.workspaces
+                    model: root.context.compositor.workspaces
 
                     delegate: Rectangle {
                         id: workspaceItem
@@ -50,25 +55,35 @@ PanelWindow {
                         required property var modelData
 
                         property var ws: modelData
-                        property bool isActive: ctx.compositor.focusedWorkspace?.id === (ws.id)
+                        property bool isActive: root.context.compositor.focusedWorkspace?.id === (ws.id)
 
-                        color: isActive ? colors.fg : colors.muted
+                        color: isActive ? root.colors.fg : root.colors.muted
+
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: 200
+                            }
+                        }
+
+                        scale: workspaceMouse.containsPress ? 0.85 : 1.0
+                        Behavior on scale {
+                            NumberAnimation {
+                                duration: 100
+                            }
+                        }
 
                         MouseArea {
+                            id: workspaceMouse
+                            hoverEnabled: true
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: ctx.compositor.gotoWorkspace(ws.id)
+                            onClicked: root.context.compositor.gotoWorkspace(workspaceItem.ws.id)
+                            onWheel: wheel => {
+                                const step = wheel.angleDelta.y / 120;
+                                if (step !== 0)
+                                    root.context.compositor.gotoWorkspaceStep(-step);
+                            }
                         }
-                    }
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    propagateComposedEvents: true
-                    onWheel: wheel => {
-                        const step = wheel.angleDelta.y / 120;
-                        if (step !== 0)
-                            ctx.compositor.gotoWorkspaceStep(-step);
                     }
                 }
             }
@@ -76,7 +91,7 @@ PanelWindow {
             Rectangle {
                 width: 1
                 height: 16
-                color: colors.muted
+                color: root.colors.muted
                 opacity: 0.5
             }
 
@@ -85,11 +100,11 @@ PanelWindow {
 
                 // Title
                 Text {
-                    text: ctx.compositor.focused[1]
-                    color: colors.fg
+                    text: root.context.compositor.focused[1]
+                    color: root.colors.fg
 
                     font {
-                        family: colors.fontFamily
+                        family: root.colors.fontFamily
                         pixelSize: 13
                         bold: true
                     }
@@ -100,11 +115,11 @@ PanelWindow {
 
                 // Class
                 Text {
-                    text: ctx.compositor.focused[0]
-                    color: colors.muted
+                    text: root.context.compositor.focused[0]
+                    color: root.colors.muted
 
                     font {
-                        family: colors.fontFamily
+                        family: root.colors.fontFamily
                         pixelSize: 11
                         bold: true
                     }
@@ -124,11 +139,11 @@ PanelWindow {
 
                 property bool isTime: true
 
-                text: isTime ? ctx.time : ctx.date
-                color: colors.fg
+                text: isTime ? root.context.time : root.context.date
+                color: root.colors.fg
 
                 font {
-                    family: colors.fontFamily
+                    family: root.colors.fontFamily
                     pixelSize: 14
                     bold: true
                 }
@@ -154,7 +169,7 @@ PanelWindow {
                 property var pinnedApps: []
                 property var blacklist: []
                 property bool hidePassive: false
-                property var colors: null
+                property var colors: root.colors
 
                 property var visibleItems: {
                     var items = SystemTray.items.values || [];
@@ -185,7 +200,7 @@ PanelWindow {
                         Layout.preferredHeight: trayRoot.iconSize + 8
 
                         radius: 4
-                        color: itemMouse.containsMouse ? colors.muted : "transparent"
+                        color: itemMouse.containsMouse ? root.colors.muted : "transparent"
 
                         Image {
                             id: trayIcon
@@ -202,7 +217,7 @@ PanelWindow {
                         Text {
                             anchors.centerIn: parent
                             text: trayIcon.status === Image.Error ? "?" : ""
-                            color: colors.muted
+                            color: root.colors.muted
                             font.pixelSize: 10
                             visible: trayIcon.status === Image.Error
                         }
@@ -251,20 +266,27 @@ PanelWindow {
                     rootWindow: root
                     targetItem: idleItem
                     watcher: idleMouseArea
-                    text: ctx.inhibitor.state.enabled ? "Activated" : "Deactivated"
+                    text: root.context.inhibitor.state.enabled ? "Activated" : "Deactivated"
                 }
 
                 Text {
                     id: idleText
 
                     anchors.centerIn: parent
-                    text: ctx.inhibitor.state.enabled ? "󰅶" : "󰛊"
-                    color: colors.fg
+                    text: root.context.inhibitor.state.enabled ? "󰅶" : "󰛊"
+                    color: root.colors.fg
 
                     font {
-                        family: colors.fontFamily
+                        family: root.colors.fontFamily
                         pixelSize: 14
                         bold: true
+                    }
+                }
+
+                scale: idleMouseArea.containsPress ? 0.85 : 1.0
+                Behavior on scale {
+                    NumberAnimation {
+                        duration: 100
                     }
                 }
 
@@ -273,14 +295,14 @@ PanelWindow {
                     anchors.fill: parent
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: ctx.inhibitor.state.enabled = !ctx.inhibitor.state.enabled
+                    onClicked: root.context.inhibitor.state.enabled = !root.context.inhibitor.state.enabled
                 }
             }
 
             // Network
             Rectangle {
                 id: netItem
-                visible: ctx.network.wifiConnected || ctx.network.ethernetConnected
+                visible: root.context.network.wifiConnected || root.context.network.ethernetConnected
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: netRow.implicitWidth + 10
                 color: "transparent"
@@ -293,14 +315,14 @@ PanelWindow {
                     CImage {
                         width: 14
                         iconSource: {
-                            if (ctx.network.ethernetConnected)
+                            if (root.context.network.ethernetConnected)
                                 return Icons.ethernetPort;
-                            if (!ctx.network.wifiEnabled)
+                            if (!root.context.network.wifiEnabled)
                                 return Icons.wifiOff;
-                            if (!ctx.network.wifiConnected)
+                            if (!root.context.network.wifiConnected)
                                 return Icons.wifiZero;
 
-                            const sig = ctx.network.wifiSignal;
+                            const sig = root.context.network.wifiSignal;
                             if (sig > 75)
                                 return Icons.wifiHigh;
                             if (sig > 50)
@@ -312,11 +334,11 @@ PanelWindow {
                     }
 
                     Text {
-                        text: ctx.network.ifaceName
-                        color: colors.fg
+                        text: root.context.network.ifaceName
+                        color: root.colors.fg
                         font {
-                            family: colors.fontFamily
-                            pixelSize: 12
+                            family: root.colors.fontFamily
+                            pixelSize: 14
                             bold: true
                         }
                     }
@@ -333,10 +355,10 @@ PanelWindow {
                     targetItem: netItem
                     watcher: netMouse
                     text: {
-                        if (ctx.network.ipv4 !== "")
-                            return ctx.network.ipv4;
-                        if (ctx.network.ipv6 !== "")
-                            return ctx.network.ipv6;
+                        if (root.context.network.ipv4 !== "")
+                            return root.context.network.ipv4;
+                        if (root.context.network.ipv6 !== "")
+                            return root.context.network.ipv6;
                         return "...";
                     }
                 }
@@ -348,7 +370,7 @@ PanelWindow {
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: bltRow.implicitWidth + 10
 
-                visible: ctx.blt.adapter.enabled
+                visible: root.context.blt.adapter.enabled
                 color: "transparent"
 
                 RowLayout {
@@ -357,16 +379,16 @@ PanelWindow {
                     spacing: 5
 
                     CImage {
-                        iconSource: ctx.blt.connected ? Icons.bluetoothConnected : Icons.bluetoothActive
+                        iconSource: root.context.blt.connected ? Icons.bluetoothConnected : Icons.bluetoothActive
                         width: 14
                     }
 
                     Text {
-                        text: ctx.blt.adapter.adapterId
-                        color: colors.fg
+                        text: root.context.blt.adapter.adapterId
+                        color: root.colors.fg
 
                         font {
-                            family: colors.fontFamily
+                            family: root.colors.fontFamily
                             pixelSize: 14
                             bold: true
                         }
@@ -383,17 +405,17 @@ PanelWindow {
                     rootWindow: root
                     targetItem: bltItem
                     watcher: bltMouse
-                    text: ctx.blt.connected ? `${ctx.blt.connected.name} ${ctx.blt.connected.batteryAvailable ? (ctx.blt.connected.battery * 100).toString() + "%" : ""}` : "Not Paired"
+                    text: root.context.blt.connected ? `${root.context.blt.connected.name} ${root.context.blt.connected.batteryAvailable ? (root.context.blt.connected.battery * 100).toString() + "%" : ""}` : "Not Paired"
                 }
             }
 
             // Volume
             Text {
-                text: `${Math.floor(ctx.pw.sink.audio.volume * 100)}% ${ctx.pw.getDefaultSinkVolumeIcon()}`
-                color: ctx.pw.defaultSinkMuted ? colors.muted : colors.fg
+                text: `${Math.floor(root.context.pw.sink.audio.volume * 100)}% ${root.context.pw.getDefaultSinkVolumeIcon()}`
+                color: root.context.pw.defaultSinkMuted ? root.colors.muted : root.colors.fg
 
                 font {
-                    family: colors.fontFamily
+                    family: root.colors.fontFamily
                     pixelSize: 14
                     bold: true
                 }
@@ -418,18 +440,18 @@ PanelWindow {
                 Text {
                     id: batText
                     anchors.centerIn: parent
-                    text: ctx.power.batteryPercentage
-                    color: ctx.power.batteryLow ? colors.red : colors.fg
+                    text: root.context.power.batteryPercentage
+                    color: root.context.power.batteryLow ? root.colors.red : root.colors.fg
 
                     Tip {
                         rootWindow: root
                         targetItem: batItem
                         watcher: batMouse
-                        text: ctx.power.batteryAlternateText
+                        text: root.context.power.batteryAlternateText
                     }
 
                     font {
-                        family: colors.fontFamily
+                        family: root.colors.fontFamily
                         pixelSize: 14
                         bold: true
                     }
@@ -443,19 +465,25 @@ PanelWindow {
                 Layout.preferredWidth: 24
                 Layout.preferredHeight: 24
                 radius: 4
-                color: ccHover.containsMouse || dashboardWindow.visible ? colors.muted : "transparent"
+                color: ccHover.containsMouse || root.cc.visible ? root.colors.muted : "transparent"
 
                 Text {
                     text: "󰤂"
-                    color: colors.fg
+                    color: root.colors.fg
                     anchors.centerIn: parent
                     font {
-                        family: colors.fontFamily
+                        family: root.colors.fontFamily
                         pixelSize: 14
                         bold: true
                     }
                 }
 
+                scale: ccHover.containsPress ? 0.85 : 1.0
+                Behavior on scale {
+                    NumberAnimation {
+                        duration: 100
+                    }
+                }
                 MouseArea {
                     id: ccHover
                     anchors.fill: parent
@@ -484,7 +512,7 @@ PanelWindow {
         anchors.right: parent.right
 
         height: 1
-        color: colors.border
+        color: root.colors.border
 
         z: 99
     }

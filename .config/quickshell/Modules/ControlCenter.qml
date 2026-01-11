@@ -1,7 +1,5 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls
-import Quickshell.Io
 
 import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
@@ -9,9 +7,14 @@ import Quickshell.Services.SystemTray
 
 import "../Assets/"
 import "../Components/"
+import "../Core"
 
 Rectangle {
     id: root
+
+    required property Context context
+    required property Colors colors
+
     width: 600
     height: 500
     color: colors.bg
@@ -97,29 +100,28 @@ Rectangle {
             Layout.preferredHeight: parent.height * 0.6
 
             radius: 8
-            border.color: colors.border
+            border.color: root.colors.border
             border.width: 2
-            color: colors.contrast
+            color: root.colors.contrast
 
             FlexboxLayout {
                 anchors.fill: parent
                 anchors.margins: 8
                 direction: FlexboxLayout.Column
                 gap: 10
-                alignItems: FlexboxLayout.Stretch
                 justifyContent: FlexboxLayout.JustifySpaceAround
 
                 StateButton {
-                    title: ctx.network.ethernetConnected ? "Wired" : "Wi-Fi"
+                    title: root.context.network.ethernetConnected ? "Wired" : "Wi-Fi"
                     icon: {
-                        if (ctx.network.ethernetConnected)
+                        if (root.context.network.ethernetConnected)
                             return Icons.ethernetPort;
-                        if (!ctx.network.wifiEnabled)
+                        if (!root.context.network.wifiEnabled)
                             return Icons.wifiOff;
-                        if (!ctx.network.wifiConnected)
+                        if (!root.context.network.wifiConnected)
                             return Icons.wifiZero;
 
-                        const sig = ctx.network.wifiSignal;
+                        const sig = root.context.network.wifiSignal;
                         if (sig > 75)
                             return Icons.wifiHigh;
                         if (sig > 50)
@@ -128,44 +130,44 @@ Rectangle {
                             return Icons.wifiLow;
                         return Icons.wifiZero;
                     }
-                    isActive: ctx.network.ethernetConnected || (ctx.network.wifiEnabled && ctx.network.wifiConnected)
+                    isActive: root.context.network.ethernetConnected || (root.context.network.wifiEnabled && root.context.network.wifiConnected)
                     details: {
-                        if (ctx.network.ethernetConnected)
-                            return ctx.network.ipv4 || "Connected";
-                        return ctx.network.wifiConnected ? ctx.network.wifiSsid : (ctx.network.wifiEnabled ? "Disconnected" : "Disabled");
+                        if (root.context.network.ethernetConnected)
+                            return root.context.network.ipv4 || "Connected";
+                        return root.context.network.wifiConnected ? root.context.network.wifiSsid : (root.context.network.wifiEnabled ? "Disconnected" : "Disabled");
                     }
-                    onClicked: ctx.network.toggleWifi()
+                    onClicked: root.context.network.toggleWifi()
                     onArrowClicked: console.log("Open Network Settings")
                 }
                 StateButton {
                     title: "Bluetooth"
-                    icon: !ctx.blt.adapter.enabled ? Icons.bluetoothOff : (ctx.blt.connected ? Icons.bluetoothConnected : Icons.bluetoothActive)
-                    isActive: ctx.blt.adapter.enabled
-                    details: ctx.blt.connected ? `${ctx.blt.connected.name} ${ctx.blt.connected.batteryAvailable ? (ctx.blt.connected.battery * 100).toString() + "%" : ""}` : "$ Not Paired"
+                    icon: !root.context.blt.adapter.enabled ? Icons.bluetoothOff : (root.context.blt.connected ? Icons.bluetoothConnected : Icons.bluetoothActive)
+                    isActive: root.context.blt.adapter.enabled
+                    details: root.context.blt.connected ? `${root.context.blt.connected.name} ${root.context.blt.connected.batteryAvailable ? (root.context.blt.connected.battery * 100).toString() + "%" : ""}` : "$ Not Paired"
                     onClicked: {
-                        if (ctx.blt.adapter.enabled) {
-                            for (const device of ctx.blt.devices) {
+                        if (root.context.blt.adapter.enabled) {
+                            for (const device of root.context.blt.devices) {
                                 if (device.connected)
                                     device.disconnect();
                             }
                         }
-                        ctx.blt.adapter.enabled = !ctx.blt.adapter.enabled;
+                        root.context.blt.adapter.enabled = !root.context.blt.adapter.enabled;
                     }
                 }
                 StateButton {
                     title: "Power Profile"
                     icon: {
-                        if (ctx.power.profile == 0)
+                        if (root.context.power.profile == 0)
                             return Icons.scale;
-                        if (ctx.power.profile == 1)
+                        if (root.context.power.profile == 1)
                             return Icons.zap;
-                        if (ctx.power.profile == 2)
+                        if (root.context.power.profile == 2)
                             return Icons.sproot;
                     }
                     expansion: false
-                    isActive: ctx.power.profile > 0
-                    details: ctx.power.profileToText(ctx.power.profile).replace("-", " ").toUpperCase()
-                    onClicked: ctx.power.cycle()
+                    isActive: root.context.power.profile > 0
+                    details: root.context.power.profileToText(root.context.power.profile).replace("-", " ").toUpperCase()
+                    onClicked: root.context.power.cycle()
                 }
             }
         }

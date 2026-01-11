@@ -4,7 +4,6 @@ use networkmanager::configs::{Ip4Config, Ip6Config};
 use networkmanager::devices::{Any, Device, Wireless};
 use networkmanager::NetworkManager;
 use serde::{Deserialize, Serialize};
-use std::path::Path;
 use std::process::Command;
 use std::thread;
 use std::time::Duration;
@@ -31,9 +30,17 @@ struct ClientCommand {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let home = std::env::var("HOME")?;
-    let socket_path = format!("{home}/.config/quickshell/.net.sock");
-    if Path::new(&socket_path).exists() {
+    let config_dir = std::env::var("XDG_CONFIG_HOME")
+        .map(std::path::PathBuf::from)
+        .unwrap_or_else(|_| {
+            let home = std::env::var("HOME").expect("HOME environment variable not set");
+            std::path::PathBuf::from(home).join(".config")
+        })
+        .join("quickshell");
+
+    let socket_path = config_dir.join(".net.sock");
+
+    if socket_path.exists() {
         let _ = std::fs::remove_file(&socket_path);
     }
 
@@ -219,4 +226,3 @@ async fn handle_client(mut stream: UnixStream, tx: broadcast::Sender<NetworkStat
         }
     }
 }
-
