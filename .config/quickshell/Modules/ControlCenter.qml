@@ -238,6 +238,14 @@ Rectangle {
                             value: root.context.pw.sink.audio.volume
                             onChangeRequested: v => root.context.pw.sink.audio.volume = v
                         }
+
+                        Connections {
+                            target: root.context.pw.sink.audio.volume
+
+                            function onVolumeChanged(vol) {
+                                volSlider.value = vol;
+                            }
+                        }
                     }
                 }
 
