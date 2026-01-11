@@ -3,10 +3,10 @@
 function reload_waybar
     rm ~/.config/waybar/style.css
     ln -s /home/luxluth/.config/waybar/$argv[1].style.css /home/luxluth/.config/waybar/style.css
-    if pgrep -f waybar >/dev/null
-        killall waybar
-    end
-    waybar &
+    # if pgrep -f waybar >/dev/null
+    #     killall waybar
+    #     waybar &
+    # end
 end
 
 set current_scheme (gsettings get org.gnome.desktop.interface color-scheme | string replace --all "'" "")
@@ -22,3 +22,5 @@ else if string match -q prefer-dark $current_scheme
 
     reload_waybar light
 end
+
+~/.config/hypr/scripts/bg.fish
