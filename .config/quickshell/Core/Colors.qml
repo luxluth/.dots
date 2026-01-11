@@ -11,7 +11,7 @@ Item {
     property color fg: isDarkThemed ? "#fff" : "#181818"
     property color bg: isDarkThemed ? "#181818" : "#f7f7f7"
     property color muted: isDarkThemed ? "#444" : "#ccc"
-    property color border: isDarkThemed ? "#595959" : "#222"
+    property color border: isDarkThemed ? "#595959" : "#444"
     property color contrast: isDarkThemed ? "#222" : "#fff"
 
     property color green: "#26a65b"

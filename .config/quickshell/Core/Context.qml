@@ -17,6 +17,11 @@ Item {
     property Services.IInhibitor inhibitor: inhibit
     property Services.Blue blt: blue
     property Services.Network network: net
+    property Services.Brightness brightness: bright
+
+    Services.Brightness {
+        id: bright
+    }
 
     Services.Network {
         id: net

@@ -39,21 +39,10 @@ Rectangle {
         }
     }
 
-    SequentialAnimation {
-        id: clickAnim
+    scale: (mainMouse.pressed || arrowMouse.pressed) ? 0.98 : 1.0
+    Behavior on scale {
         NumberAnimation {
-            target: root
-            property: "scale"
-            to: 0.97
-            duration: 50
-            easing.type: Easing.OutQuad
-        }
-        NumberAnimation {
-            target: root
-            property: "scale"
-            to: 1.0
-            duration: 150
-            easing.type: Easing.OutBack
+            duration: 100
         }
     }
 
@@ -124,7 +113,6 @@ Rectangle {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                    clickAnim.start();
                     root.clicked();
                 }
             }
@@ -158,7 +146,6 @@ Rectangle {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                    clickAnim.start();
                     root.arrowClicked();
                 }
             }

@@ -182,9 +182,116 @@ Rectangle {
 
             Layout.preferredWidth: parent.width * 0.45
             Layout.preferredHeight: parent.height * 0.6
-
-            radius: 8
             color: "transparent"
+
+            FlexboxLayout {
+                anchors.fill: parent
+                anchors.margins: 0
+                direction: FlexboxLayout.Column
+                gap: 10
+                justifyContent: FlexboxLayout.JustifySpaceBetween
+
+                // VOLUME
+                Rectangle {
+                    radius: 8
+                    border.color: root.colors.border
+                    border.width: 2
+                    color: root.colors.contrast
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    height: 190
+
+                    ColumnLayout {
+                        anchors.fill: parent
+                        anchors.margins: 12
+                        spacing: 4
+
+                        Text {
+                            text: "Volume"
+                            color: root.colors.fg
+                            font {
+                                family: "Inter"
+                                pixelSize: 18
+                                bold: true
+                            }
+                            Layout.fillWidth: true
+                        }
+
+                        Text {
+                            text: `Fixed at ${Math.round(volSlider.value * 100)}%`
+                            color: Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.6)
+                            font {
+                                family: "Inter"
+                                pixelSize: 13
+                            }
+                            Layout.fillWidth: true
+                        }
+
+                        Item {
+                            Layout.fillHeight: true
+                        }
+
+                        SliderControl {
+                            id: volSlider
+                            Layout.fillWidth: true
+                            value: root.context.pw.sink.audio.volume
+                            onChangeRequested: v => root.context.pw.sink.audio.volume = v
+                        }
+                    }
+                }
+
+                // BRIGHTNESS
+                Rectangle {
+                    radius: 8
+                    border.color: root.colors.border
+                    border.width: 2
+                    color: root.colors.contrast
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    height: 190
+
+                    ColumnLayout {
+                        anchors.fill: parent
+                        anchors.margins: 12
+                        spacing: 4
+
+                        Text {
+                            text: "Brightness"
+                            color: root.colors.fg
+
+                            font {
+                                family: "Inter"
+                                pixelSize: 18
+                                bold: true
+                            }
+                            Layout.fillWidth: true
+                        }
+
+                        Text {
+                            text: `Fixed at ${Math.round(brightnessSlider.value * 100)}%`
+                            color: Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.6)
+                            font {
+                                family: "Inter"
+                                pixelSize: 13
+                            }
+                            Layout.fillWidth: true
+                        }
+
+                        Item {
+                            Layout.fillHeight: true
+                        }
+
+                        SliderControl {
+                            id: brightnessSlider
+                            Layout.fillWidth: true
+                            value: root.context.brightness.brightness
+                            onChangeRequested: v => root.context.brightness.setBrightness(v)
+                        }
+                    }
+                }
+            }
         }
 
         // RIGHT TOP

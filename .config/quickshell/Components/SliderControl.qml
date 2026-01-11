@@ -1,103 +1,66 @@
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Layouts
+import Quickshell.Widgets
 
-Rectangle {
+Item {
     id: root
 
-    property string label: ""
-    property string icon: ""
-    property real value: 0
-    required property var theme
+    property real value: .0
 
     signal changeRequested(real newValue)
 
     Layout.fillWidth: true
-    implicitHeight: 52
-    radius: 12
-    color: theme.surface
-    border.width: 1
-    border.color: theme.border
+    implicitHeight: 34
 
-    RowLayout {
+    ClippingRectangle {
+        id: track
         anchors.fill: parent
-        anchors.margins: 12
-        spacing: 12
+        radius: 6
+        color: colors.contrast
+        border.width: 2
+        border.color: colors.border
 
-        Text {
-            text: root.icon
-            font.family: "Symbols Nerd Font"
-            font.pixelSize: 16
+        Rectangle {
+            id: ranged
+            anchors.left: parent.left
+            anchors.top: parent.top
+            height: parent.height
+            width: parent.width * root.value
             color: colors.fg
         }
+    }
 
-        Text {
-            Layout.preferredWidth: 70
-            text: root.label
-            font.pixelSize: 13
-            color: colors.fg
-        }
+    Rectangle {
+        id: rangeAnchor
+        x: (track.width * root.value) - (width / 2)
+        anchors.verticalCenter: parent.verticalCenter
+        height: parent.height + 8
+        width: 8
+        radius: 4
+        color: colors.fg
+        scale: sliderEvent.containsPress ? 0.95 : 1.0
+        border.color: colors.border
 
-        Slider {
-            id: slider
-
-            Layout.fillWidth: true
-            from: 0
-            to: 1
-            onMoved: root.changeRequested(value)
-
-            MouseArea {
-                anchors.fill: parent
-                acceptedButtons: Qt.NoButton // Passthrough clicks to slider
-                onWheel: wheel => {
-                    var step = 0.05;
-                    var next = (wheel.angleDelta.y > 0) ? slider.value + step : slider.value - step;
-                    next = Math.max(0, Math.min(1, next));
-                    root.changeRequested(next);
-                }
-            }
-
-            Binding on value {
-                value: root.value
-                when: !slider.pressed
-                restoreMode: Binding.RestoreBinding
-            }
-
-            background: Rectangle {
-                x: slider.leftPadding
-                y: slider.topPadding + slider.availableHeight / 2 - height / 2
-                implicitWidth: 200
-                implicitHeight: 4
-                width: slider.availableWidth
-                height: implicitHeight
-                radius: 2
-                color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.2)
-
-                Rectangle {
-                    width: slider.visualPosition * parent.width
-                    height: parent.height
-                    color: colors.fg // TODO: use accent
-                    radius: 2
-                }
-            }
-
-            handle: Rectangle {
-                x: slider.leftPadding + slider.visualPosition * (slider.availableWidth - width)
-                y: slider.topPadding + slider.availableHeight / 2 - height / 2
-                implicitWidth: 16
-                implicitHeight: 16
-                radius: 8
-                color: "#FFFFFF"
-                border.width: 0
+        Behavior on scale {
+            NumberAnimation {
+                duration: 100
             }
         }
+    }
 
-        Text {
-            text: Math.round(slider.value * 100) + "%"
-            font.pixelSize: 12
-            color: colors.muted
-            Layout.preferredWidth: 30
-            horizontalAlignment: Text.AlignRight
+    MouseArea {
+        id: sliderEvent
+        anchors.fill: parent
+        hoverEnabled: true
+        onPressed: mouse => updateValue(mouse.x)
+        onPositionChanged: mouse => updateValue(mouse.x)
+
+        function updateValue(mouseX) {
+            if (sliderEvent.pressed) {
+                const newValue = Math.max(0, Math.min(1, mouseX / width));
+                root.value = newValue;
+                root.changeRequested(newValue);
+            }
         }
     }
 }
