@@ -202,6 +202,14 @@ Rectangle {
                     Layout.fillHeight: true
                     height: 190
 
+                    opacity: root.context.pw.sink.audio.muted ? 0.4 : 1
+
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: 100
+                        }
+                    }
+
                     ColumnLayout {
                         anchors.fill: parent
                         anchors.margins: 12
@@ -232,18 +240,53 @@ Rectangle {
                             Layout.fillHeight: true
                         }
 
-                        SliderControl {
-                            id: volSlider
+                        RowLayout {
                             Layout.fillWidth: true
-                            value: root.context.pw.sink.audio.volume
-                            onChangeRequested: v => root.context.pw.sink.audio.volume = v
+                            spacing: 10
+
+                            SliderControl {
+                                id: volSlider
+                                Layout.fillWidth: true
+                                value: root.context.pw.sink.audio.volume
+                                onChangeRequested: v => root.context.pw.sink.audio.volume = v
+                            }
+
+                            Rectangle {
+                                Layout.fillHeight: true
+                                width: 40
+                                radius: 10
+
+                                border.color: root.colors.border
+                                border.width: 2
+                                color: root.context.pw.sink.audio.muted ? root.colors.fg : root.colors.contrast
+
+                                scale: muteButtonMouse.containsPress ? 0.95 : 1
+
+                                Behavior on scale {
+                                    NumberAnimation {
+                                        duration: 90
+                                    }
+                                }
+                                CImage {
+                                    coloring: root.context.pw.sink.audio.muted ? root.colors.bg : root.colors.fg
+                                    anchors.centerIn: parent
+                                    iconSource: Icons.volumeMute
+                                }
+
+                                MouseArea {
+                                    id: muteButtonMouse
+                                    anchors.fill: parent
+
+                                    onClicked: root.context.pw.sink.audio.muted = !root.context.pw.sink.audio.muted
+                                }
+                            }
                         }
 
                         Connections {
-                            target: root.context.pw.sink.audio.volume
+                            target: root.context.pw.sink.audio
 
-                            function onVolumeChanged(vol) {
-                                volSlider.value = vol;
+                            function onVolumesChanged() {
+                                volSlider.value = root.context.pw.sink.audio.volume;
                             }
                         }
                     }

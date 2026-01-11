@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell.Io
 
 Item {
+    id: root
     property real brightness: 0
 
     function setBrightness(v) {
@@ -11,37 +12,48 @@ Item {
         brightness = v;
     }
 
-    Process {
-        id: setProc
-    }
+    readonly property string path: "/sys/class/backlight/intel_backlight"
+    property int maxBrightness: 96000
 
     Process {
-        id: brightProc
-
-        command: ["brightnessctl", "-m"]
-
+        id: maxProc
+        command: ["cat", `${root.path}/max_brightness`]
         stdout: SplitParser {
             onRead: data => {
-                if (!data)
-                    return;
-
-                const parts = data.split(",");
-                for (let i = 0; i < parts.length; i++) {
-                    if (parts[i].endsWith("%")) {
-                        let val = parseFloat(parts[i]);
-                        brightness = val / 100;
-                        return;
-                    }
+                const val = parseInt(data.trim());
+                if (!isNaN(val) && val > 0) {
+                    root.maxBrightness = val;
+                    console.log("max", root.maxBrightness);
+                    brightProc.running = true;
                 }
             }
         }
     }
 
-    Timer {
-        interval: 3000
+    Process {
+        id: brightProc
+        command: ["cat", `${root.path}/brightness`]
+        stdout: SplitParser {
+            onRead: data => {
+                const val = parseInt(data.trim());
+                if (!isNaN(val)) {
+                    brightness = val / root.maxBrightness;
+                }
+            }
+        }
+    }
+
+    Process {
+        id: setProc
+    }
+
+    Process {
+        id: monitorProc
+        command: ["udevadm", "monitor", "--udev", "--subsystem-match=backlight"]
         running: true
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: brightProc.running = true
+
+        stdout: SplitParser {
+            onRead: _ => brightProc.running = true
+        }
     }
 }

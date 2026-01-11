@@ -20,4 +20,6 @@ QtObject {
     readonly property string chevronRight: Qt.resolvedUrl("./chevron-right.svg")
 
     readonly property string ethernetPort: Qt.resolvedUrl("./ethernet-port.svg")
+
+    readonly property string volumeMute: Qt.resolvedUrl("./volume-x.svg")
 }
