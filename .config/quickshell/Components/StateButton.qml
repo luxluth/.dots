@@ -27,6 +27,49 @@ Rectangle {
     color: isActive ? colors.pearleBlue : colors.contrast
     border.width: isActive ? 2 : 1
 
+    // Hover and Click animations
+    Behavior on color {
+        ColorAnimation {
+            duration: 150
+        }
+    }
+    Behavior on border.color {
+        ColorAnimation {
+            duration: 150
+        }
+    }
+
+    SequentialAnimation {
+        id: clickAnim
+        NumberAnimation {
+            target: root
+            property: "scale"
+            to: 0.97
+            duration: 50
+            easing.type: Easing.OutQuad
+        }
+        NumberAnimation {
+            target: root
+            property: "scale"
+            to: 1.0
+            duration: 150
+            easing.type: Easing.OutBack
+        }
+    }
+
+    Rectangle {
+        id: hoverOverlay
+        anchors.fill: parent
+        color: "white"
+        opacity: (mainMouse.containsMouse || arrowMouse.containsMouse) ? 0.05 : 0
+        radius: root.radius
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 150
+            }
+        }
+    }
+
     RowLayout {
         anchors.fill: parent
         spacing: 0
@@ -41,7 +84,6 @@ Rectangle {
                 anchors.rightMargin: 8
                 spacing: 12
 
-                // Icon
                 CImage {
                     iconSource: root.icon
                 }
@@ -55,7 +97,6 @@ Rectangle {
                         color: colors.fg
                         Layout.fillWidth: true
                         elide: Text.ElideRight
-
                         font {
                             family: "Inter"
                             pixelSize: 18
@@ -69,7 +110,6 @@ Rectangle {
                         visible: root.details !== ""
                         Layout.fillWidth: true
                         elide: Text.ElideRight
-
                         font {
                             family: "Inter"
                             pixelSize: 13
@@ -79,9 +119,14 @@ Rectangle {
             }
 
             MouseArea {
+                id: mainMouse
                 anchors.fill: parent
+                hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
-                onClicked: root.clicked()
+                onClicked: {
+                    clickAnim.start();
+                    root.clicked();
+                }
             }
         }
 
@@ -95,6 +140,7 @@ Rectangle {
         }
 
         Item {
+            id: arrowItem
             Layout.preferredWidth: 50
             Layout.fillHeight: true
             visible: root.expansion
@@ -107,9 +153,14 @@ Rectangle {
             }
 
             MouseArea {
+                id: arrowMouse
                 anchors.fill: parent
+                hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
-                onClicked: root.arrowClicked()
+                onClicked: {
+                    clickAnim.start();
+                    root.arrowClicked();
+                }
             }
         }
     }

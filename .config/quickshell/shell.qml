@@ -31,7 +31,9 @@ ShellRoot {
 
         // Load the module
         ControlCenter {
+            id: dashboard
             anchors.fill: parent
+            onClosed: dashboardWindow.visible = false
         }
     }
 
@@ -39,10 +41,14 @@ ShellRoot {
         target: bar.ccBtn
 
         function onClicked() {
-            const pos = bar.ccBtn.mapToItem(bar.contentItem, 0, 0);
-            dashboardWindow.clickedRect = Qt.rect(pos.x, pos.y + 35, bar.ccBtn.width, bar.ccBtn.height);
-
-            dashboardWindow.visible = !dashboardWindow.visible;
+            if (dashboardWindow.visible) {
+                dashboard.close();
+            } else {
+                const pos = bar.ccBtn.mapToItem(bar.contentItem, 0, 0);
+                dashboardWindow.clickedRect = Qt.rect(pos.x, pos.y + 35, bar.ccBtn.width, bar.ccBtn.height);
+                dashboardWindow.visible = true;
+                dashboard.open();
+            }
         }
     }
 
