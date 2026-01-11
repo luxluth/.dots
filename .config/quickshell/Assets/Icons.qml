@@ -18,4 +18,6 @@ QtObject {
     readonly property string sproot: Qt.resolvedUrl("./sprout.svg")
 
     readonly property string chevronRight: Qt.resolvedUrl("./chevron-right.svg")
+
+    readonly property string ethernetPort: Qt.resolvedUrl("./ethernet-port.svg")
 }

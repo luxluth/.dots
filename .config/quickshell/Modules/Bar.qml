@@ -277,6 +277,116 @@ PanelWindow {
                 }
             }
 
+            // Network
+            Rectangle {
+                id: netItem
+                visible: ctx.network.wifiConnected || ctx.network.ethernetConnected
+                Layout.preferredHeight: 24
+                Layout.preferredWidth: netRow.implicitWidth + 10
+                color: "transparent"
+
+                RowLayout {
+                    id: netRow
+                    anchors.centerIn: parent
+                    spacing: 5
+
+                    CImage {
+                        width: 14
+                        iconSource: {
+                            if (ctx.network.ethernetConnected)
+                                return Icons.ethernetPort;
+                            if (!ctx.network.wifiEnabled)
+                                return Icons.wifiOff;
+                            if (!ctx.network.wifiConnected)
+                                return Icons.wifiZero;
+
+                            const sig = ctx.network.wifiSignal;
+                            if (sig > 75)
+                                return Icons.wifiHigh;
+                            if (sig > 50)
+                                return Icons.wifiMid;
+                            if (sig > 25)
+                                return Icons.wifiLow;
+                            return Icons.wifiZero;
+                        }
+                    }
+
+                    Text {
+                        text: ctx.network.ifaceName
+                        color: colors.fg
+                        font {
+                            family: colors.fontFamily
+                            pixelSize: 12
+                            bold: true
+                        }
+                    }
+                }
+
+                MouseArea {
+                    id: netMouse
+                    anchors.fill: parent
+                    hoverEnabled: true
+                }
+
+                Tip {
+                    rootWindow: root
+                    targetItem: netItem
+                    watcher: netMouse
+                    text: {
+                        if (ctx.network.ipv4 !== "")
+                            return ctx.network.ipv4;
+                        if (ctx.network.ipv6 !== "")
+                            return ctx.network.ipv6;
+                        return "...";
+                    }
+                }
+            }
+
+            // BLT
+            Rectangle {
+                id: bltItem
+                Layout.preferredHeight: 24
+                Layout.preferredWidth: bltRow.implicitWidth + 10
+
+                visible: ctx.blt.adapter.enabled
+                color: "transparent"
+
+                RowLayout {
+                    id: bltRow
+                    anchors.centerIn: parent
+                    spacing: 5
+
+                    CImage {
+                        iconSource: ctx.blt.connected ? Icons.bluetoothConnected : Icons.bluetoothActive
+                        width: 14
+                    }
+
+                    Text {
+                        text: ctx.blt.adapter.adapterId
+                        color: colors.fg
+
+                        font {
+                            family: colors.fontFamily
+                            pixelSize: 14
+                            bold: true
+                        }
+                    }
+                }
+
+                MouseArea {
+                    id: bltMouse
+                    anchors.fill: parent
+                    hoverEnabled: true
+                }
+
+                Tip {
+                    rootWindow: root
+                    targetItem: bltItem
+                    watcher: bltMouse
+                    text: ctx.blt.connected ? `${ctx.blt.connected.name} ${ctx.blt.connected.batteryAvailable ? (ctx.blt.connected.battery * 100).toString() + "%" : ""}` : "Not Paired"
+                }
+            }
+
             // Volume
             Text {
                 text: `${Math.floor(ctx.pw.sink.audio.volume * 100)}% ${ctx.pw.getDefaultSinkVolumeIcon()}`
@@ -322,39 +432,6 @@ PanelWindow {
                         family: colors.fontFamily
                         pixelSize: 14
                         bold: true
-                    }
-                }
-            }
-
-            // BLT
-            Rectangle {
-                Layout.preferredWidth: 40
-                Layout.preferredHeight: 24
-
-                visible: ctx.blt.adapter.enabled
-                color: "transparent"
-
-                FlexboxLayout {
-                    gap: 1
-                    anchors.centerIn: parent
-                    justifyContent: FlexboxLayout.JustifyCenter
-                    alignItems: FlexboxLayout.AlignCenter
-
-                    CImage {
-                        iconSource: ctx.blt.connected ? Icons.bluetoothConnected : Icons.bluetoothActive
-                        width: 14
-                    }
-
-                    Text {
-                        text: ctx.blt.adapter.adapterId
-
-                        color: colors.fg
-
-                        font {
-                            family: colors.fontFamily
-                            pixelSize: 14
-                            bold: true
-                        }
                     }
                 }
             }

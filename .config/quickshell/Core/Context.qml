@@ -16,6 +16,11 @@ Item {
     property Services.Volume pw: pipewire
     property Services.IInhibitor inhibitor: inhibit
     property Services.Blue blt: blue
+    property Services.Network network: net
+
+    Services.Network {
+        id: net
+    }
 
     Services.Blue {
         id: blue
