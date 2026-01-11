@@ -7,7 +7,7 @@ if pgrep -f awww-daemon >/dev/null
         set image "$HOME/Pictures/walls/wallhaven-xez83v.jpg"
         awww img $image --transition-type fade --transition-fps 60 --transition-duration 0.5
     else
-        set image "$HOME/Pictures/walls/wallhaven-9d152k.png"
+        set image "$HOME/Pictures/walls/wallhaven-8ge7yo.jpg"
         awww img $image --transition-type fade --transition-fps 60 --transition-duration 0.5
     end
 end

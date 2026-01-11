@@ -221,8 +221,12 @@ PanelWindow {
                                 } else if (mouse.button === Qt.MiddleButton) {
                                     trayItemWrapper.modelData.secondaryActivate(pos.x, pos.y);
                                 } else if (mouse.button === Qt.RightButton) {
-                                    // secondaryActivate usually triggers the context menu for most tray implementations
-                                    trayItemWrapper.modelData.secondaryActivate(pos.x, pos.y);
+                                    const menu = trayItemWrapper.modelData.menu;
+                                    const hasMenu = trayItemWrapper.modelData.hasMenu;
+                                    if (hasMenu && menu) {
+                                        const relativePos = trayItemWrapper.mapToItem(root.contentItem, trayItemWrapper.x + trayItemWrapper.width, trayItemWrapper.y + trayItemWrapper.height);
+                                        trayItemWrapper.modelData.display(root, Math.round(relativePos.x), Math.round(relativePos.y));
+                                    }
                                 }
                             }
                         }
@@ -230,7 +234,7 @@ PanelWindow {
                             rootWindow: root
                             watcher: itemMouse
                             targetItem: trayItemWrapper
-                            text: trayItemWrapper.modelData.title || trayItemWrapper.modelData.id
+                            text: trayItemWrapper.modelData.tooltipTitle || trayItemWrapper.modelData.title || trayItemWrapper.modelData.id
                         }
                     }
                 }
