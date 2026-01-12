@@ -22,4 +22,11 @@ QtObject {
     readonly property string ethernetPort: Qt.resolvedUrl("./ethernet-port.svg")
 
     readonly property string volumeMute: Qt.resolvedUrl("./volume-x.svg")
+
+    readonly property string plane: Qt.resolvedUrl("./plane.svg")
+    readonly property string bellOff: Qt.resolvedUrl("./bell-off.svg")
+    readonly property string logOut: Qt.resolvedUrl("./log-out.svg")
+    readonly property string rotateCCW: Qt.resolvedUrl("./rotate-ccw.svg")
+    readonly property string lock: Qt.resolvedUrl("./lock.svg")
+    readonly property string power: Qt.resolvedUrl("./power.svg")
 }

@@ -15,7 +15,7 @@ PanelWindow {
 
     required property Context context
     required property Colors colors
-    required property PopupWindow cc
+    required property PanelWindow cc
 
     anchors.top: true
     anchors.left: true
@@ -50,6 +50,7 @@ PanelWindow {
 
                         width: 20
                         height: 20
+                        radius: 2
 
                         required property int index
                         required property var modelData

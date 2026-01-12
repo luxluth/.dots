@@ -9,11 +9,8 @@ Item {
     property bool defaultSinkMuted: sink.audio.muted
 
     PwObjectTracker {
-        id: bdr
-        objects: [vol.pw.defaultAudioSink]
+        objects: [Pipewire.defaultAudioSink]
     }
-
-    property PwObjectTracker binder: bdr
 
     function getDefaultSinkVolumeIcon() {
         const icons = ["", "", ""];

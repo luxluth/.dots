@@ -1,6 +1,7 @@
 //@ pragma UseQApplication
 
 import Quickshell
+import Quickshell.Wayland
 import QtQuick
 import "Core"
 import "Modules"
@@ -15,25 +16,37 @@ ShellRoot {
         context: ctx
     }
 
-    PopupWindow {
+    PanelWindow {
         id: dashboardWindow
 
-        anchor.window: bar // Anchor to your bar?
-        anchor.edges: Edges.Top | Edges.Right
-        anchor.gravity: Edges.Bottom | Edges.Left
+        visible: false
+        screen: bar.screen
+        anchors {
+            top: true
+            bottom: true
+            left: true
+            right: true
+        }
+        color: "transparent"
 
-        implicitWidth: 600
-        implicitHeight: 500
+        WlrLayershell.layer: WlrLayer.Overlay
+        WlrLayershell.exclusiveZone: -1
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
+        WlrLayershell.namespace: "qs-cc"
 
-        property rect clickedRect: Qt.rect(0, 0, 0, 0)
-        anchor.rect: clickedRect
+        property real popupX: 0
+        property real popupY: 0
 
-        color: "transparent" // The ControlCenter has its own background
+        MouseArea {
+            anchors.fill: parent
+            onClicked: dashboard.close()
+        }
 
         // Load the module
         ControlCenter {
             id: dashboard
-            anchors.fill: parent
+            x: dashboardWindow.popupX
+            y: dashboardWindow.popupY
             context: ctx
             colors: colors
             onClosed: dashboardWindow.visible = false
@@ -47,8 +60,11 @@ ShellRoot {
             if (dashboardWindow.visible) {
                 dashboard.close();
             } else {
-                const pos = bar.ccBtn.mapToItem(bar.contentItem, 0, 0);
-                dashboardWindow.clickedRect = Qt.rect(pos.x, pos.y + 35, bar.ccBtn.width, bar.ccBtn.height);
+                const pos = bar.ccBtn.mapToGlobal(0, 0);
+
+                dashboardWindow.popupX = pos.x - dashboard.width + bar.ccBtn.width - 2;
+                dashboardWindow.popupY = pos.y + bar.ccBtn.height + 10;
+
                 dashboardWindow.visible = true;
                 dashboard.open();
             }

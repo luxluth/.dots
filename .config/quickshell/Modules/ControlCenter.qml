@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
+import Quickshell
 
 import Quickshell.Services.Mpris
-import Quickshell.Services.Pipewire
-import Quickshell.Services.SystemTray
 
 import "../Assets/"
 import "../Components/"
@@ -21,6 +21,19 @@ Rectangle {
     radius: 16
     border.color: colors.border
     border.width: 2
+
+    property ControlCenterActions actions: controlActions
+
+    ControlCenterActions {
+        id: controlActions
+        colors: root.colors
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        onClicked: mouse => mouse.accepted = true
+    }
 
     // Animation properties
     transformOrigin: Item.TopRight
@@ -141,8 +154,8 @@ Rectangle {
                 }
                 StateButton {
                     title: "Bluetooth"
-                    icon: !root.context.blt.adapter.enabled ? Icons.bluetoothOff : (root.context.blt.connected ? Icons.bluetoothConnected : Icons.bluetoothActive)
-                    isActive: root.context.blt.adapter.enabled
+                    icon: !(root.context.blt.adapter?.enabled ?? false) ? Icons.bluetoothOff : (root.context.blt.connected ? Icons.bluetoothConnected : Icons.bluetoothActive)
+                    isActive: root.context.blt.adapter?.enabled ?? false
                     details: root.context.blt.connected ? `${root.context.blt.connected.name} ${root.context.blt.connected.batteryAvailable ? (root.context.blt.connected.battery * 100).toString() + "%" : ""}` : "$ Not Paired"
                     onClicked: {
                         if (root.context.blt.adapter.enabled) {
@@ -202,7 +215,7 @@ Rectangle {
                     Layout.fillHeight: true
                     height: 190
 
-                    opacity: root.context.pw.sink.audio.muted ? 0.4 : 1
+                    opacity: (root.context.pw.sink?.audio.muted ?? false) ? 0.4 : 1
 
                     Behavior on opacity {
                         NumberAnimation {
@@ -247,7 +260,7 @@ Rectangle {
                             SliderControl {
                                 id: volSlider
                                 Layout.fillWidth: true
-                                value: root.context.pw.sink.audio.volume
+                                value: (root.context.pw.sink?.audio.volume ?? 0)
                                 onChangeRequested: v => root.context.pw.sink.audio.volume = v
                             }
 
@@ -285,7 +298,7 @@ Rectangle {
                         Connections {
                             target: root.context.pw.sink.audio
 
-                            function onVolumesChanged() {
+                            function onVolumeChanged() {
                                 volSlider.value = root.context.pw.sink.audio.volume;
                             }
                         }
@@ -345,7 +358,7 @@ Rectangle {
             }
         }
 
-        // RIGHT TOP
+        // RIGHT TOP - Info + Quick Actions
         Rectangle {
             Layout.column: 1
             Layout.row: 0
@@ -357,16 +370,153 @@ Rectangle {
 
             radius: 8
             color: "transparent"
+
+            ColumnLayout {
+                anchors.fill: parent
+                spacing: 8
+
+                // Uptime + UserData
+                Rectangle {
+                    radius: 8
+                    border.color: root.colors.border
+                    border.width: 2
+                    color: colorQuantizer.selection
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    height: 40
+
+                    ColorQuantizer {
+                        id: colorQuantizer
+                        source: root.context.system.avatar
+                        depth: 3
+                        rescaleSize: 64
+
+                        property color selection: {
+                            var qcolors = [...colorQuantizer.colors];
+                            qcolors.sort((a, b) => root.colors.isDarkThemed ? a.hslLightness - b.hslLightness : b.hslLightness - a.hslLightness);
+                            return qcolors[0];
+                        }
+                    }
+
+                    RowLayout {
+                        anchors.margins: 10
+                        anchors.fill: parent
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            spacing: 0
+                            Text {
+                                text: root.context.system.uptime
+                                color: root.colors.fg
+
+                                font {
+                                    family: "Inter"
+                                    pixelSize: 18
+                                    bold: true
+                                }
+                            }
+
+                            RowLayout {
+                                Text {
+                                    color: root.colors.fg
+                                    text: "connected as"
+                                    opacity: 0.7
+                                }
+
+                                Text {
+                                    color: root.colors.fg
+                                    text: root.context.system.username
+                                    font.bold: true
+                                }
+                            }
+                        }
+
+                        // Avatar
+                        Item {
+                            width: 48
+                            height: 48
+                            Layout.alignment: Qt.AlignVCenter
+
+                            Image {
+                                id: avatarImage
+                                anchors.fill: parent
+                                source: root.context.system.avatar
+                                sourceSize: Qt.size(128, 128)
+                                fillMode: Image.PreserveAspectCrop
+                                visible: false
+                                smooth: true
+                                mipmap: true
+                            }
+
+                            OpacityMask {
+                                anchors.fill: avatarImage
+                                source: avatarImage
+                                smooth: true
+                                maskSource: Rectangle {
+                                    width: avatarImage.width
+                                    height: avatarImage.height
+                                    radius: width / 2
+                                    antialiasing: true
+                                    visible: false
+                                }
+                            }
+
+                            Rectangle {
+                                anchors.fill: parent
+                                radius: width / 2
+                                color: "transparent"
+                                border.color: root.colors.fg
+                                border.width: 2
+                                opacity: 0.5
+                                antialiasing: true
+                            }
+                        }
+                    }
+                }
+
+                // Actions
+                Rectangle {
+                    radius: 8
+                    border.color: root.colors.border
+                    border.width: 2
+                    color: root.colors.contrast
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    height: 100
+
+                    GridLayout {
+                        anchors.fill: parent
+                        anchors.margins: 8
+                        columns: 3
+                        rowSpacing: 8
+                        columnSpacing: 8
+
+                        Repeater {
+                            model: root.actions.actions
+                            delegate: ActionButton {
+                                required property var modelData
+                                model: modelData
+                                context: root.context
+                                colors: root.colors
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        // RIGHT BOTTOM
+        // RIGHT BOTTOM - MPRIS
         Rectangle {
             Layout.column: 1
             Layout.row: 1
             Layout.fillWidth: true
             Layout.fillHeight: true
+
             radius: 8
-            color: "transparent"
+            border.color: root.colors.border
+            border.width: 2
+            color: root.colors.contrast
         }
     }
 }

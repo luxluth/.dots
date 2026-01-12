@@ -121,8 +121,8 @@ Rectangle {
         Rectangle {
             Layout.preferredWidth: 2
             Layout.fillHeight: true
-            Layout.topMargin: 10
-            Layout.bottomMargin: 10
+            Layout.topMargin: 0
+            Layout.bottomMargin: 0
             visible: root.expansion
             color: root.isActive ? colors.pearleBlueStroke : colors.border
         }

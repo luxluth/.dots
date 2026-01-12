@@ -18,6 +18,11 @@ Item {
     property Services.Blue blt: blue
     property Services.Network network: net
     property Services.Brightness brightness: bright
+    property Services.SystemInfo system: sysInfo
+
+    Services.SystemInfo {
+        id: sysInfo
+    }
 
     Services.Brightness {
         id: bright
