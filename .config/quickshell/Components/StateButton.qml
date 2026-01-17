@@ -87,7 +87,7 @@ Rectangle {
                         Layout.fillWidth: true
                         elide: Text.ElideRight
                         font {
-                            family: "Inter"
+                            family: colors.fontFamily
                             pixelSize: 18
                             bold: true
                         }
@@ -100,7 +100,7 @@ Rectangle {
                         Layout.fillWidth: true
                         elide: Text.ElideRight
                         font {
-                            family: "Inter"
+                            family: colors.fontFamily
                             pixelSize: 13
                         }
                     }

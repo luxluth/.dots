@@ -7,6 +7,7 @@ Item {
 
     property string theme: context.theme
     property bool isDarkThemed: context.theme === "prefer-dark"
+    // property string fontFamily: "Inter"
     property string fontFamily: "Fantasque Sans Mono"
     property color fg: isDarkThemed ? "#fff" : "#181818"
     property color bg: isDarkThemed ? "#181818" : "#f7f7f7"

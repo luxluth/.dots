@@ -48,10 +48,6 @@ PanelWindow {
                     delegate: Rectangle {
                         id: workspaceItem
 
-                        width: 20
-                        height: 20
-                        radius: 2
-
                         required property int index
                         required property var modelData
 
@@ -59,6 +55,9 @@ PanelWindow {
                         property bool isActive: root.context.compositor.focusedWorkspace?.id === (ws.id)
 
                         color: isActive ? root.colors.fg : root.colors.muted
+                        implicitWidth: isActive ? 30 : 20
+                        height: 20
+                        radius: 2
 
                         Behavior on color {
                             ColorAnimation {
@@ -68,6 +67,12 @@ PanelWindow {
 
                         scale: workspaceMouse.containsPress ? 0.85 : 1.0
                         Behavior on scale {
+                            NumberAnimation {
+                                duration: 100
+                            }
+                        }
+
+                        Behavior on implicitWidth {
                             NumberAnimation {
                                 duration: 100
                             }
@@ -135,23 +140,52 @@ PanelWindow {
         RowLayout {
             anchors.centerIn: parent
             // Date
-            Text {
-                id: date
+            Rectangle {
+                id: dateWrapper
+                color: root.context.notificationPopupVisible ? root.colors.muted : "transparent"
+                radius: 4
+                implicitWidth: date.contentWidth + 16
+                implicitHeight: 24
 
-                property bool isTime: true
+                scale: dateMouse.containsPress ? 0.95 : 1.0
+                Behavior on scale {
+                    NumberAnimation {
+                        duration: 100
+                    }
+                }
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 150
+                    }
+                }
 
-                text: isTime ? root.context.time : root.context.date
-                color: root.colors.fg
+                Text {
+                    id: date
 
-                font {
-                    family: root.colors.fontFamily
-                    pixelSize: 14
-                    bold: true
+                    property bool isTime: true
+
+                    text: isTime ? root.context.time : root.context.date
+                    anchors.centerIn: parent
+                    color: root.colors.fg
+
+                    font {
+                        family: root.colors.fontFamily
+                        pixelSize: 14
+                        bold: true
+                    }
                 }
 
                 MouseArea {
+                    id: dateMouse
                     anchors.fill: parent
-                    onClicked: date.isTime = !date.isTime
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: event => {
+                        if (event.button === Qt.RightButton) {
+                            date.isTime = !date.isTime;
+                        } else {
+                            root.context.toggleNotifications();
+                        }
+                    }
                 }
             }
         }
@@ -496,8 +530,16 @@ PanelWindow {
                 IpcHandler {
                     target: "cc"
 
-                    function toogle(): void {
+                    function toggle(): void {
                         ccBtn.clicked();
+                    }
+                }
+
+                IpcHandler {
+                    target: "notif"
+
+                    function toggle(): void {
+                        root.context.toggleNotifications();
                     }
                 }
 

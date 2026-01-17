@@ -3,92 +3,34 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
-import Quickshell.Io
 import Quickshell.Wayland
-
-import "../Components/"
-import "../Assets/"
+import "../Components"
+import "../Core"
 
 Item {
     id: root
-    property real brightness: 0
+
+    required property Colors colors
+
+    property string icon: ""
+    property string title: ""
+    property string subtitle: ""
 
     property bool shouldShowOsd: false
     property bool closing: false
 
-    function setBrightness(v) {
-        const percent = Math.round(v * 100);
-        setProc.command = ["brightnessctl", "s", percent + "%"];
-        setProc.running = true;
-        brightness = v;
-    }
-
-    readonly property string path: "/sys/class/backlight/intel_backlight"
-    property int maxBrightness: 96000
-
-    Process {
-        id: maxProc
-        command: ["cat", `${root.path}/max_brightness`]
-        stdout: SplitParser {
-            onRead: data => {
-                const val = parseInt(data.trim());
-                if (!isNaN(val) && val > 0) {
-                    root.maxBrightness = val;
-                    // console.log("max", root.maxBrightness);
-                    brightProc.running = true;
-                }
-            }
-        }
-    }
-
-    Process {
-        id: brightProc
-        command: ["cat", `${root.path}/brightness`]
-        stdout: SplitParser {
-            onRead: data => {
-                const val = parseInt(data.trim());
-                if (!isNaN(val)) {
-                    brightness = val / root.maxBrightness;
-                }
-            }
-        }
-    }
-
-    Process {
-        id: setProc
-    }
-
-    Process {
-        id: monitorProc
-        command: ["udevadm", "monitor", "--udev", "--subsystem-match=backlight"]
-        running: true
-
-        stdout: SplitParser {
-            onRead: _ => brightProc.running = true
-        }
-    }
-
-    Connections {
-        target: root
-
-        function onBrightnessChanged() {
-            root.shouldShowOsd = true;
-            root.closing = false;
-            hideTimer.restart();
-        }
-    }
-
-    function getBrightnessIcon() {
-        if (root.brightness < 0.33)
-            return Icons.sunLow;
-        if (root.brightness < 0.66)
-            return Icons.sunMid;
-        return Icons.sunHigh;
+    function show(icon, title, subtitle) {
+        root.icon = icon;
+        root.title = title;
+        root.subtitle = subtitle;
+        root.shouldShowOsd = true;
+        root.closing = false;
+        hideTimer.restart();
     }
 
     Timer {
         id: hideTimer
-        interval: 1000
+        interval: 1500
         onTriggered: root.closing = true
     }
 
@@ -108,7 +50,6 @@ Item {
             implicitHeight: 70
             color: "transparent"
 
-            // An empty click mask prevents the window from blocking mouse events.
             mask: Region {}
 
             Item {
@@ -187,41 +128,34 @@ Item {
                             leftMargin: 20
                             rightMargin: 20
                         }
+                        spacing: 15
 
                         CImage {
-                            iconSource: root.getBrightnessIcon()
+                            iconSource: root.icon
                         }
 
                         ColumnLayout {
                             Layout.fillWidth: true
+                            spacing: 2
 
-                            Rectangle {
-                                // Stretches to fill all left-over space
+                            Text {
                                 Layout.fillWidth: true
+                                text: root.title
+                                color: colors.fg
+                                font.bold: true
+                                font.pixelSize: 14
+                                font.family: colors.fontFamily
+                                elide: Text.ElideRight
+                            }
 
-                                implicitHeight: 7
-                                radius: 10
-                                color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.1)
-                                border.width: 1
-                                border.color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.1)
-
-                                Rectangle {
-                                    anchors {
-                                        left: parent.left
-                                        top: parent.top
-                                        bottom: parent.bottom
-                                    }
-                                    color: colors.fg
-
-                                    implicitWidth: parent.width * (root.brightness)
-                                    radius: parent.radius
-
-                                    Behavior on implicitWidth {
-                                        NumberAnimation {
-                                            duration: 150
-                                        }
-                                    }
-                                }
+                            Text {
+                                Layout.fillWidth: true
+                                text: root.subtitle
+                                color: Qt.lighter(colors.fg, 1.5)
+                                font.pixelSize: 12
+                                font.family: colors.fontFamily
+                                elide: Text.ElideRight
+                                visible: root.subtitle.length > 0
                             }
                         }
                     }

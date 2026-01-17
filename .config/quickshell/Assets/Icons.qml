@@ -22,11 +22,27 @@ QtObject {
     readonly property string ethernetPort: Qt.resolvedUrl("./ethernet-port.svg")
 
     readonly property string volumeMute: Qt.resolvedUrl("./volume-x.svg")
+    readonly property string volumeZero: Qt.resolvedUrl("./volume-0.svg")
+    readonly property string volumeLow: Qt.resolvedUrl("./volume-1.svg")
+    readonly property string volumeHigh: Qt.resolvedUrl("./volume-2.svg")
+
+    readonly property string sunLow: Qt.resolvedUrl("./sun-dim.svg")
+    readonly property string sunMid: Qt.resolvedUrl("./sun-medium.svg")
+    readonly property string sunHigh: Qt.resolvedUrl("./sun.svg")
+
+    readonly property string bellOff: Qt.resolvedUrl("./bell-off.svg")
+    readonly property string bell: Qt.resolvedUrl("./bell.svg")
 
     readonly property string plane: Qt.resolvedUrl("./plane.svg")
-    readonly property string bellOff: Qt.resolvedUrl("./bell-off.svg")
     readonly property string logOut: Qt.resolvedUrl("./log-out.svg")
     readonly property string rotateCCW: Qt.resolvedUrl("./rotate-ccw.svg")
     readonly property string lock: Qt.resolvedUrl("./lock.svg")
     readonly property string power: Qt.resolvedUrl("./power.svg")
+
+    readonly property string coffee: Qt.resolvedUrl("./coffe.svg")
+
+    readonly property string micOn: Qt.resolvedUrl("./mic-on.svg")
+    readonly property string micOff: Qt.resolvedUrl("./mic-off.svg")
+
+    readonly property string close: Qt.resolvedUrl("./x.svg")
 }

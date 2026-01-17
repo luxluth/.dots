@@ -14,6 +14,7 @@ Rectangle {
 
     required property Context context
     required property Colors colors
+    required property bool statusVisible
 
     width: 600
     height: 500
@@ -26,6 +27,7 @@ Rectangle {
 
     ControlCenterActions {
         id: controlActions
+        context: root.context
         colors: root.colors
     }
 
@@ -232,7 +234,7 @@ Rectangle {
                             text: "Volume"
                             color: root.colors.fg
                             font {
-                                family: "Inter"
+                                family: root.colors.fontFamily
                                 pixelSize: 18
                                 bold: true
                             }
@@ -243,7 +245,7 @@ Rectangle {
                             text: `Fixed at ${Math.round(volSlider.value * 100)}%`
                             color: Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.6)
                             font {
-                                family: "Inter"
+                                family: root.colors.fontFamily
                                 pixelSize: 13
                             }
                             Layout.fillWidth: true
@@ -265,8 +267,8 @@ Rectangle {
                             }
 
                             Rectangle {
-                                Layout.fillHeight: true
-                                width: 40
+                                implicitWidth: 40
+                                implicitHeight: 40
                                 radius: 10
 
                                 border.color: root.colors.border
@@ -326,7 +328,7 @@ Rectangle {
                             color: root.colors.fg
 
                             font {
-                                family: "Inter"
+                                family: root.colors.fontFamily
                                 pixelSize: 18
                                 bold: true
                             }
@@ -337,7 +339,7 @@ Rectangle {
                             text: `Fixed at ${Math.round(brightnessSlider.value * 100)}%`
                             color: Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.6)
                             font {
-                                family: "Inter"
+                                family: root.colors.fontFamily
                                 pixelSize: 13
                             }
                             Layout.fillWidth: true
@@ -393,6 +395,9 @@ Rectangle {
                         rescaleSize: 64
 
                         property color selection: {
+                            if (colorQuantizer.colors.length <= 0) {
+                                return root.colors.bg;
+                            }
                             var qcolors = [...colorQuantizer.colors];
                             qcolors.sort((a, b) => root.colors.isDarkThemed ? a.hslLightness - b.hslLightness : b.hslLightness - a.hslLightness);
                             return qcolors[0];
@@ -410,7 +415,7 @@ Rectangle {
                                 color: root.colors.fg
 
                                 font {
-                                    family: "Inter"
+                                    family: root.colors.fontFamily
                                     pixelSize: 18
                                     bold: true
                                 }
@@ -420,13 +425,19 @@ Rectangle {
                                 Text {
                                     color: root.colors.fg
                                     text: "connected as"
+                                    font {
+                                        family: root.colors.fontFamily
+                                    }
                                     opacity: 0.7
                                 }
 
                                 Text {
                                     color: root.colors.fg
                                     text: root.context.system.username
-                                    font.bold: true
+                                    font {
+                                        family: root.colors.fontFamily
+                                        bold: true
+                                    }
                                 }
                             }
                         }
@@ -435,7 +446,7 @@ Rectangle {
                         Item {
                             width: 48
                             height: 48
-                            Layout.alignment: Qt.AlignVCenter
+                            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
 
                             Image {
                                 id: avatarImage
