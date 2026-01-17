@@ -161,6 +161,17 @@ Rectangle {
                 border.width: 2
                 border.color: root.colors.border
 
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: () => {
+                        if (notification.actions.length === 1) {
+                            notification.actions[0].invoke();
+                            root.closed();
+                        }
+                    }
+                }
+
                 ColumnLayout {
                     id: contentColumn
                     anchors.fill: parent
@@ -221,7 +232,7 @@ Rectangle {
 
                     RowLayout {
                         Layout.fillWidth: true
-                        visible: notification.actions.length > 0
+                        visible: notification.actions.length > 1
                         spacing: 10
 
                         Repeater {
