@@ -8,17 +8,6 @@
 
 set -l sink "@DEFAULT_AUDIO_SINK@"
 
-function ping_hd
-    set -l cur_line (wpctl get-volume @DEFAULT_AUDIO_SINK@)
-    set -l cur (string match -r '[0-9]+\.[0-9]+' -- $cur_line | head -n1)
-    set -l is_muted (string match -rq '\[MUTED\]' -- $cur_line; and echo 1; or echo 0)
-
-    set -l muted_state (test $is_muted = 1; and echo MUTED; or echo NOTMUTED)
-    set -l vol_percent (math "round($cur * 100)")
-    echo "VOLUME@$vol_percent" | socat UNIX-CONNECT:/tmp/hd STDIN &
-    echo "VOLUME@$muted_state" | socat UNIX-CONNECT:/tmp/hd STDIN &
-end
-
 if test (count $argv) -ne 1
     echo "Usage: (status filename) up|down|mute" >&2
     exit 2
@@ -44,8 +33,6 @@ if test "$dir" = mute
     set cur_line (wpctl get-volume $sink)
     set is_muted (string match -rq '\[MUTED\]' -- $cur_line; and echo 1; or echo 0)
 
-    ping_hd
-
     exit 0
 end
 
@@ -53,8 +40,6 @@ if test $is_muted -eq 1 -a "$dir" = up
     set -l start (math "min($floor, $cap)")
     wpctl set-mute $sink 0
     wpctl set-volume $sink $start
-
-    ping_hd
 
     exit 0
 end
@@ -75,11 +60,9 @@ if test "$dir" = down
     set -l no_change (test $new_raw = $cur; and echo 1; or echo 0)
     if test $no_change -eq 1 -o $new_raw -le $floor
         wpctl set-mute $sink 1
-        ping_hd
         exit 0
     end
 end
 
 set -l new (math "min( max($new_raw, 0), $cap )")
 wpctl set-volume $sink $new
-ping_hd
