@@ -95,7 +95,7 @@ Rectangle {
         }
 
         Text {
-            visible: root.context.nsTracked.length === 0
+            visible: root.context.nsTracked.count === 0
             text: "No notifications"
             color: root.colors.muted
             font.family: root.colors.fontFamily
@@ -106,7 +106,7 @@ Rectangle {
         }
 
         ListView {
-            visible: root.context.nsTracked.length > 0
+            visible: root.context.nsTracked.count > 0
             Layout.fillWidth: true
             Layout.fillHeight: true
             clip: true
@@ -151,8 +151,7 @@ Rectangle {
 
             delegate: Rectangle {
                 id: notifDelegate
-                required property var modelData
-                property Notification notification: modelData
+                required property Notification notification
 
                 width: ListView.view.width
                 implicitHeight: contentColumn.implicitHeight + 20
@@ -214,6 +213,14 @@ Rectangle {
                                 wrapMode: Text.WordWrap
                                 maximumLineCount: 3
                             }
+                        }
+
+                        Text {
+                            text: root.context.timeAgo(root.context.notificationTimes[notification.id])
+                            color: Qt.lighter(root.colors.fg, 1.5)
+                            font.family: root.colors.fontFamily
+                            font.pixelSize: 11
+                            Layout.alignment: Qt.AlignTop
                         }
 
                         CImage {
