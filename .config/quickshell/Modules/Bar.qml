@@ -5,6 +5,7 @@ import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.SystemTray
+import Quickshell.Widgets
 
 import "../Components"
 import "../Assets"
@@ -459,14 +460,47 @@ PanelWindow {
             }
 
             // Battery
-            Rectangle {
+            Item {
                 id: batItem
-                height: parent.height
 
-                Layout.preferredHeight: 24
-                Layout.preferredWidth: batText.implicitWidth + 10
-                radius: 4
-                color: "transparent"
+                implicitWidth: batRect.width
+                implicitHeight: batRect.height
+
+                ClippingRectangle {
+                    id: batRect
+                    implicitHeight: parent.parent.height - 6
+                    implicitWidth: batText.implicitWidth + 20
+                    radius: 20
+                    border.width: 2
+                    border.color: root.context.power.batteryLow ? root.colors.red : root.colors.fg
+                    color: {
+                        if (root.context.power.batteryLow)
+                            return root.colors.bg;
+                        return root.colors.isDarkThemed ? Qt.darker(root.colors.fg, 1.5) : Qt.lighter(root.colors.fg, 7);
+                    }
+
+                    Rectangle {
+                        id: ranged
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        height: parent.height
+                        width: parent.width * root.context.power.battery.percentage
+                        color: root.context.power.batteryLow ? root.colors.red : root.colors.fg
+                    }
+                }
+
+                Text {
+                    id: batText
+                    anchors.centerIn: parent
+                    text: root.context.power.batteryPercentage
+                    color: root.context.power.batteryLow ? root.colors.red : root.colors.bg
+
+                    font {
+                        family: "Inter"
+                        pixelSize: 13
+                        bold: true
+                    }
+                }
 
                 MouseArea {
                     id: batMouse
@@ -474,24 +508,11 @@ PanelWindow {
                     hoverEnabled: true
                 }
 
-                Text {
-                    id: batText
-                    anchors.centerIn: parent
-                    text: root.context.power.batteryPercentage
-                    color: root.context.power.batteryLow ? root.colors.red : root.colors.fg
-
-                    Tip {
-                        rootWindow: root
-                        targetItem: batItem
-                        watcher: batMouse
-                        text: root.context.power.batteryAlternateText
-                    }
-
-                    font {
-                        family: root.colors.fontFamily
-                        pixelSize: 14
-                        bold: true
-                    }
+                Tip {
+                    rootWindow: root
+                    targetItem: batItem
+                    watcher: batMouse
+                    text: root.context.power.batteryAlternateText
                 }
             }
 

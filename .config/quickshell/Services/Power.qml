@@ -5,8 +5,8 @@ import Quickshell.Io
 Item {
     id: root
     property UPowerDevice battery: UPower.devices.values[0]
-    property var batteryPercentage: `${(battery.percentage * 100).toFixed(0)}% ${getIcon()}`
     property var batteryCharging: battery.state == UPowerDeviceState.Charging
+    property var batteryPercentage: `${(battery.percentage * 100).toFixed(batteryCharging ? 1 : 0)}${getIcon()}`
     property var batteryLow: battery.percentage <= 0.2
     property var batteryAlternateText: getAlternateText()
     property int profile: Power.PowerProfile.Balanced
@@ -39,9 +39,7 @@ Item {
     }
 
     function getIcon(): string {
-        const icons = ["", "", "", "", ""];
-        const iconsIdx = Math.floor(battery.percentage * 4);
-        return batteryCharging ? "" : icons[iconsIdx];
+        return batteryCharging ? "/100" : "";
     }
 
     function getAlternateText() {

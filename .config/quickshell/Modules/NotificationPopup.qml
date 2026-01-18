@@ -170,6 +170,8 @@ Rectangle {
                         Layout.preferredHeight: 20
                         source: Quickshell.iconPath(groupDelegate.appIcon, "application-x-executable")
                         fillMode: Image.PreserveAspectFit
+                        smooth: true
+                        mipmap: true
                     }
 
                     Text {
@@ -254,6 +256,8 @@ Rectangle {
                                     Layout.alignment: Qt.AlignTop
                                     source: notification.image.length > 0 ? notification.image : Quickshell.iconPath(notification.appIcon || notification.desktopEntry || notification.appName || "application-x-executable", "application-x-executable")
                                     fillMode: Image.PreserveAspectFit
+                                    smooth: true
+                                    mipmap: true
                                 }
 
                                 ColumnLayout {
@@ -278,7 +282,7 @@ Rectangle {
                                         font.pixelSize: 12
                                         elide: Text.ElideRight
                                         wrapMode: Text.WordWrap
-                                        maximumLineCount: 3
+                                        maximumLineCount: 10
                                     }
                                 }
 

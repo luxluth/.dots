@@ -218,6 +218,8 @@ Item {
                                 Layout.alignment: container.expanded ? Qt.AlignTop : Qt.AlignVCenter
                                 source: notification.image.length > 0 ? notification.image : Quickshell.iconPath(notification.desktopEntry || notification.appName || notification.appIcon || "application-x-executable", "application-x-executable")
                                 fillMode: Image.PreserveAspectFit
+                                smooth: true
+                                mipmap: true
                             }
 
                             Text {
