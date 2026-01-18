@@ -65,6 +65,35 @@ Rectangle {
             }
 
             Rectangle {
+                visible: root.context.nsTracked.count > 0
+                implicitWidth: 30
+                implicitHeight: 30
+                radius: 4
+                color: clearMouse.containsMouse ? root.colors.contrast : "transparent"
+
+                scale: clearMouse.pressed ? 0.9 : 1.0
+                Behavior on scale {
+                    NumberAnimation {
+                        duration: 100
+                    }
+                }
+
+                CImage {
+                    anchors.centerIn: parent
+                    width: 20
+                    height: 20
+                    iconSource: Icons.clean
+                }
+
+                MouseArea {
+                    id: clearMouse
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: root.context.notifier.dismissAll()
+                }
+            }
+
+            Rectangle {
                 width: 30
                 height: 30
                 radius: 4
@@ -160,9 +189,18 @@ Rectangle {
                 border.width: 2
                 border.color: root.colors.border
 
+                scale: notiMouse.pressed ? 0.98 : 1.0
+                Behavior on scale {
+                    NumberAnimation {
+                        duration: 100
+                    }
+                }
+
                 MouseArea {
+                    id: notiMouse
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
                     onClicked: () => {
                         if (notification.actions.length === 1) {
                             notification.actions[0].invoke();
@@ -229,7 +267,15 @@ Rectangle {
                             height: 16
                             Layout.alignment: Qt.AlignTop
 
+                            scale: dismissButton.pressed ? 0.9 : 1.0
+                            Behavior on scale {
+                                NumberAnimation {
+                                    duration: 100
+                                }
+                            }
+
                             MouseArea {
+                                id: dismissButton
                                 anchors.fill: parent
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: notification.dismiss()

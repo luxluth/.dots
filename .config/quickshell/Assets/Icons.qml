@@ -45,4 +45,5 @@ QtObject {
     readonly property string micOff: Qt.resolvedUrl("./mic-off.svg")
 
     readonly property string close: Qt.resolvedUrl("./x.svg")
+    readonly property string clean: Qt.resolvedUrl("./brush-clean.svg")
 }
