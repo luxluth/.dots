@@ -20,6 +20,76 @@ Rectangle {
     border.width: 2
     radius: 8
 
+    scale: 0.9
+    opacity: 0
+    transform: Translate {
+        id: trans
+        y: 20
+    }
+
+    function open() {
+        enterAnim.start();
+    }
+
+    function close() {
+        exitAnim.start();
+    }
+
+    ParallelAnimation {
+        id: enterAnim
+        NumberAnimation {
+            target: root
+            property: "scale"
+            from: 0.9
+            to: 1.0
+            duration: 200
+            easing.type: Easing.OutBack
+        }
+        NumberAnimation {
+            target: root
+            property: "opacity"
+            from: 0
+            to: 1
+            duration: 150
+        }
+        NumberAnimation {
+            target: trans
+            property: "y"
+            from: 20
+            to: 0
+            duration: 250
+            easing.type: Easing.OutQuart
+        }
+    }
+
+    ParallelAnimation {
+        id: exitAnim
+        onFinished: root.closed()
+        NumberAnimation {
+            target: root
+            property: "scale"
+            from: 1.0
+            to: 0.9
+            duration: 150
+            easing.type: Easing.InQuad
+        }
+        NumberAnimation {
+            target: root
+            property: "opacity"
+            from: 1
+            to: 0
+            duration: 100
+        }
+        NumberAnimation {
+            target: trans
+            property: "y"
+            from: 0
+            to: 20
+            duration: 150
+            easing.type: Easing.InQuad
+        }
+    }
+
     MouseArea {
         anchors.fill: parent
     }
@@ -94,7 +164,7 @@ Rectangle {
                             try {
                                 btn.actionData._signal();
                             } catch (e) {}
-                            root.closed();
+                            root.close();
                         }
                     }
                 }

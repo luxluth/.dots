@@ -81,6 +81,11 @@ Item {
                 scale: 0.9
                 transformOrigin: Item.TopRight
 
+                transform: Translate {
+                    id: trans
+                    y: -50
+                }
+
                 ParallelAnimation {
                     id: enterAnim
                     running: true
@@ -98,6 +103,14 @@ Item {
                         from: 0
                         to: 1
                         duration: 150
+                    }
+                    NumberAnimation {
+                        target: trans
+                        property: "y"
+                        from: -50
+                        to: 0
+                        duration: 250
+                        easing.type: Easing.OutQuart
                     }
                 }
 
@@ -121,6 +134,14 @@ Item {
                         from: 1
                         to: 0
                         duration: 100
+                    }
+                    NumberAnimation {
+                        target: trans
+                        property: "y"
+                        from: 0
+                        to: -50
+                        duration: 150
+                        easing.type: Easing.InQuad
                     }
                 }
 
@@ -189,7 +210,7 @@ Item {
                                 Layout.preferredWidth: 24
                                 Layout.preferredHeight: 24
                                 Layout.alignment: container.expanded ? Qt.AlignTop : Qt.AlignVCenter
-                                source: Quickshell.iconPath(window.notification.appIcon || window.notification.image || window.notification.appName || "application-x-executable", "application-x-executable")
+                                source: Quickshell.iconPath(notification.appIcon || notification.image || notification.appName || "application-x-executable", "application-x-executable")
                                 fillMode: Image.PreserveAspectFit
                             }
 

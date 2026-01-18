@@ -42,6 +42,11 @@ Rectangle {
     scale: 0.9
     opacity: 0
 
+    transform: Translate {
+        id: trans
+        y: -20
+    }
+
     // Signal to notify parent when closing animation is done
     signal closed
 
@@ -72,6 +77,14 @@ Rectangle {
             to: 1
             duration: 150
         }
+        NumberAnimation {
+            target: trans
+            property: "y"
+            from: -20
+            to: 0
+            duration: 250
+            easing.type: Easing.OutQuart
+        }
     }
 
     // Exit Animation
@@ -92,6 +105,14 @@ Rectangle {
             from: 1
             to: 0
             duration: 100
+        }
+        NumberAnimation {
+            target: trans
+            property: "y"
+            from: 0
+            to: -20
+            duration: 150
+            easing.type: Easing.InQuad
         }
     }
 

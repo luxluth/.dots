@@ -169,6 +169,7 @@ ShellRoot {
             popupContent.actions = actions || [];
             popupContent.defaultAction = defaultAction || "";
             popupWindow.visible = true;
+            popupContent.open();
         }
     }
 }

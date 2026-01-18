@@ -39,6 +39,7 @@ Item {
     property alias notificationTimes: notif.notificationTimes
     property alias nsTracked: notif.tracked
     property Notifier notifier: notif
+    property MediaPlayer media: mediaPlayer
 
     function timeAgo(date) {
         return notif.timeAgo(date);
@@ -50,6 +51,10 @@ Item {
 
     Brightness {
         id: bright
+    }
+
+    MediaPlayer {
+        id: mediaPlayer
     }
 
     Network {

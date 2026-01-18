@@ -29,6 +29,16 @@ Rectangle {
     scale: show ? 1 : 0.95
     transformOrigin: Item.Top
 
+    transform: Translate {
+        y: show ? 0 : -20
+        Behavior on y {
+            NumberAnimation {
+                duration: 250
+                easing.type: Easing.OutQuart
+            }
+        }
+    }
+
     Behavior on opacity {
         NumberAnimation {
             duration: 200
