@@ -28,6 +28,10 @@ Item {
             if (root.context.notificationPopupVisible || root.context.dnd)
                 return;
 
+            // if (root.activeNotification.transient) {
+            //     root.activeNotification.expire();
+            // }
+
             root.activeNotification = n;
             root.shouldShow = true;
         }
@@ -170,7 +174,9 @@ Item {
                     onTriggered: {
                         if (notification) {
                             root.notificationDisplayed(notification);
-                            // notification.expire();
+                            if (notification.transient) {
+                                notification.expire();
+                            }
                         }
                         container.close();
                     }
@@ -210,7 +216,7 @@ Item {
                                 Layout.preferredWidth: 24
                                 Layout.preferredHeight: 24
                                 Layout.alignment: container.expanded ? Qt.AlignTop : Qt.AlignVCenter
-                                source: Quickshell.iconPath(notification.appIcon || notification.image || notification.appName || "application-x-executable", "application-x-executable")
+                                source: notification.image.length > 0 ? notification.image : Quickshell.iconPath(notification.desktopEntry || notification.appName || notification.appIcon || "application-x-executable", "application-x-executable")
                                 fillMode: Image.PreserveAspectFit
                             }
 

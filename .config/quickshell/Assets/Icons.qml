@@ -46,4 +46,8 @@ QtObject {
 
     readonly property string close: Qt.resolvedUrl("./x.svg")
     readonly property string clean: Qt.resolvedUrl("./brush-clean.svg")
+
+    readonly property string forward: Qt.resolvedUrl("./fast-forward.svg")
+    readonly property string pause: Qt.resolvedUrl("./pause.svg")
+    readonly property string play: Qt.resolvedUrl("./play.svg")
 }

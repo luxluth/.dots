@@ -549,6 +549,20 @@ Rectangle {
             border.color: root.colors.border
             border.width: 2
             color: root.colors.contrast
+            clip: true
+
+            property var player: root.context.media.activePlayer
+
+            // No Player State
+            Text {
+                anchors.centerIn: parent
+                text: "No Media Playing"
+                visible: !parent.player
+                color: root.colors.muted
+                font.family: root.colors.fontFamily
+                font.pixelSize: 16
+                font.bold: true
+            }
         }
     }
 }

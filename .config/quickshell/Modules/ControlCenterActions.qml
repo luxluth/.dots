@@ -22,9 +22,11 @@ QtObject {
             }
         },
         {
-            active: false,
+            active: context.dnd,
             icon: Icons.bellOff,
-            action: (item, proc) => {}
+            action: (item, proc) => {
+                context.dnd = !context.dnd;
+            }
         },
         {
             active: false,

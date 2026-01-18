@@ -139,6 +139,8 @@ PanelWindow {
         //// CENTER
         RowLayout {
             anchors.centerIn: parent
+            spacing: 10
+
             // Date
             Rectangle {
                 id: dateWrapper

@@ -252,7 +252,7 @@ Rectangle {
                                     Layout.preferredWidth: 32
                                     Layout.preferredHeight: 32
                                     Layout.alignment: Qt.AlignTop
-                                    source: Quickshell.iconPath(notification.image || notification.appIcon || groupDelegate.appIcon || "application-x-executable", "application-x-executable")
+                                    source: notification.image.length > 0 ? notification.image : Quickshell.iconPath(notification.appIcon || notification.desktopEntry || notification.appName || "application-x-executable", "application-x-executable")
                                     fillMode: Image.PreserveAspectFit
                                 }
 

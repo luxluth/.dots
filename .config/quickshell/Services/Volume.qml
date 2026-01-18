@@ -216,8 +216,9 @@ Item {
                             }
 
                             Text {
-                                Layout.alignment: Qt.AlignHCenter
-                                text: root.pw.defaultAudioSink.nickname || root.pw.defaultAudioSink.description
+                                Layout.fillWidth: true
+                                horizontalAlignment: Text.AlignHCenter
+                                text: root.pw.defaultAudioSink.description || root.pw.defaultAudioSink.nickname
                                 color: Qt.lighter(colors.fg, 2.1)
                                 elide: Text.ElideRight
 
