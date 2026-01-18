@@ -15,7 +15,7 @@ Item {
 
     function updateWifiSignal() {
         if (_currentWifiNetwork) {
-            root.wifiSignal = _currentWifiNetwork.signalStrength;
+            root.wifiSignal = _currentWifiNetwork.signalStrength * 100;
         } else {
             root.wifiSignal = 0;
         }
@@ -24,9 +24,9 @@ Item {
     on_CurrentWifiNetworkChanged: updateWifiSignal()
 
     Connections {
-        target: _currentWifiNetwork
+        target: root._currentWifiNetwork
         function onSignalStrengthChanged() {
-            updateWifiSignal();
+            root.updateWifiSignal();
         }
     }
 
