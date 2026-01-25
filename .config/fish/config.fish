@@ -19,6 +19,7 @@ alias wifi="nmtui"
 
 ## neovim
 alias vim="nvim"
+alias v="nvim"
 alias nv="neovide"
 set -gx EDITOR nvim
 set -gx MANPAGER "nvim +Man!"
@@ -264,7 +265,7 @@ function test-wall --description "Test A Wallpaper"
         echo "Usage: test-wall <url>"
     else
         wget $argv[1] -O /tmp/test-wall
-        swww img /tmp/test-wall --transition-type grow --transition-pos 0.854,0.977 --transition-step 90
+        awww img /tmp/test-wall --transition-type grow --transition-pos 0.854,0.977 --transition-step 90
     end
 end
 
@@ -332,13 +333,10 @@ function set_pkg_cfg_path
     end
 end
 
-set -gx PATH $HOME/.local/bin $PATH
-set -gx PATH $HOME/.config/emacs/bin $PATH
+fish_add_path $HOME/.local/bin
+fish_add_path $HOME/.config/emacs/bin
 
 # set -gx RUST_LOG trace
-
-set -gx BUN_INSTALL $HOME/.bun
-set -gx PATH $BUN_INSTALL/bin $PATH
 
 # set -gx SOFTWARES_DIR $HOME/.bin/
 
@@ -369,7 +367,7 @@ set_pkg_cfg_path
 # pnpm
 set -gx PNPM_HOME "/home/luxluth/.local/share/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
-    set -gx PATH "$PNPM_HOME" $PATH
+    fish_add_path "$PNPM_HOME"
 end
 # pnpm end
 
@@ -378,15 +376,15 @@ set -gx DOTNET_CLI_TELEMETRY_OPTOUT 1
 # set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
 # set -gx PATH $HOME/.cabal/bin $PATH /home/luxluth/.ghcup/bin # ghcup-env
 
-set -gx PATH $PATH $HOME/.dotnet/tools # dotnet_tools
+fish_add_path $HOME/.dotnet/tools # dotnet_tools
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
-set --export PATH $BUN_INSTALL/bin $PATH
+fish_add_path $BUN_INSTALL/bin
 
-# fly.io
-set --export FLYCTL_INSTALL "$HOME/.fly"
-set --export PATH "$FLYCTL_INSTALL/bin" $PATH
+# android sdk
+set --export ANDROID_HOME "$HOME/Android/Sdk"
 
 # # dbus-launch
 # export $(dbus-launch)
+# fish_add_path /home/luxluth/.pixi/bin

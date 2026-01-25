@@ -179,7 +179,7 @@ Rectangle {
                     title: "Bluetooth"
                     icon: !(root.context.blt.adapter?.enabled ?? false) ? Icons.bluetoothOff : (root.context.blt.connected ? Icons.bluetoothConnected : Icons.bluetoothActive)
                     isActive: root.context.blt.adapter?.enabled ?? false
-                    details: root.context.blt.connected ? `${root.context.blt.connected.name} ${root.context.blt.connected.batteryAvailable ? (root.context.blt.connected.battery * 100).toString() + "%" : ""}` : "$ Not Paired"
+                    details: root.context.blt.connected ? `${root.context.blt.connected.name} ${root.context.blt.connected.batteryAvailable ? (root.context.blt.connected.battery * 100).toFixed(0).toString() + "%" : ""}` : "$ Not Paired"
                     onClicked: {
                         if (root.context.blt.adapter.enabled) {
                             for (const device of root.context.blt.devices) {

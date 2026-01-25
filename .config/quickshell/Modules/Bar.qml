@@ -443,7 +443,7 @@ PanelWindow {
                     rootWindow: root
                     targetItem: bltItem
                     watcher: bltMouse
-                    text: root.context.blt.connected ? `${root.context.blt.connected.name} ${root.context.blt.connected.batteryAvailable ? (root.context.blt.connected.battery * 100).toString() + "%" : ""}` : "Not Paired"
+                    text: root.context.blt.connected ? `${root.context.blt.connected.name} ${root.context.blt.connected.batteryAvailable ? (root.context.blt.connected.battery * 100).toFixed(0).toString() + "%" : ""}` : "Not Paired"
                 }
             }
 
