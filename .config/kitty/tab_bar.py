@@ -17,46 +17,11 @@ from kitty.utils import color_as_int
 
 opts = get_options()
 
-ICON: str = "BIP "
-ICON_LENGTH: int = len(ICON)
-ICON_FG: int = as_rgb(color_as_int(opts.color19))
-ICON_BG: int = as_rgb(color_as_int(opts.color18))
 
 CLOCK_FG = 0
 CLOCK_BG = as_rgb(color_as_int(opts.background))
 DATE_FG = 0
 DATE_BG = as_rgb(color_as_int(opts.background))
-
-
-def _draw_icon(screen: Screen, index: int) -> int:
-    if index != 1:
-        return screen.cursor.x
-
-    fg, bg, bold, italic = (
-        screen.cursor.fg,
-        screen.cursor.bg,
-        screen.cursor.bold,
-        screen.cursor.italic,
-    )
-
-    screen.cursor.bold, screen.cursor.italic, screen.cursor.fg, screen.cursor.bg = (
-        True,
-        False,
-        ICON_FG,
-        ICON_BG,
-    )
-
-    screen.draw(ICON)
-    # set cursor position
-    screen.cursor.x = ICON_LENGTH
-    # restore color style
-    screen.cursor.fg, screen.cursor.bg, screen.cursor.bold, screen.cursor.italic = (
-        fg,
-        bg,
-        bold,
-        italic,
-    )
-    return screen.cursor.x
 
 
 def _draw_left_status(
@@ -88,8 +53,6 @@ def _draw_left_status(
     extra = screen.cursor.x - before - max_title_length
     if extra > 0:
         screen.cursor.x -= extra + 1
-        # Don't change `ICON`
-        screen.cursor.x = max(screen.cursor.x, ICON_LENGTH)
         screen.draw("…")
     if trailing_spaces:
         screen.draw(" " * trailing_spaces)
@@ -103,34 +66,6 @@ def _draw_left_status(
     return screen.cursor.x
 
 
-def _draw_right_status(screen: Screen, is_last: bool) -> int:
-    if not is_last:
-        return screen.cursor.x
-
-    cells = [
-        (CLOCK_FG, CLOCK_BG, datetime.datetime.now().strftime(" %H:%M ")),
-        (DATE_FG, DATE_BG, datetime.datetime.now().strftime(" %d/%m/%Y ")),
-    ]
-
-    right_status_length = 0
-    for _, _, cell in cells:
-        right_status_length += len(cell)
-
-    draw_spaces = screen.columns - screen.cursor.x - right_status_length
-    if draw_spaces > 0:
-        screen.draw(" " * draw_spaces)
-
-    for fg, bg, cell in cells:
-        screen.cursor.fg = fg
-        screen.cursor.bg = bg
-        screen.draw(cell)
-    screen.cursor.fg = 0
-    screen.cursor.bg = 0
-
-    screen.cursor.x = max(screen.cursor.x, screen.columns - right_status_length)
-    return screen.cursor.x
-
-
 def draw_tab(
     draw_data: DrawData,
     screen: Screen,
@@ -141,7 +76,6 @@ def draw_tab(
     is_last: bool,
     extra_data: ExtraData,
 ) -> int:
-    _draw_icon(screen, index)
     # Set cursor to where `left_status` ends, instead `right_status`,
     # to enable `open new tab` feature
     end = _draw_left_status(
@@ -154,9 +88,5 @@ def draw_tab(
         is_last,
         extra_data,
         use_kitty_render_function=False,
-    )
-    _draw_right_status(
-        screen,
-        is_last,
     )
     return end

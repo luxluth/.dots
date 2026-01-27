@@ -1,36 +1,19 @@
+// Edit with `hyprshell config edit`
 (
-    layerrules: true,
-    launcher: None,
+    version: 3,
     windows: (
-        size_factor: 5.5,
-        workspaces_per_row: 5,
-        strip_html_from_workspace_title: true,
-        overview: (
-            open: (
-                modifier: alt,
-                key: "Tab",
-            ),
-            navigate: (
-                forward: "tab",
-                reverse: Mod(shift),
-            ),
-            other: (
-                hide_filtered: false,
-                filter_by: [],
-            ),
-        ),
+        scale: 8.5,
+        items_per_row: 5,
+        overview: None,
         switch: (
-            open: (
-                modifier: super,
-            ),
-            navigate: (
-                forward: "tab",
-                reverse: Mod(shift),
-            ),
-            other: (
-                hide_filtered: true,
-                filter_by: [],
-            ),
+            modifier: "super",
+            key: "Tab",
+            filter_by: [
+                current_monitor,
+            ],
+            switch_workspaces: false,
+            exclude_special_workspaces: "",
         ),
+        switch_2: None,
     ),
 )

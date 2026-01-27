@@ -18,13 +18,16 @@ enable_audio_bell no
 visual_bell_duration 0.2
 # visual_bell_color none
 
-# cursor_trail 10
-# cursor_trail_start_threshold 0
-# cursor_trail_decay 0.01 0.05
-# cursor_blink true
+tab_bar_style       custom
+tab_bar_edge        top
+tab_separator       ""
+tab_title_template  " {index} {title} "
+tab_bar_margin_height 12 0.0
+tab_bar_margin_width 12
+tab_bar_min_tabs 1
 
 # BEGIN_KITTY_THEME
-# Gruvbox Dark
+# Kanagawa_dragon
 include current-theme.conf
 # END_KITTY_THEME
 

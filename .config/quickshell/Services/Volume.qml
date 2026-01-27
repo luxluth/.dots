@@ -222,9 +222,8 @@ Item {
                                 color: Qt.lighter(colors.fg, 2.1)
                                 elide: Text.ElideRight
 
-                                font: {
-                                    family: colors.fontFamily;
-                                }
+                                font.family: colors.fontFamily
+                                font.pixelSize: 13
                             }
                         }
                     }
