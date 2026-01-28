@@ -16,45 +16,15 @@ Rectangle {
     required property Context context
     signal closed
 
-    property bool show: context.notificationPopupVisible
+    Layout.fillWidth: true
+    Layout.fillHeight: true
+    Layout.preferredHeight: 400
+    Layout.minimumHeight: 300
 
-    width: 400
-    height: 500
-    color: colors.bg
-    border.color: colors.border
+    radius: 8
+    border.color: root.colors.border
     border.width: 2
-    radius: 16
-
-    opacity: show ? 1 : 0
-    scale: show ? 1 : 0.95
-    transformOrigin: Item.Top
-
-    transform: Translate {
-        y: show ? 0 : -20
-        Behavior on y {
-            NumberAnimation {
-                duration: 250
-                easing.type: Easing.OutQuart
-            }
-        }
-    }
-
-    Behavior on opacity {
-        NumberAnimation {
-            duration: 200
-        }
-    }
-
-    Behavior on scale {
-        NumberAnimation {
-            duration: 200
-            easing.type: Easing.OutBack
-        }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-    }
+    color: root.colors.contrast
 
     ColumnLayout {
         anchors.fill: parent

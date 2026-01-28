@@ -32,9 +32,7 @@ Item {
     signal popup(string message, var actions, string defaultAction)
     signal osd(string icon, string title, string subtitle)
     signal notificationReceived(Notification notification)
-    signal toggleNotifications
 
-    property bool notificationPopupVisible: false
     property bool dnd: false
     property alias notificationTimes: notif.notificationTimes
     property alias nsTracked: notif.tracked

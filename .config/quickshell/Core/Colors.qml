@@ -14,6 +14,8 @@ Item {
     property color muted: isDarkThemed ? "#444" : "#ccc"
     property color border: isDarkThemed ? "#595959" : "#444"
     property color contrast: isDarkThemed ? "#222" : "#fff"
+    property color transparentBg: Qt.rgba(root.bg.r, root.bg.g, root.bg.b, 0.9)
+    property color transparentFg: Qt.rgba(root.fg.r, root.fg.g, root.fg.b, 0.5)
 
     property color green: "#26a65b"
     property color red: "#f53c3c"

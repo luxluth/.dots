@@ -25,7 +25,7 @@ Item {
     Connections {
         target: root.context
         function onNotificationReceived(n) {
-            if (root.context.notificationPopupVisible || root.context.dnd)
+            if (root.context.dnd)
                 return;
 
             // if (root.activeNotification.transient) {

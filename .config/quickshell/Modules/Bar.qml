@@ -24,7 +24,7 @@ PanelWindow {
     implicitHeight: 40
     color: "transparent"
 
-    property alias ccBtn: ccBtn
+    property alias ccBtn: batItem
 
     Rectangle {
         anchors.fill: parent
@@ -32,8 +32,8 @@ PanelWindow {
         anchors.leftMargin: 10
         anchors.rightMargin: 10
         anchors.bottomMargin: 5
-        color: colors.bg
-        border.width: 2
+        color: root.colors.transparentBg
+        border.width: 1
         border.color: root.colors.muted
         radius: 8
 
@@ -66,7 +66,7 @@ PanelWindow {
                             property var ws: modelData
                             property bool isActive: root.context.compositor.focusedWorkspace?.id === (ws.id)
 
-                            color: isActive ? root.colors.fg : root.colors.muted
+                            color: isActive ? root.colors.fg : root.colors.transparentFg
                             implicitWidth: isActive ? 30 : 20
                             height: 20
                             radius: 2
@@ -134,7 +134,7 @@ PanelWindow {
                     // Class
                     Text {
                         text: root.context.compositor.focused[0]
-                        color: root.colors.muted
+                        color: root.colors.transparentFg
 
                         font {
                             family: root.colors.fontFamily
@@ -156,12 +156,12 @@ PanelWindow {
                 // Date
                 Rectangle {
                     id: dateWrapper
-                    color: root.context.notificationPopupVisible ? root.colors.muted : "transparent"
+                    color: "transparent"
                     radius: 4
                     implicitWidth: date.contentWidth + 16
                     implicitHeight: 24
 
-                    scale: dateMouse.containsPress ? 0.95 : 1.0
+                    scale: dateMouse.containsPress ? 0.98 : 1.0
                     Behavior on scale {
                         NumberAnimation {
                             duration: 100
@@ -193,13 +193,7 @@ PanelWindow {
                         id: dateMouse
                         anchors.fill: parent
                         acceptedButtons: Qt.LeftButton | Qt.RightButton
-                        onClicked: event => {
-                            if (event.button === Qt.RightButton) {
-                                date.isTime = !date.isTime;
-                            } else {
-                                root.context.toggleNotifications();
-                            }
-                        }
+                        onClicked: date.isTime = !date.isTime
                     }
                 }
             }
@@ -461,7 +455,7 @@ PanelWindow {
                 // Volume
                 Text {
                     text: `${Math.floor(root.context.pw.sink.audio.volume * 100)}% ${root.context.pw.getDefaultSinkVolumeIcon()}`
-                    color: root.context.pw.defaultSinkMuted ? root.colors.muted : root.colors.fg
+                    color: root.context.pw.defaultSinkMuted ? root.colors.transparentFg : root.colors.fg
 
                     font {
                         family: root.colors.fontFamily
@@ -479,9 +473,9 @@ PanelWindow {
 
                     ClippingRectangle {
                         id: batRect
-                        implicitHeight: parent.parent.height - 6
+                        implicitHeight: parent.parent.height - 4
                         implicitWidth: batText.implicitWidth + 20
-                        radius: 20
+                        radius: 4
                         border.width: 2
                         border.color: root.context.power.batteryLow ? root.colors.red : root.colors.fg
                         color: {
@@ -517,7 +511,26 @@ PanelWindow {
                         id: batMouse
                         anchors.fill: parent
                         hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: batItem.clicked()
                     }
+
+                    scale: batMouse.containsPress ? 0.90 : 1.0
+                    Behavior on scale {
+                        NumberAnimation {
+                            duration: 100
+                        }
+                    }
+
+                    IpcHandler {
+                        target: "cc"
+
+                        function toggle(): void {
+                            batItem.clicked();
+                        }
+                    }
+
+                    signal clicked
 
                     Tip {
                         rootWindow: root
@@ -525,59 +538,6 @@ PanelWindow {
                         watcher: batMouse
                         text: root.context.power.batteryAlternateText
                     }
-                }
-
-                // Control Center Invoke
-                Rectangle {
-                    id: ccBtn
-
-                    Layout.preferredWidth: 24
-                    Layout.preferredHeight: 24
-                    radius: 4
-                    color: ccHover.containsMouse || root.cc.visible ? root.colors.muted : "transparent"
-
-                    Text {
-                        text: "󰤂"
-                        color: root.colors.fg
-                        anchors.centerIn: parent
-                        font {
-                            family: root.colors.fontFamily
-                            pixelSize: 14
-                            bold: true
-                        }
-                    }
-
-                    scale: ccHover.containsPress ? 0.85 : 1.0
-                    Behavior on scale {
-                        NumberAnimation {
-                            duration: 100
-                        }
-                    }
-                    MouseArea {
-                        id: ccHover
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: ccBtn.clicked()
-                    }
-
-                    IpcHandler {
-                        target: "cc"
-
-                        function toggle(): void {
-                            ccBtn.clicked();
-                        }
-                    }
-
-                    IpcHandler {
-                        target: "notif"
-
-                        function toggle(): void {
-                            root.context.toggleNotifications();
-                        }
-                    }
-
-                    signal clicked
                 }
             }
         }

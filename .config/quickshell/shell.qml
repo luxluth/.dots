@@ -78,6 +78,7 @@ ShellRoot {
         context: ctx
         colors: colors
         cc: dashboardWindow
+        WlrLayershell.namespace: "qs-bar"
     }
 
     PanelWindow {
@@ -120,46 +121,8 @@ ShellRoot {
         context: ctx
     }
 
-    // Re-doing PanelWindow to be full screen overlay for click dismissal
-    PanelWindow {
-        id: notifHistoryOverlay
-        visible: ctx.notificationPopupVisible || notifPopup.opacity > 0
-        screen: bar.screen
-        anchors {
-            top: true
-            bottom: true
-            left: true
-            right: true
-        }
-        color: "transparent"
-
-        WlrLayershell.layer: WlrLayer.Overlay
-        WlrLayershell.exclusiveZone: -1
-        WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
-        WlrLayershell.namespace: "qs-notif-history"
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: ctx.notificationPopupVisible = false
-        }
-
-        NotificationPopup {
-            id: notifPopup
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: bar.height + 5
-
-            context: ctx
-            colors: colors
-            onClosed: ctx.notificationPopupVisible = false
-        }
-    }
-
     Connections {
         target: ctx
-        function onToggleNotifications() {
-            ctx.notificationPopupVisible = !ctx.notificationPopupVisible;
-        }
         function onOsd(icon, title, subtitle) {
             globalOsd.show(icon, title, subtitle);
         }
