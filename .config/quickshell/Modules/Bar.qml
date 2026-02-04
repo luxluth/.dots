@@ -33,7 +33,7 @@ PanelWindow {
         anchors.rightMargin: 10
         anchors.bottomMargin: 5
         color: root.colors.transparentBg
-        border.width: 1
+        border.width: 2
         border.color: root.colors.muted
         radius: 8
 
@@ -453,14 +453,29 @@ PanelWindow {
                 }
 
                 // Volume
-                Text {
-                    text: `${Math.floor(root.context.pw.sink.audio.volume * 100)}% ${root.context.pw.getDefaultSinkVolumeIcon()}`
-                    color: root.context.pw.defaultSinkMuted ? root.colors.transparentFg : root.colors.fg
+                Rectangle {
+                    id: volItem
+                    color: root.colors.transparentBg
+                    implicitWidth: 24
+                    implicitHeight: 24
 
-                    font {
-                        family: root.colors.fontFamily
-                        pixelSize: 14
-                        bold: true
+                    CImage {
+                        coloring: root.context.pw.defaultSinkMuted ? root.colors.transparentFg : root.colors.fg
+                        anchors.centerIn: parent
+                        width: 14
+                        iconSource: root.context.pw.getDefaultSinkVolumeSvg()
+                    }
+
+                    MouseArea {
+                        id: volumeArea
+                        hoverEnabled: true
+                    }
+
+                    Tip {
+                        rootWindow: root
+                        targetItem: volItem
+                        watcher: volumeArea
+                        text: `${root.context.pw.volume * 100}% ${root.context.pw.sink.description || root.context.pw.sink.nickname}`
                     }
                 }
 

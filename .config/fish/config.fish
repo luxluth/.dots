@@ -26,6 +26,8 @@ set -gx MANPAGER "nvim +Man!"
 
 alias zj="zellij"
 
+alias srm="trash"
+
 ## eza
 alias ls="eza --icons"
 alias lla="eza --icons -la"
@@ -367,7 +369,7 @@ set_pkg_cfg_path
 # pnpm
 set -gx PNPM_HOME "/home/luxluth/.local/share/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
-    fish_add_path "$PNPM_HOME"
+    set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
 
