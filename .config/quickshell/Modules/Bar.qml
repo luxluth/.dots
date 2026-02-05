@@ -453,21 +453,28 @@ PanelWindow {
                 }
 
                 // Volume
-                Rectangle {
+                Item {
                     id: volItem
-                    color: root.colors.transparentBg
-                    implicitWidth: 24
-                    implicitHeight: 24
+                    implicitWidth: volRect.width
+                    implicitHeight: volRect.height
 
-                    CImage {
-                        coloring: root.context.pw.defaultSinkMuted ? root.colors.transparentFg : root.colors.fg
-                        anchors.centerIn: parent
-                        width: 14
-                        iconSource: root.context.pw.getDefaultSinkVolumeSvg()
+                    Rectangle {
+                        id: volRect
+                        color: "#00000000"
+                        implicitWidth: 24
+                        implicitHeight: 24
+
+                        CImage {
+                            coloring: root.context.pw.defaultSinkMuted ? root.colors.transparentFg : root.colors.fg
+                            anchors.centerIn: parent
+                            width: 14
+                            iconSource: root.context.pw.getDefaultSinkVolumeSvg()
+                        }
                     }
 
                     MouseArea {
                         id: volumeArea
+                        anchors.fill: parent
                         hoverEnabled: true
                     }
 
