@@ -117,7 +117,7 @@ Item {
                 Rectangle {
                     id: outer
                     anchors.fill: parent
-                    radius: 20
+                    radius: root.colors.radiusOsd
                     color: Qt.rgba(colors.bg.r, colors.bg.g, colors.bg.b, 0.9)
                     border.width: 1
                     border.color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.1)

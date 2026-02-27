@@ -56,7 +56,7 @@ PopupWindow {
         color: colors.bg
         border.color: colors.muted
         border.width: 1
-        radius: 4
+        radius: colors.radiusSmall
 
         states: State {
             name: "visible"

@@ -17,6 +17,17 @@ Item {
     property color transparentBg: Qt.rgba(root.bg.r, root.bg.g, root.bg.b, 0.9)
     property color transparentFg: Qt.rgba(root.fg.r, root.fg.g, root.fg.b, 0.5)
 
+    property real radiusExtraSmall: 2
+    property real radiusSmall: 4
+    property real radius5: 5
+    property real radiusCompact: 6
+    property real radiusMedium: 8
+    property real radiusBase: 10
+    property real radiusLarge: 12
+    property real radius14: 14
+    property real radiusExtraLarge: 16
+    property real radiusOsd: 20
+
     property color green: "#26a65b"
     property color red: "#f53c3c"
 

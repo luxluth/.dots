@@ -1,1 +1,1 @@
-/home/luxluth/Code/Projects/seekr/plugins/image_search.lua
+/home/luxluth/Code/probe/seekr/plugins/image_search.lua

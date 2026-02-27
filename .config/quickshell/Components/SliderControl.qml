@@ -15,7 +15,7 @@ Item {
     ClippingRectangle {
         id: track
         anchors.fill: parent
-        radius: 6
+        radius: colors.radiusCompact
         color: colors.contrast
         border.width: 2
         border.color: colors.border
@@ -36,7 +36,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         height: parent.height + 8
         width: 8
-        radius: 4
+        radius: colors.radiusSmall
         color: colors.fg
         scale: sliderEvent.containsPress ? 0.95 : 1.0
         border.color: colors.border

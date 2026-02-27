@@ -20,7 +20,7 @@ Rectangle {
 
     Layout.fillWidth: true
     Layout.fillHeight: true
-    radius: 4
+    radius: colors.radiusSmall
     height: 60
 
     border.color: isActive ? colors.pearleBlueStroke : colors.border

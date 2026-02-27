@@ -23,7 +23,7 @@ Rectangle {
 
     Layout.fillWidth: true
     Layout.fillHeight: true
-    radius: 6
+    radius: colors.radiusCompact
     color: model.active ? colors.fg : colors.contrast
     border.color: colors.border
     border.width: 2

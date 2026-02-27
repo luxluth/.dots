@@ -20,7 +20,7 @@ Rectangle {
     width: 600
     height: 900
     color: colors.transparentBg
-    radius: 16
+    radius: colors.radiusExtraLarge
     border.color: colors.border
     border.width: 2
 
@@ -141,7 +141,7 @@ Rectangle {
                 Layout.preferredWidth: parent.width * 0.45
                 Layout.preferredHeight: parent.height * 0.6
 
-                radius: 8
+                radius: root.colors.radiusMedium
                 border.color: root.colors.border
                 border.width: 2
                 color: root.colors.contrast
@@ -235,7 +235,7 @@ Rectangle {
 
                     // VOLUME
                     Rectangle {
-                        radius: 8
+                        radius: root.colors.radiusMedium
                         border.color: root.colors.border
                         border.width: 2
                         color: root.colors.contrast
@@ -296,8 +296,7 @@ Rectangle {
                                 Rectangle {
                                     implicitWidth: 40
                                     implicitHeight: 40
-                                    radius: 10
-
+                                    radius: root.colors.radiusBase
                                     border.color: root.colors.border
                                     border.width: 2
                                     color: root.context.pw.sink.audio.muted ? root.colors.fg : root.colors.contrast
@@ -336,7 +335,7 @@ Rectangle {
 
                     // BRIGHTNESS
                     Rectangle {
-                        radius: 8
+                        radius: root.colors.radiusMedium
                         border.color: root.colors.border
                         border.width: 2
                         color: root.colors.contrast
@@ -397,7 +396,7 @@ Rectangle {
                 Layout.preferredWidth: parent.width * 0.45
                 Layout.preferredHeight: parent.height * 0.6
 
-                radius: 8
+                radius: root.colors.radiusMedium
                 color: "transparent"
 
                 ColumnLayout {
@@ -406,7 +405,7 @@ Rectangle {
 
                     // Uptime + UserData
                     Rectangle {
-                        radius: 8
+                        radius: root.colors.radiusMedium
                         border.color: root.colors.border
                         border.width: 2
                         color: colorQuantizer.selection
@@ -514,7 +513,7 @@ Rectangle {
 
                     // Actions
                     Rectangle {
-                        radius: 8
+                        radius: root.colors.radiusMedium
                         border.color: root.colors.border
                         border.width: 2
                         color: root.colors.contrast
@@ -551,7 +550,7 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                radius: 8
+                radius: root.colors.radiusMedium
                 border.color: root.colors.border
                 border.width: 2
                 color: root.colors.contrast

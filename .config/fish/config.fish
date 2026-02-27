@@ -28,9 +28,7 @@ alias zj="zellij"
 
 alias srm="trash"
 
-## eza
-alias ls="eza --icons"
-alias lla="eza --icons -la"
+alias lla="ls -lah"
 
 # line count lc
 alias lc="wc -l"
@@ -38,7 +36,7 @@ alias lc="wc -l"
 alias b="cd -"
 
 function lsd --description "ls that display folder first"
-    eza -l --group-directories-first $argv --icons
+    eza -l --group-directories-first $argv
 end
 
 function lt --description "Dispaly tree like format for 'ls'"
@@ -369,7 +367,7 @@ set_pkg_cfg_path
 # pnpm
 set -gx PNPM_HOME "/home/luxluth/.local/share/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
-    set -gx PATH "$PNPM_HOME" $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
 

@@ -49,7 +49,7 @@ Item {
             anchors {
                 top: true
             }
-            margins.top: 50
+            margins.top: 60
 
             implicitWidth: 320
             implicitHeight: container.implicitHeight
@@ -191,7 +191,7 @@ Item {
 
                 Rectangle {
                     anchors.fill: parent
-                    radius: 20
+                    radius: root.colors.radiusOsd
                     color: Qt.rgba(root.colors.bg.r, root.colors.bg.g, root.colors.bg.b, 0.9)
                     border.width: 1
                     border.color: Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.1)
@@ -305,7 +305,7 @@ Item {
                                     Layout.fillWidth: true
                                     height: 30
                                     color: actMouse.containsMouse ? Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.1) : "transparent"
-                                    radius: 12
+                                    radius: root.colors.radiusLarge
                                     border.width: 1
                                     border.color: root.colors.border
 

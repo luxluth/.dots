@@ -18,7 +18,7 @@ Rectangle {
     color: colors.bg
     border.color: colors.border
     border.width: 2
-    radius: 8
+    radius: colors.radiusMedium
 
     scale: 0.9
     opacity: 0
@@ -125,7 +125,7 @@ Rectangle {
 
                     implicitWidth: Math.max(300, btnText.contentWidth + 30)
                     implicitHeight: 36
-                    radius: 5
+                    radius: root.colors.radius5
 
                     property color baseColor: {
                         if (actionData.type === "D")

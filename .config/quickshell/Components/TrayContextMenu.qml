@@ -66,8 +66,8 @@ PopupWindow {
             clip: true // Clip the content that sits inside
             topLeftRadius: 0
             topRightRadius: 0
-            bottomLeftRadius: 14
-            bottomRightRadius: 14
+            bottomLeftRadius: root.colors.radiusExtraLarge
+            bottomRightRadius: root.colors.radiusExtraLarge
 
             QsMenuOpener {
                 id: opener
@@ -85,7 +85,7 @@ PopupWindow {
                 y: menuColumn.y + targetY
                 width: parent.width - 16
                 height: 36
-                radius: 8
+                radius: root.colors.radiusMedium
                 color: root.colors.accent
                 opacity: active ? 0.15 : 0
 
@@ -140,7 +140,7 @@ PopupWindow {
                             visible: !isSeparator && highlight.active && highlight.targetY === menuItem.y
                             width: 3
                             height: 16
-                            radius: 2
+                            radius: root.colors.radiusExtraSmall
                             color: root.colors.accent
                             anchors.left: parent.left
                             anchors.leftMargin: 4
@@ -245,6 +245,11 @@ PopupWindow {
         property color accent: "#cba6f7"
         property color muted: "#45475a"
         property color border: "#313244"
+        property real radiusSmall: 4
+        property real radiusMedium: 8
+        property real radiusLarge: 12
+        property real radiusExtraLarge: 14
+        property real radiusExtraSmall: 2
     }
 
     mask: Region {

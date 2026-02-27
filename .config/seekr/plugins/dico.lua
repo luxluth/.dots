@@ -1,1 +1,1 @@
-/home/luxluth/Code/Projects/seekr/plugins/dictionary.lua
+/home/luxluth/Code/probe/seekr/plugins/dictionary.lua

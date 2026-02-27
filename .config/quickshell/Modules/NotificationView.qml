@@ -21,7 +21,7 @@ Rectangle {
     Layout.preferredHeight: 400
     Layout.minimumHeight: 300
 
-    radius: 8
+    radius: colors.radiusSmall
     border.color: root.colors.border
     border.width: 2
     color: root.colors.contrast
@@ -48,7 +48,7 @@ Rectangle {
                 visible: root.context.nsTracked.count > 0
                 implicitWidth: 30
                 implicitHeight: 30
-                radius: 4
+                radius: root.colors.radiusSmall
                 color: clearMouse.containsMouse ? root.colors.contrast : "transparent"
 
                 scale: clearMouse.pressed ? 0.9 : 1.0
@@ -76,7 +76,7 @@ Rectangle {
             Rectangle {
                 width: 30
                 height: 30
-                radius: 4
+                radius: root.colors.radiusSmall
                 color: dndMouse.containsMouse ? root.colors.contrast : "transparent"
 
                 scale: dndMouse.pressed ? 0.9 : 1.0
@@ -157,7 +157,7 @@ Rectangle {
                     Rectangle {
                         width: 24
                         height: 24
-                        radius: 4
+                        radius: root.colors.radiusSmall
                         color: groupClearMouse.containsMouse ? root.colors.contrast : "transparent"
 
                         CImage {
@@ -185,7 +185,7 @@ Rectangle {
                         width: groupDelegate.width
                         implicitHeight: contentColumn.implicitHeight + 20
                         color: root.colors.contrast
-                        radius: 12
+                        radius: root.colors.radiusLarge
                         border.width: 2
                         border.color: root.colors.border
 
@@ -298,7 +298,7 @@ Rectangle {
                                         Layout.fillWidth: true
                                         height: 30
                                         color: actMouse.containsMouse ? Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.1) : "transparent"
-                                        radius: 8
+                                        radius: root.colors.radiusMedium
                                         border.width: 2
                                         border.color: root.colors.border
 

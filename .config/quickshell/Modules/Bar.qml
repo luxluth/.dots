@@ -35,7 +35,7 @@ PanelWindow {
         color: root.colors.transparentBg
         border.width: 2
         border.color: root.colors.muted
-        radius: 8
+        radius: root.colors.radiusMedium
 
         Item {
             anchors.fill: parent
@@ -69,7 +69,7 @@ PanelWindow {
                             color: isActive ? root.colors.fg : root.colors.transparentFg
                             implicitWidth: isActive ? 30 : 20
                             height: 20
-                            radius: 2
+                            radius: root.colors.radiusExtraSmall
 
                             Behavior on color {
                                 ColorAnimation {
@@ -157,7 +157,7 @@ PanelWindow {
                 Rectangle {
                     id: dateWrapper
                     color: "transparent"
-                    radius: 4
+                    radius: root.colors.radiusSmall
                     implicitWidth: date.contentWidth + 16
                     implicitHeight: 24
 
@@ -242,7 +242,7 @@ PanelWindow {
                             Layout.preferredWidth: trayRoot.iconSize + 8
                             Layout.preferredHeight: trayRoot.iconSize + 8
 
-                            radius: 4
+                            radius: root.colors.radiusSmall
                             color: itemMouse.containsMouse ? root.colors.muted : "transparent"
 
                             Image {
@@ -497,7 +497,7 @@ PanelWindow {
                         id: batRect
                         implicitHeight: parent.parent.height - 4
                         implicitWidth: batText.implicitWidth + 20
-                        radius: 4
+                        radius: root.colors.radiusSmall
                         border.width: 2
                         border.color: root.context.power.batteryLow ? root.colors.red : root.colors.fg
                         color: {
@@ -520,7 +520,7 @@ PanelWindow {
                         id: batText
                         anchors.centerIn: parent
                         text: root.context.power.batteryPercentage
-                        color: root.context.power.batteryLow ? root.colors.red : root.colors.bg
+                        color: root.context.power.batteryLow ? root.colors.fg : root.colors.bg
 
                         font {
                             family: "Inter"
