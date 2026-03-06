@@ -1,0 +1,35 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run the `open default settings` command
+// from the command palette or from `Zed` application menu.
+{
+  "theme": "Andromeda",
+  "vim_mode": true,
+  "auto_update": true,
+  "terminal": {
+    "font_family": "JetBrainsMonoNL Nerd Font Mono"
+  },
+  "vim": {
+    "use_system_clipboard": "always"
+  },
+  "features": {
+    "inline_completion_provider": "none",
+    "copilot": false
+  },
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "ui_font_family": "JetBrainsMono Nerd Font",
+  "ui_font_weight": 500,
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_weight": 500,
+  "ui_font_features": {
+    "liga": true
+  },
+  "buffer_font_features": {
+    "liga": true
+  }
+}

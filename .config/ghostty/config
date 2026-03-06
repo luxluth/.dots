@@ -1,0 +1,22 @@
+font-family  = "IosevkaTerm Nerd Font Mono"
+font-size    = 13
+# font-feature = +dlig
+
+theme = light:dawnfox,dark:GruvboxDark
+
+window-padding-x = 12
+window-padding-y = 12
+window-padding-balance = true
+window-vsync = true
+window-theme = ghostty
+window-decoration = true
+window-save-state = always
+window-height = 41
+window-width = 165
+
+# keybind = ctrl+shift+h=toggle_window_decorations
+keybind = alt+shift+right=new_split:right
+keybind = alt+shift+down=new_split:down
+keybind = ctrl+shift+plus=increase_font_size:1
+keybind = ctrl+shift+minus=decrease_font_size:1
+

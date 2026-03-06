@@ -1,0 +1,9 @@
+@import "firefox-gnome-theme/userChrome.css";
+
+#statuspanel #statuspanel-label {
+  font-family: monospace !important;
+  font-weight: bold !important;
+  margin-bottom: 5px !important;
+  margin-inline: 5px !important;
+  border-radius: 7px !important;
+}

@@ -1,0 +1,64 @@
+[global]
+follow = mouse
+indicate_hidden = yes
+offset = 0x5
+origin = top-center
+
+separator_height = 2
+
+padding = 8
+horizontal_padding = 8
+text_icon_padding = 0
+frame_width = 1
+
+dmenu = /usr/bin/wofi -dmenu -p dunst:
+
+progress_bar_height = 20
+progress_bar_corner_radius = 0
+
+frame_color = "#000000"
+highlight = "#000000"
+separator_color = frame
+
+sort = yes
+idle_threshold = 120
+font = CaskaydiaCove NFM 10
+line_height = 0
+markup = full
+alignment = left
+vertical_alignment = center
+show_age_threshold = 60
+word_wrap = yes
+stack_duplicates = true
+hide_duplicate_count = false
+
+show_indicators = yes
+
+min_icon_size = 0
+max_icon_size = 64
+enable_recursive_icon_lookup = true
+icon_theme = WhiteSur
+icon_position = left
+
+browser = /usr/bin/xdg-open
+mouse_left_click = do_action
+
+title = dunst
+class = dunst
+
+corner_radius = 0
+timeout = 5
+[urgency_low]
+background = "#ffffff"
+foreground = "#000000"
+frame_color = "#000000"
+
+[urgency_normal]
+background = "#ffffff"
+foreground = "#000000"
+frame_color = "#000000"
+
+[urgency_critical]
+background = "#ffffff"
+foreground = "#000000"
+frame_color = "#000000"

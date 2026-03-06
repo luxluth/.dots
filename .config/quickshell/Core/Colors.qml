@@ -1,0 +1,90 @@
+import QtQuick
+
+Item {
+    id: root
+
+    required property var context
+
+    property string theme: context.theme
+    property bool isDarkThemed: context.theme === "prefer-dark"
+    // property string fontFamily: "Inter"
+    property string fontFamily: "Fantasque Sans Mono"
+    property color fg: isDarkThemed ? "#fff" : "#181818"
+    property color bg: isDarkThemed ? "#181818" : "#f7f7f7"
+    property color muted: isDarkThemed ? "#444" : "#ccc"
+    property color border: isDarkThemed ? "#595959" : "#444"
+    property color contrast: isDarkThemed ? "#222" : "#fff"
+    property color transparentBg: Qt.rgba(root.bg.r, root.bg.g, root.bg.b, 0.9)
+    property color transparentFg: Qt.rgba(root.fg.r, root.fg.g, root.fg.b, 0.5)
+
+    property real radiusExtraSmall: 2
+    property real radiusSmall: 4
+    property real radius5: 5
+    property real radiusCompact: 6
+    property real radiusMedium: 8
+    property real radiusBase: 10
+    property real radiusLarge: 12
+    property real radius14: 14
+    property real radiusExtraLarge: 16
+    property real radiusOsd: 20
+
+    property color green: "#26a65b"
+    property color red: "#f53c3c"
+
+    property color pearleBlue: isDarkThemed ? "#6269E5" : "#A0BFFF"
+    property color pearleBlueStroke: isDarkThemed ? "#7A80E7" : "#7E83E7"
+
+    Behavior on bg {
+        ColorAnimation {
+            duration: 100
+        }
+    }
+
+    Behavior on fg {
+        ColorAnimation {
+            duration: 100
+        }
+    }
+
+    Behavior on muted {
+        ColorAnimation {
+            duration: 100
+        }
+    }
+
+    Behavior on border {
+        ColorAnimation {
+            duration: 100
+        }
+    }
+
+    Behavior on contrast {
+        ColorAnimation {
+            duration: 100
+        }
+    }
+
+    Behavior on green {
+        ColorAnimation {
+            duration: 100
+        }
+    }
+
+    Behavior on red {
+        ColorAnimation {
+            duration: 100
+        }
+    }
+
+    Behavior on pearleBlue {
+        ColorAnimation {
+            duration: 100
+        }
+    }
+
+    Behavior on pearleBlueStroke {
+        ColorAnimation {
+            duration: 100
+        }
+    }
+}

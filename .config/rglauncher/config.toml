@@ -1,0 +1,6 @@
+[db]
+db_path = "/home/luxluth/.cache/rglauncher/store.db"
+
+[ui]
+icon_theme = "WhiteSur"
+dark_mode = false

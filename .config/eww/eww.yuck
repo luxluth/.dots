@@ -1,0 +1,67 @@
+(defvar volume-level 0)
+(defvar brightness-level 0)
+(defvar volume-is-muted false)
+
+(defwindow volume
+           :monitor 0
+           :timeout 200
+           :geometry (geometry :x "0%"
+                               :y "0%"
+                               :width "18%"
+                               :height "30px"
+                               :anchor "center center")
+           :stacking "overlay"
+           :wm-ignore false
+           :class "volume"
+  (box
+    :class "boundery"
+    :orientation "h"
+    :spacing 2
+    :space-evenly false
+    
+    (label
+      :class { volume-is-muted ? "muted" : "" }
+      :width 28
+      :text "${volume-level}"
+    )
+
+    (progress
+      :value volume-level
+      :orientation "h"
+      :hexpand true
+      :class { volume-is-muted ? "muted" : "" }
+    )
+  )
+)
+
+(defwindow brightness
+           :monitor 0
+           :timeout 200
+           :geometry (geometry :x "0%"
+                               :y "0%"
+                               :width "18%"
+                               :height "30px"
+                               :anchor "center center")
+           :stacking "overlay"
+           :wm-ignore false
+           :class "brightness"
+  (box
+    :class "boundery"
+    :orientation "h"
+    :spacing 2
+    :space-evenly false
+    
+    (label
+      :width 28
+      :text "${brightness-level}"
+      :class "brightness-label"
+    )
+
+    (progress
+      :value brightness-level
+      :orientation "h"
+      :hexpand true
+      :class "brightness-progress"
+    )
+  )
+)

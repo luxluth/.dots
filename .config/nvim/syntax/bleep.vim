@@ -1,0 +1,1 @@
+/home/luxluth/Code/Projects/bleep/v1/editor/nvim/syntax/bleep.vim
