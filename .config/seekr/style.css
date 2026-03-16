@@ -13,7 +13,7 @@ window {
 }
 
 window.gnome {
-  border: 2px solid #333333;
+  border: 1px solid #595959;
   border-radius: 12px;
 }
 

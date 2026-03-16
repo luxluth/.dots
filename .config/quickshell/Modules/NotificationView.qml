@@ -21,7 +21,7 @@ Rectangle {
     Layout.preferredHeight: 400
     Layout.minimumHeight: 300
 
-    radius: colors.radiusSmall
+    radius: colors.radiusBase
     border.color: root.colors.border
     border.width: 2
     color: root.colors.contrast

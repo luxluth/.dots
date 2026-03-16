@@ -1,6 +1,6 @@
 font-family  = "IosevkaTerm Nerd Font Mono"
 font-size    = 13
-font-feature = +dlig
+# font-feature = +dlig
 
 theme = light:Alabaster,dark:Bamboo
 

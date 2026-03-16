@@ -1,5 +1,5 @@
 //@ pragma UseQApplication
-//@ pragma IconTheme WhiteSur
+//@ pragma IconTheme WhiteSur-dark
 
 import Quickshell
 import Quickshell.Wayland

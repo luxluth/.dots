@@ -482,7 +482,7 @@ PanelWindow {
                         rootWindow: root
                         targetItem: volItem
                         watcher: volumeArea
-                        text: `${root.context.pw.volume * 100}% ${root.context.pw.sink.description || root.context.pw.sink.nickname}`
+                        text: `${(root.context.pw.volume * 100).toFixed(0)}% ${root.context.pw.sink.description || root.context.pw.sink.nickname}`
                     }
                 }
 
@@ -497,6 +497,7 @@ PanelWindow {
                         id: batRect
                         implicitHeight: parent.parent.height - 4
                         implicitWidth: batText.implicitWidth + 20
+                        antialiasing: true
                         radius: root.colors.radiusSmall
                         border.width: 2
                         border.color: root.context.power.batteryLow ? root.colors.red : root.colors.fg

@@ -19,6 +19,7 @@ Item {
         color: colors.contrast
         border.width: 2
         border.color: colors.border
+        antialiasing: true
 
         Rectangle {
             id: ranged
@@ -38,7 +39,7 @@ Item {
         width: 8
         radius: colors.radiusSmall
         color: colors.fg
-        scale: sliderEvent.containsPress ? 0.95 : 1.0
+        scale: sliderEvent.containsPress ? 0.92 : 1.0
         border.color: colors.border
 
         Behavior on scale {
