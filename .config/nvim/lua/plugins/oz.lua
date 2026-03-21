@@ -1,5 +1,5 @@
 return {
   {
-    dir = "/home/luxluth/Code/Projects/oz.nvim",
+    dir = "/home/luxluth/Code/probe/oz.nvim",
   },
 }
