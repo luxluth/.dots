@@ -6,10 +6,10 @@ return {
     if scheme ~= nil and scheme:sub(0, scheme:len() - 1) ~= "'prefer-dark'" then
       vim.o.background = "light"
       vim.cmd("colorscheme alabaster")
-      vim.notify("USING Alabaster", vim.log.levels.WARN, { title = "INIT" })
+      vim.notify("USING Alabaster", vim.log.levels.INFO, { title = "Background - " .. scheme })
     else
       vim.cmd("colorscheme bamboo_muted")
-      vim.notify("USING Bamboo", vim.log.levels.WARN, { title = "INIT" })
+      vim.notify("USING Bamboo", vim.log.levels.INFO, { title = "Background - " .. scheme })
     end
   end,
 }
