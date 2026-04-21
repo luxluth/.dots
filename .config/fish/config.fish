@@ -388,3 +388,8 @@ set --export ANDROID_HOME "$HOME/Android/Sdk"
 # # dbus-launch
 # export $(dbus-launch)
 # fish_add_path /home/luxluth/.pixi/bin
+
+# ZVM
+set -gx ZVM_INSTALL "$HOME/.zvm/self"
+set -gx PATH $PATH "$HOME/.zvm/bin"
+set -gx PATH $PATH "$ZVM_INSTALL/"
