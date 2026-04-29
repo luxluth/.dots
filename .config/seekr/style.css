@@ -1,11 +1,15 @@
+:root {
+  --theme-fg: #fff;
+}
+
 * {
   font-family: "Fantasque Sans Mono", "IosevkaTerm NFP";
-  color: @theme_fg_color;
+  color: var(--theme-fg-color, #fff);
 }
 
 window {
-  background: @theme_bg_color;
-  color: @theme_fg_color;
+  background: var(--theme-bg-color, #222222);
+  color: var(--theme-fg-color, #fff);
 }
 
 window {
@@ -30,7 +34,7 @@ completionLabel {
 
 input,
 completionLabel {
-  caret-color: @theme_fg_color;
+  caret-color: var(--theme-fg-color, #fff);
   font-size: 32px;
 }
 
@@ -48,18 +52,18 @@ file {
   margin-top: 2.5px;
   margin-bottom: 2.5px;
   padding: 5px;
-  background: alpha(@theme_fg_color, 0.05);
+  background: alpha(var(--theme-fg-color, #fff), 0.05);
   border-radius: 8px;
   transition: background 0.1s ease-out;
 }
 
 entry:hover,
 file:hover {
-  background: alpha(@theme_fg_color, 0.1);
+  background: alpha(var(--theme-fg-color, #fff), 0.1);
 }
 
 file.focused {
-  box-shadow: inset 0px 0px 0px 2px white;
+  box-shadow: inset 0px 0px 0px 2px var(--accent-color);
 }
 
 entryIcon,
@@ -93,7 +97,7 @@ tip {
 }
 
 mathResult {
-  background-color: alpha(@theme_fg_color, 0.1);
+  background-color: alpha(var(--theme-fg-color, #fff), 0.1);
   border-radius: 8px;
   padding: 5px;
 }
@@ -172,14 +176,14 @@ infoBox .info_title {
 }
 
 infoBox .info_body {
-  background: alpha(@theme_fg_color, 0.1);
+  background: alpha(var(--theme-fg-color, #fff), 0.1);
   padding: 1em;
   border-radius: 8px;
   font-family: "IosevkaTerm NFP", monospace;
 }
 
 consoleBox .console_view {
-  background-color: alpha(@theme_fg_color, 0.1);
+  background-color: alpha(var(--theme-fg-color, #fff), 0.1);
   font-family: "IosevkaTerm NFP", monospace;
   font-weight: bold;
   padding: 1em;

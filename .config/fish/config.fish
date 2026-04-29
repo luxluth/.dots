@@ -35,6 +35,8 @@ alias lc="wc -l"
 # back
 alias b="cd -"
 
+alias cat="bat --plain --no-paging"
+
 function lsd --description "ls that display folder first"
     eza -l --group-directories-first $argv
 end
@@ -367,7 +369,7 @@ set_pkg_cfg_path
 # pnpm
 set -gx PNPM_HOME "/home/luxluth/.local/share/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
-  set -gx PATH "$PNPM_HOME" $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
 
