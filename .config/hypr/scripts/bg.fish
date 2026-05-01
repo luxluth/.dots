@@ -5,11 +5,11 @@ set current_scheme (gsettings get org.gnome.desktop.interface color-scheme | str
 if pgrep -f awww-daemon >/dev/null
     if string match -q default $current_scheme; or string match -q prefer-light $current_scheme
         # light mode
-        set image "$HOME/Pictures/walls/wallhaven-xezq13.jpg"
+        set image "$HOME/Pictures/walls/wallhaven-lykzjy.jpg"
         awww img $image --transition-type fade --transition-fps 60 --transition-duration 0.5
     else
         # dark mode
-        set image "$HOME/Pictures/walls/eye.jpeg"
+        set image "$HOME/Pictures/walls/wallhaven-yqg2og.jpg"
         awww img $image --transition-type fade --transition-fps 60 --transition-duration 0.5
     end
 
