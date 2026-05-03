@@ -6,15 +6,32 @@ Item {
     id: root
 
     property string username: ""
+    property string whoami: ""
     property string uptime: "..."
-    property string avatar: username.length > 0 ? Qt.resolvedUrl(`file:///home/${username}/.face.png`) : Icons.close
+    property string avatar: username.length > 0 ? Qt.resolvedUrl(`file:///home/${whoami}/.face.png`) : Icons.close
 
     Process {
         id: whoamiProc
         running: true
         command: ["whoami"]
         stdout: SplitParser {
-            onRead: data => root.username = data.trim()
+            onRead: data => {
+                root.whoami = data.trim();
+            }
+        }
+    }
+
+    Process {
+        id: getent
+        running: !whoamiProc.running
+        command: ["getent", "passwd", root.whoami]
+        stdout: SplitParser {
+            onRead: data => {
+                let fullname = data.split(":")[4];
+                if (fullname.length > 0) {
+                    root.username = fullname;
+                }
+            }
         }
     }
 
