@@ -1,0 +1,7 @@
+require("confs.env")
+require("confs.monitor")
+require("confs.autostart")
+require("confs.binds")
+require("confs.input")
+require("confs.look")
+require("confs.rules")

@@ -3,6 +3,6 @@ if status is-interactive
 
     # Only run the full keychain command if the socket is missing (first login)
     if not ssh-add -l >/dev/null 2>&1
-        eval (keychain --eval $SSH_KEYS_TO_AUTOLOAD)
+        eval (keychain --eval --quiet $SSH_KEYS_TO_AUTOLOAD)
     end
 end
