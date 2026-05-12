@@ -15,11 +15,10 @@ fn main() -> std::io::Result<()> {
 
     while let Ok(data) = rx.recv() {
         match data {
-            HyprEvent::URGENT(win_id) => {
-                match HyprlandRequestSender::send(&format!(
-                    "/dispatch focuswindow address:0x{:x}",
-                    win_id
-                )) {
+            HyprEvent::URGENT(_) => {
+                match HyprlandRequestSender::send(
+                    "/dispatch hl.dsp.focus({ urgent_or_last = true })",
+                ) {
                     Ok(resp) => {
                         eprintln!("{resp}");
                     }
