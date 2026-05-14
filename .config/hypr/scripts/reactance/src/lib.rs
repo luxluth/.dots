@@ -47,6 +47,7 @@ pub struct HyprlandRequestSender;
 
 impl HyprlandRequestSender {
     pub fn send(action: &str) -> std::io::Result<String> {
+        eprintln!("[send]: {action}");
         let mut sock = UnixStream::connect(hyprland_sock_path("/.socket.sock"))?;
         sock.write_all(action.as_bytes())?;
 

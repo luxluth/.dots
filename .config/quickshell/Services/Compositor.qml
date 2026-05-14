@@ -14,7 +14,7 @@ Item {
     property bool firstRun: true
 
     function gotoWorkspace(wid) {
-        Hyprland.dispatch(`workspace ${wid}`);
+        Hyprland.dispatch(`hl.dsp.focus({ workspace = ${wid} })`);
     }
 
     function gotoWorkspaceStep(dt) {
