@@ -16,14 +16,14 @@ fn main() -> std::io::Result<()> {
     while let Ok(data) = rx.recv() {
         match data {
             HyprEvent::URGENT(_) => {
-                match HyprlandRequestSender::send(
-                    "/dispatch hl.dsp.focus({ urgent_or_last = true })",
-                ) {
-                    Ok(resp) => {
-                        eprintln!("{resp}");
-                    }
-                    Err(e) => eprintln!("{e}"),
-                }
+                // match HyprlandRequestSender::send(
+                //     "/dispatch hl.dsp.focus({ urgent_or_last = true })",
+                // ) {
+                //     Ok(resp) => {
+                //         eprintln!("{resp}");
+                //     }
+                //     Err(e) => eprintln!("{e}"),
+                // }
             }
             _ => {}
         }

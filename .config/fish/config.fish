@@ -368,8 +368,8 @@ set_pkg_cfg_path
 
 # pnpm
 set -gx PNPM_HOME "/home/luxluth/.local/share/pnpm"
-if not string match -q -- $PNPM_HOME $PATH
-    set -gx PATH "$PNPM_HOME" $PATH
+if not string match -q -- "$PNPM_HOME/bin" $PATH
+    set -gx PATH "$PNPM_HOME/bin" $PATH
 end
 # pnpm end
 
@@ -379,10 +379,7 @@ set -gx DOTNET_CLI_TELEMETRY_OPTOUT 1
 # set -gx PATH $HOME/.cabal/bin $PATH /home/luxluth/.ghcup/bin # ghcup-env
 
 fish_add_path $HOME/.dotnet/tools # dotnet_tools
-
-# bun
-set --export BUN_INSTALL "$HOME/.bun"
-fish_add_path $BUN_INSTALL/bin
+fish_add_path $GOPATH/bin
 
 # android sdk
 set --export ANDROID_HOME "$HOME/Android/Sdk"

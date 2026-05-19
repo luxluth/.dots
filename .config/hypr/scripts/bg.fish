@@ -9,7 +9,7 @@ if pgrep -f awww-daemon >/dev/null
         awww img $image --transition-type fade --transition-fps 60 --transition-duration 0.5
     else
         # dark mode
-        set image "$HOME/Pictures/walls/wallhaven-yqg2og.jpg"
+        set image "$HOME/Pictures/walls/wallhaven-qrgqyq.jpg"
         awww img $image --transition-type fade --transition-fps 60 --transition-duration 0.5
     end
 
