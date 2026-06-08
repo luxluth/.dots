@@ -114,6 +114,7 @@ ShellRoot {
     Osd {
         id: globalOsd
         colors: colors
+        context: ctx
     }
 
     NotificationOsd {

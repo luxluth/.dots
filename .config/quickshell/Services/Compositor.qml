@@ -12,6 +12,7 @@ Item {
     property var workspaceById: ({})
 
     property bool firstRun: true
+    property bool hasWindows: (focusedWorkspace?.windows ?? 0) > 0
 
     function gotoWorkspace(wid) {
         Hyprland.dispatch(`hl.dsp.focus({ workspace = ${wid} })`);
@@ -42,7 +43,7 @@ Item {
             }
             if (event.name == "activewindow") {
                 compositor.focused = event.parse(2);
-            } else if (event.name == "workspace") {
+            } else if (event.name == "workspace" || event.name == "openwindow" || event.name == "closewindow" || event.name == "movewindow") {
                 getWorkspaces.running = true;
                 focusedWorkspaceProc.running = true;
             }

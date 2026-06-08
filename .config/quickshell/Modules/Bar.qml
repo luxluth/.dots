@@ -21,21 +21,58 @@ PanelWindow {
     anchors.top: true
     anchors.left: true
     anchors.right: true
-    implicitHeight: 40
+    implicitHeight: root.isHyprland ? 40 : 30
     color: "transparent"
 
     property alias ccBtn: batItem
+    property bool hasWindows: root.context.compositor.hasWindows
+    property bool isHovered: barMouseArea.containsMouse
+    property bool isHyprland: (Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase() === "hyprland"
+    property bool shouldShowFull: !isHyprland || hasWindows || isHovered || cc.visible
+    property bool showFull: shouldShowFull
+
+    onShouldShowFullChanged: {
+        if (shouldShowFull) {
+            cooloffTimer.stop();
+            showFull = true;
+        } else {
+            cooloffTimer.restart();
+        }
+    }
+
+    Timer {
+        id: cooloffTimer
+        interval: 2000 // 2 seconds cooloff before entering zen mode
+        repeat: false
+        onTriggered: showFull = false
+    }
+
+    MouseArea {
+        id: barMouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+    }
 
     Rectangle {
         anchors.fill: parent
-        anchors.topMargin: 5
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
-        anchors.bottomMargin: 5
-        color: root.colors.transparentBg
-        border.width: 2
+        anchors.topMargin: root.isHyprland ? 5 : 0
+        anchors.leftMargin: root.isHyprland ? 10 : 0
+        anchors.rightMargin: root.isHyprland ? 10 : 0
+        anchors.bottomMargin: root.isHyprland ? 5 : 0
+        color: root.isHyprland ? (showFull ? root.colors.transparentBg : "transparent") : root.colors.bg
+        border.width: root.isHyprland ? (showFull ? 2 : 0) : 0
         border.color: root.colors.muted
-        radius: root.colors.radiusMedium
+        radius: root.isHyprland ? root.colors.radiusMedium : 0
+        Behavior on color {
+            ColorAnimation {
+                duration: 250
+            }
+        }
+        Behavior on border.width {
+            NumberAnimation {
+                duration: 250
+            }
+        }
 
         Item {
             anchors.fill: parent
@@ -44,6 +81,13 @@ PanelWindow {
 
             //// LEFT
             RowLayout {
+                opacity: showFull ? 1.0 : 0.0
+                visible: opacity > 0
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 250
+                    }
+                }
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 15
@@ -159,6 +203,11 @@ PanelWindow {
                     color: "transparent"
                     radius: root.colors.radiusSmall
                     implicitWidth: date.contentWidth + 16
+                    Behavior on implicitWidth {
+                        NumberAnimation {
+                            duration: 250
+                        }
+                    }
                     implicitHeight: 24
 
                     scale: dateMouse.containsPress ? 0.98 : 1.0
@@ -180,12 +229,18 @@ PanelWindow {
 
                         text: isTime ? root.context.time : root.context.date
                         anchors.centerIn: parent
-                        color: root.colors.fg
+                        color: showFull ? root.colors.fg : root.colors.clockZen
 
                         font {
                             family: root.colors.fontFamily
                             pixelSize: 14
                             bold: true
+                        }
+
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: 250
+                            }
                         }
                     }
 
@@ -200,6 +255,14 @@ PanelWindow {
 
             //// RIGHT
             RowLayout {
+                id: rightSection
+                opacity: (showFull || root.context.power.batteryLow) ? 1.0 : 0.0
+                visible: opacity > 0
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 250
+                    }
+                }
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 10
@@ -207,6 +270,7 @@ PanelWindow {
                 // Tray
                 RowLayout {
                     id: trayRoot
+                    visible: showFull
 
                     property int iconSize: 16
                     property var pinnedApps: []
@@ -301,6 +365,7 @@ PanelWindow {
                 // Idle Inhibitor
                 Rectangle {
                     id: idleItem
+                    visible: showFull
                     Layout.preferredWidth: 24
                     Layout.preferredHeight: 24
                     color: "transparent"
@@ -312,18 +377,13 @@ PanelWindow {
                         text: root.context.inhibitor.state.enabled ? "Activated" : "Deactivated"
                     }
 
-                    Text {
-                        id: idleText
-
+                    CImage {
+                        id: idleIcon
                         anchors.centerIn: parent
-                        text: root.context.inhibitor.state.enabled ? "󰅶" : "󰛊"
-                        color: root.colors.fg
-
-                        font {
-                            family: root.colors.fontFamily
-                            pixelSize: 14
-                            bold: true
-                        }
+                        width: 14
+                        height: 14
+                        iconSource: Icons.coffee
+                        coloring: root.context.inhibitor.state.enabled ? root.colors.fg : root.colors.transparentFg
                     }
 
                     scale: idleMouseArea.containsPress ? 0.85 : 1.0
@@ -345,7 +405,7 @@ PanelWindow {
                 // Network
                 Rectangle {
                     id: netItem
-                    visible: root.context.network.wifiConnected || root.context.network.ethernetConnected
+                    visible: showFull && (root.context.network.wifiConnected || root.context.network.ethernetConnected)
                     Layout.preferredHeight: 24
                     Layout.preferredWidth: netRow.implicitWidth + 10
                     color: "transparent"
@@ -410,10 +470,9 @@ PanelWindow {
                 // BLT
                 Rectangle {
                     id: bltItem
+                    visible: showFull && root.context.blt.adapter.enabled
                     Layout.preferredHeight: 24
                     Layout.preferredWidth: bltRow.implicitWidth + 10
-
-                    visible: root.context.blt.adapter.enabled
                     color: "transparent"
 
                     RowLayout {
@@ -455,6 +514,7 @@ PanelWindow {
                 // Volume
                 Item {
                     id: volItem
+                    visible: showFull
                     implicitWidth: volRect.width
                     implicitHeight: volRect.height
 

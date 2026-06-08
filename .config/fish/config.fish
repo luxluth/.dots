@@ -42,15 +42,65 @@ function lsd --description "ls that display folder first"
 end
 
 function lt --description "Dispaly tree like format for 'ls'"
-    if test -z $argv[1]
+    if test -z "$argv[1]"
         eza -T --level=1 --icons
     else
         eza -T --icons --level=$argv[1] $argv[2]
     end
 end
 
+function getcontrib --description "Get contribution in a git project"
+    if test -z "$argv[1]"
+        set -f filter "*"
+    else
+        set -f filter "$argv[1]"
+    end
+
+    # Get unique authors
+    set authors (git log --format='%aN' | sort -u)
+
+    # Create a temporary file to store the aggregated results
+    set tmp_file (mktemp)
+
+    for author in $authors
+        # Fetch numstat for Java files and sum lines using awk
+        set stats (git log --author="$author" --numstat --pretty=format: -- $filter | \
+                    awk '
+        NF==3 && $1 ~ /^[0-9]+$/ && $2 ~ /^[0-9]+$/ {
+            added += $1
+            deleted += $2
+        }
+        END {
+            print added+0, deleted+0
+        }
+        ')
+
+        # Read the calculated metrics
+        set added (string split " " $stats)[1]
+        set deleted (string split " " $stats)[2]
+
+        # Only output if there is activity
+        if test $added -gt 0 -o $deleted -gt 0
+            echo "$added $deleted $author" >>$tmp_file
+        end
+    end
+
+    # Print header
+    printf "%-10s %-10s %-s\n" Added Deleted Author
+    printf "%-10s %-10s %-s\n" ----- ------- ------
+
+    # Sort numerically by the first column (Added) in descending order and format output
+    sort -n -r $tmp_file | while read -l added deleted author
+        printf "%-10s %-10s %-s\n" $added $deleted "$author"
+    end
+
+    # Clean up
+    rm $tmp_file
+
+end
+
 function ytb --description "See Youtube video"
-    if test -z $argv[1]
+    if test -z "$argv[1]"
         echo "Usage: ytb <url>"
     else
         mpv $argv[1] --ytdl-format='bestvideo[height<=?1080][fps<=?30][vcodec!=?vp9]+bestaudio/bestaudio'
@@ -58,7 +108,7 @@ function ytb --description "See Youtube video"
 end
 
 function clone --description "Clone a github repository"
-    if test -z $argv[1]
+    if test -z "$argv[1]"
         echo "Usage: clone <repo_url> or <user/repo> if you have gh installed and logged in with gh auth login"
     else
         if string match -q http $argv[1]
@@ -79,7 +129,7 @@ function ntmp-help
 end
 
 function ntmp --description "Create a new temporary file in the temp dir and open it in $EDITOR"
-    if test -z $argv[1]
+    if test -z "$argv[1]"
         ntmp-help
     else if string match -q -r -- -l $argv[1]
         mkdir -p /tmp/ntmp
@@ -95,7 +145,7 @@ function ntmp --description "Create a new temporary file in the temp dir and ope
 end
 
 function compareBin
-    if test -z $argv[1]
+    if test -z "$argv[1]"
         echo "Usage: compareBin <file1> <file2>\n\tShow diff between two bin files"
     else
         cmp -l $argv[1] $argv[2] | awk 'function oct2dec(oct,    dec) {
@@ -112,7 +162,7 @@ function compareBin
 end
 
 function compareBinH
-    if test -z $argv[1]
+    if test -z "$argv[1]"
         echo "Usage: compareBinH <file1> <file2>\n\tShow diff between two bin files"
     else
         set uuid1 (uuidgen)
@@ -127,7 +177,7 @@ alias cbin="compareBin"
 alias cbinh="compareBinH"
 
 function mkcd --description "Create a directory and cd into it"
-    if test -z $argv[1]
+    if test -z "$argv[1]"
         echo "Usage: mkcd <directory>"
         echo "Create a directory and cd into it"
         echo ""
@@ -145,12 +195,12 @@ function hard-slugify
 end
 
 function slugify --description "Convert a string to a slug"
-    if test -z $argv[1]
+    if test -z "$argv[1]"
         echo "Usage: slugify [-s] <string>"
         echo "    Convert a string to a slug"
         echo "  -s: soft slugify, don't convert to lowercase"
     else if string match -q -r -- -s $argv[1]
-        if test -z $argv[2]
+        if test -z "$argv[2]"
             echo "Usage: slugify [-s] <string>"
             echo "    Convert a string to a slug"
             echo "  -s: soft slugify, don't convert to lowercase"
@@ -169,55 +219,54 @@ function add-font-usage
     echo ""
 end
 
-function acnew
-    if test -z $argv[1]
-        echo "acnew <sketch_name>"
-    else
-        arduino-cli sketch new $argv[1]
-    end
-end
-
-function acup
-    if test -z $argv[1]
-        echo "acup <sketch_name> [arch] [port]"
-    else
-        set -x arch "arduino:avr:uno"
-        set -x port /dev/ttyUSB0
-
-        if test -z $argv[2]
-        else
-            set arch $argv[2]
-        end
-        if test -z $argv[3]
-        else
-            set port $argv[3]
-        end
-
-        if test -e sketch.yaml
-        else
-            echo ">> GENERATING SKETCH CONFIGURATION"
-            arduino-cli board attach $argv[1] -b "$arch" --port $port
-        end
-
-        echo ">> COMPILING - $argv[1]"
-        arduino-cli compile $argv[1] --build-path=./build --verbose | tee build.log
-
-        echo ">> UPDATATING COMPILE FLAGS"
-        grep -oP '(?<=\bg\+\+ ).*' build.log | head -n 1 | tr ' ' '\n' >compile_flags.txt
-        rm -rf build.log
-
-        echo ">> UPLOADING - $argv[1]"
-        arduino-cli upload $argv[1] --build-path=./build --verbose --verify
-
-    end
-end
+# function acnew
+#     if test -z "$argv[1]"
+#         echo "acnew <sketch_name>"
+#     else
+#         arduino-cli sketch new $argv[1]
+#     end
+# end
+#
+# function acup
+#     if test -z "$argv[1]"
+#         echo "acup <sketch_name> [arch] [port]"
+#     else
+#         set -x arch "arduino:avr:uno"
+#         set -x port /dev/ttyUSB0
+#
+#         if test -z "$argv[2]"
+#         else
+#             set arch "$argv[2]"
+#         end
+#         if test -z "$argv[3]"
+#         else
+#             set port "$argv[3]"
+#         end
+#
+#         if test -e sketch.yaml
+#         else
+#             echo ">> GENERATING SKETCH CONFIGURATION"
+#             arduino-cli board attach $argv[1] -b "$arch" --port $port
+#         end
+#
+#         echo ">> COMPILING - $argv[1]"
+#         arduino-cli compile $argv[1] --build-path=./build --verbose | tee build.log
+#
+#         echo ">> UPDATATING COMPILE FLAGS"
+#         grep -oP '(?<=\bg\+\+ ).*' build.log | head -n 1 | tr ' ' '\n' >compile_flags.txt
+#         rm -rf build.log
+#
+#         echo ">> UPLOADING - $argv[1]"
+#         arduino-cli upload $argv[1] --build-path=./build --verbose --verify
+#
+#     end
+# end
 
 function add-font --description "Add a font to the user fonts directory"
-    set add_fontFontDir /usr/local/share/fonts/
     set add_fontFonDirOtf /usr/local/share/fonts/otf/
     set add_fontFonDirTtf /usr/local/share/fonts/ttf/
 
-    if test -z $argv[1]
+    if test -z "$argv[1]"
         add-font-usage
     else
         sudo mkdir -p $add_fontFonDirTtf
@@ -251,7 +300,7 @@ end
 
 function vmrss --description "Show the memory usage of a process"
     set p $argv[1]
-    if test -z $p
+    if test -z "$p"
         echo "Usage: vmrss <pid>"
     else
         echo "pid: $p"
@@ -263,16 +312,16 @@ function vmrss --description "Show the memory usage of a process"
 end
 
 function test-wall --description "Test A Wallpaper"
-    if test -z $argv[1]
+    if test -z "$argv[1]"
         echo "Usage: test-wall <url>"
     else
         wget $argv[1] -O /tmp/test-wall
-        awww img /tmp/test-wall --transition-type grow --transition-pos 0.854,0.977 --transition-step 90
+        matugen image /tmp/test-wall --source-color-index 0 --verbose
     end
 end
 
 function dotnew --description "Create a new dotnet console project"
-    if test -z $argv[1]
+    if test -z "$argv[1]"
         echo "Usage: dotnew <project_name>"
     else
         dotnet new console -o $argv[1] && cd $argv[1] && slngen
@@ -361,10 +410,6 @@ set -gx XDG_CONFIG_HOME $HOME/.config
 set -gx GDK_BACKEND wayland
 
 set_pkg_cfg_path
-
-# tabtab source for packages
-# uninstall by removing these lines
-[ -f ~/.config/tabtab/fish/__tabtab.fish ]; and . ~/.config/tabtab/fish/__tabtab.fish; or true
 
 # pnpm
 set -gx PNPM_HOME "/home/luxluth/.local/share/pnpm"

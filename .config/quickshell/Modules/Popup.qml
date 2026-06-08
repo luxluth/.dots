@@ -131,7 +131,7 @@ Rectangle {
                         if (actionData.type === "D")
                             return root.colors.red;
                         if (actionData.id === root.defaultAction)
-                            return root.colors.pearleBlue;
+                            return root.colors.accentContainer;
                         return root.colors.contrast;
                     }
 

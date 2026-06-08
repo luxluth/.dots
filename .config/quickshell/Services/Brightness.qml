@@ -103,6 +103,8 @@ Item {
             exclusiveZone: 0
 
             WlrLayershell.namespace: "qs-osd"
+            WlrLayershell.layer: WlrLayer.Overlay
+            WlrLayershell.exclusiveZone: -1
 
             implicitWidth: 236
             implicitHeight: 70

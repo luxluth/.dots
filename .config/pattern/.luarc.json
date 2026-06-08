@@ -1,0 +1,8 @@
+{
+  "workspace": {
+    "library": ["."]
+  },
+  "diagnostics": {
+    "globals": ["pattern"]
+  }
+}

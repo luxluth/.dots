@@ -23,8 +23,8 @@ Rectangle {
     radius: colors.radiusSmall
     height: 60
 
-    border.color: isActive ? colors.pearleBlueStroke : colors.border
-    color: isActive ? colors.pearleBlue : colors.contrast
+    border.color: isActive ? colors.accentOutline : colors.border
+    color: isActive ? colors.accentContainer : colors.contrast
     border.width: isActive ? 2 : 1
 
     // Hover and Click animations
@@ -124,7 +124,7 @@ Rectangle {
             Layout.topMargin: 0
             Layout.bottomMargin: 0
             visible: root.expansion
-            color: root.isActive ? colors.pearleBlueStroke : colors.border
+            color: root.isActive ? colors.accentOutline : colors.border
         }
 
         Item {

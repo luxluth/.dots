@@ -11,6 +11,7 @@ Item {
     id: root
 
     required property Colors colors
+    required property Context context
 
     property string icon: ""
     property string title: ""
@@ -38,13 +39,19 @@ Item {
         active: root.shouldShowOsd
 
         PanelWindow {
-            anchors.bottom: true
-            anchors.left: true
+            anchors {
+                bottom: true
+                left: true
+            }
+
+            screen: root.context.window ? root.context.window.screen : Quickshell.screens[0]
+
             margins.bottom: 20
             margins.left: 20
-            exclusiveZone: 0
 
+            WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.namespace: "qs-osd"
+            WlrLayershell.exclusiveZone: -1
 
             implicitWidth: 236
             implicitHeight: 70
