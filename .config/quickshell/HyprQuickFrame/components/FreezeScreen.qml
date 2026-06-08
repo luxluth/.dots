@@ -1,0 +1,60 @@
+/*
+ * This file contains code based on "HyprQuickshot"
+ * Original Author: JamDon2 (Copyright 2025)
+ * Licensed under the MIT License.
+ *
+ * Modifications and other code: Copyright (c) 2026 Ronin-CK
+ *
+ * Copyright (c) 2025 JamDon2
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+import QtQuick
+import Quickshell
+import Quickshell.Wayland
+
+PanelWindow {
+    id: root
+
+    property var targetScreen: Quickshell.screens[0]
+    property bool isReady: screencopy.hasContent
+    property alias contentItem: root.contentItem
+
+    screen: targetScreen
+    exclusionMode: ExclusionMode.Ignore
+    WlrLayershell.layer: WlrLayer.Overlay
+    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+    color: "transparent"
+
+    anchors {
+        left: true
+        right: true
+        top: true
+        bottom: true
+    }
+
+    ScreencopyView {
+        id: screencopy
+        captureSource: root.targetScreen
+        anchors.fill: parent
+        z: -1
+    }
+
+}

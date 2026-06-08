@@ -12,8 +12,7 @@ hl.bind("SUPER + J", hl.dsp.layout("togglesplit"))
 hl.bind("SUPER + P", hl.dsp.window.pin())
 hl.bind("SUPER + SHIFT + T", hl.dsp.exec_cmd("~/.bin/theme-switch.fish"))
 hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("XDG_CURRENT_DESKTOP=GNOME gnome-control-center"))
-hl.bind("PRINT", hl.dsp.exec_cmd(VARS.scriptsDir .. "/scrsht.fish"))
-hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd(VARS.scriptsDir .. "/scrsht.fish edit"))
+hl.bind("PRINT", hl.dsp.exec_cmd("qs -c ~/.config/quickshell/HyprQuickFrame/ -n"))
 
 -- bind = $mainMod, left, movefocus, l
 -- bind = $mainMod, right, movefocus, r
