@@ -33,8 +33,7 @@ Scope {
     property bool overlaysVisible: true
 
     function parseTOML(text) {
-        let result = {
-        };
+        let result = {};
         let section = "";
         const lines = text.split(/\r?\n/);
         for (let i = 0; i < lines.length; i++) {
@@ -67,7 +66,6 @@ Scope {
                     const num = parseFloat(val);
                     if (!isNaN(num))
                         val = num;
-
                 }
                 result[key] = val;
                 continue;
@@ -83,9 +81,13 @@ Scope {
     function grimGeometry(x, y, width, height, screenName) {
         let target = null;
         for (const m of Hyprland.monitors.values) {
-            if (m.name === screenName) { target = m; break; }
+            if (m.name === screenName) {
+                target = m;
+                break;
+            }
         }
-        if (!target) target = hyprlandMonitor;
+        if (!target)
+            target = hyprlandMonitor;
         const mx = target.lastIpcObject.x;
         const my = target.lastIpcObject.y;
         return `${Math.round(x + mx)},${Math.round(y + my)} ${Math.round(width)}x${Math.round(height)}`;
@@ -94,7 +96,7 @@ Scope {
     function runPostSaveHook() {
         const hook = theme.postSaveHook;
         if (!hook || !root.lastSavedPath)
-            return ;
+            return;
 
         const filePath = root.lastSavedPath;
         const fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
@@ -121,38 +123,17 @@ Scope {
 
         const grimRegion = `timeout 5 grim -l 1 -g ${eGeom}`;
 
-        const shareCmd = "kdeconnect-cli -l | grep 'reachable' | grep -oP '[a-f0-9-]{8,}'"
-            + " | head -1 | xargs -I{} sh -c"
-            + " 'kdeconnect-cli -d {} --share \"$1\" && sleep 0.2"
-            + " && kdeconnect-cli -d {} --send-clipboard' --";
-        const maybeShare = (escapedPath) => root.shareActive ? ` && ${shareCmd} ${escapedPath}` : "";
+        const shareCmd = "kdeconnect-cli -l | grep 'reachable' | grep -oP '[a-f0-9-]{8,}'" + " | head -1 | xargs -I{} sh -c" + " 'kdeconnect-cli -d {} --share \"$1\" && sleep 0.2" + " && kdeconnect-cli -d {} --send-clipboard' --";
+        const maybeShare = escapedPath => root.shareActive ? ` && ${shareCmd} ${escapedPath}` : "";
         const shareTag = root.shareActive ? " & phone" : "";
         const mkdirCmd = `mkdir -p ${ePicturesDir}`;
 
-        const sattyCommand =
-            `${mkdirCmd} && ${grimRegion} - `
-            + `| satty --filename - --output-filename ${eOutputPath} --early-exit --init-tool brush --copy-command "wl-copy --type image/png" `
-            + `; if [ -f ${eOutputPath} ]; then wl-copy --type image/png < ${eOutputPath}${maybeShare(eOutputPath)}; fi`;
-        const gradiaCommand =
-            `${mkdirCmd} && ${grimRegion} ${eOutputPath} `
-            + `&& hyprctl dispatch exec -- "gradia ${eOutputPath} || flatpak run be.alexandervanhee.gradia ${eOutputPath}"`;
-        const defaultSaveCommand =
-            `${mkdirCmd} && ${grimRegion} ${eOutputPath} `
-            + `&& wl-copy --type image/png < ${eOutputPath}`
-            + `${maybeShare(eOutputPath)} `
-            + `&& notify-send -a "HyprQuickFrame" -i ${eOutputPath} `
-            + `-h string:image-path:${eOutputPath} "Screenshot Saved" `
-            + `"Saved to ${picturesDir}"`;
+        const sattyCommand = `${mkdirCmd} && ${grimRegion} - ` + `| satty --filename - --output-filename ${eOutputPath} --early-exit --init-tool brush --copy-command "wl-copy --type image/png" ` + `; if [ -f ${eOutputPath} ]; then wl-copy --type image/png < ${eOutputPath}${maybeShare(eOutputPath)}; fi`;
+        const gradiaCommand = `${mkdirCmd} && ${grimRegion} ${eOutputPath} ` + `&& hyprctl dispatch exec -- "gradia ${eOutputPath} || flatpak run be.alexandervanhee.gradia ${eOutputPath}"`;
+        const defaultSaveCommand = `${mkdirCmd} && ${grimRegion} ${eOutputPath} ` + `&& wl-copy --type image/png < ${eOutputPath}` + `${maybeShare(eOutputPath)} ` + `&& notify-send -a "satty" -i ${eOutputPath} ` + `-h string:image-path:${eOutputPath} "Screenshot Saved" ` + `"Saved to ${picturesDir}"`;
         const eTempSnip = shellEscape(Quickshell.cachePath(`snip-${timestamp}.png`));
-        const tempShareCommand =
-            `${grimRegion} ${eTempSnip} `
-            + `&& wl-copy --type image/png < ${eTempSnip}`
-            + `${maybeShare(eTempSnip)} `
-            + `&& notify-send -a "HyprQuickFrame" "Screenshot Copied" "Copied to clipboard${shareTag}"; `
-            + `rm -f ${eTempSnip}`;
-        const tempPlainCommand =
-            `${grimRegion} - | wl-copy --type image/png `
-            + `&& notify-send -a "HyprQuickFrame" "Screenshot Copied" "Copied to clipboard"`;
+        const tempShareCommand = `${grimRegion} ${eTempSnip} ` + `&& wl-copy --type image/png < ${eTempSnip}` + `${maybeShare(eTempSnip)} ` + `&& notify-send -a "satty" "Screenshot Copied" "Copied to clipboard${shareTag}"; ` + `rm -f ${eTempSnip}`;
+        const tempPlainCommand = `${grimRegion} - | wl-copy --type image/png ` + `&& notify-send -a "satty" "Screenshot Copied" "Copied to clipboard"`;
         const defaultTempCommand = root.shareActive ? tempShareCommand : tempPlainCommand;
 
         let cmd;
@@ -166,7 +147,7 @@ Scope {
         root._pendingCmd = cmd;
         root.capturing = true;
         captureDelayTimer.start();
-        
+
         if (root.editActive)
             hideOverlaysTimer.start();
     }
@@ -201,7 +182,8 @@ Scope {
         repeat: false
         onTriggered: {
             for (const w of overlayVariants.instances) {
-                if (w && w.isReady) return;
+                if (w && w.isReady)
+                    return;
             }
             console.error("HyprQuickFrame: screencopy never produced a frame; exiting.");
             Qt.quit();
@@ -248,14 +230,13 @@ Scope {
                 console.log("Theme loaded from:", themeFile.path);
             }
         }
-
     }
 
     Process {
         id: screenshotProcess
 
         running: false
-        onExited: (code) => {
+        onExited: code => {
             if (code !== 0)
                 console.error("Screenshot pipeline failed with exit code:", code);
             else
@@ -267,7 +248,6 @@ Scope {
             onStreamFinished: {
                 if (this.text.trim())
                     console.log(this.text);
-
             }
         }
 
@@ -275,17 +255,15 @@ Scope {
             onStreamFinished: {
                 if (this.text.trim())
                     console.warn(this.text);
-
             }
         }
-
     }
 
     Process {
         id: connectivityProcess
 
         command: ["sh", "-c", "timeout 5 kdeconnect-cli -l | grep 'reachable'"]
-        onExited: (code) => {
+        onExited: code => {
             root.connectivityStatus = (code === 0 ? 1 : 2);
         }
     }
@@ -338,7 +316,6 @@ Scope {
                         }
                     }
                 }
-
             }
 
             Shortcut {
@@ -379,7 +356,6 @@ Scope {
                     root.editActive = !root.editActive;
                     if (root.editActive)
                         root.tempActive = false;
-
                 }
             }
 
@@ -389,7 +365,6 @@ Scope {
                     root.tempActive = !root.tempActive;
                     if (root.tempActive)
                         root.editActive = false;
-
                 }
             }
 
@@ -399,7 +374,6 @@ Scope {
                     root.shareActive = !root.shareActive;
                     if (root.shareActive && !connectivityProcess.running && root.connectivityStatus !== 0)
                         connectivityProcess.running = true;
-
                 }
             }
 
@@ -444,7 +418,7 @@ Scope {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: overlay.themeRef ? overlay.themeRef.bottomMargin : 60
-                onModeSelected: (m) => {
+                onModeSelected: m => {
                     return root.mode = m;
                 }
                 onTempToggled: {
@@ -538,11 +512,7 @@ Scope {
                         }
                     }
                 }
-
             }
-
         }
-
     }
-
 }

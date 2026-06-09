@@ -3,8 +3,16 @@ source_color_index=0
 
 [config.wallpaper]
 set = true
-command = "awww img {{ image }} --transition-type fade --transition-fps 60 --transition-duration 0.5"
+command = "pgrep -x awww-daemon && awww img {{ image }} --transition-type fade --transition-fps 60 --transition-duration 0.5"
 
 [templates.quickshell]
 input_path = "~/.config/matugen/quickshell.json"
 output_path = "~/.config/quickshell/colors.json"
+
+[templates.hyprlock]
+input_path = "~/.config/matugen/templates/hyprlock.conf"
+output_path = "~/.config/hypr/hyprlock.conf"
+
+[templates.zed]
+input_path = '~/.config/matugen/templates/zed-colors.json'
+output_path = '~/.config/zed/themes/matugen.json'
