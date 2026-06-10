@@ -40,6 +40,7 @@ QtObject {
     readonly property string power: Qt.resolvedUrl("./power.svg")
 
     readonly property string coffee: Qt.resolvedUrl("./coffe.svg")
+    readonly property string coffeeFilled: Qt.resolvedUrl("./coffe-filled.svg")
 
     readonly property string micOn: Qt.resolvedUrl("./mic-on.svg")
     readonly property string micOff: Qt.resolvedUrl("./mic-off.svg")
@@ -50,4 +51,6 @@ QtObject {
     readonly property string forward: Qt.resolvedUrl("./fast-forward.svg")
     readonly property string pause: Qt.resolvedUrl("./pause.svg")
     readonly property string play: Qt.resolvedUrl("./play.svg")
+
+    readonly property string audioLines: Qt.resolvedUrl("./audio-lines.svg")
 }

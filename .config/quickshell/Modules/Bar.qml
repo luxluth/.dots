@@ -382,7 +382,7 @@ PanelWindow {
                         anchors.centerIn: parent
                         width: 14
                         height: 14
-                        iconSource: Icons.coffee
+                        iconSource: root.context.inhibitor.state.enabled ? Icons.coffeeFilled : Icons.coffee
                         coloring: root.context.inhibitor.state.enabled ? root.colors.fg : root.colors.transparentFg
                     }
 

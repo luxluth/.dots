@@ -3,8 +3,6 @@ import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 import Quickshell
 
-import Quickshell.Services.Mpris
-
 import "../Assets/"
 import "../Components/"
 import "../Core"
@@ -138,8 +136,8 @@ Rectangle {
                 // Sizing
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                Layout.preferredWidth: parent.width * 0.45
-                Layout.preferredHeight: parent.height * 0.6
+                Layout.preferredWidth: root.width * 0.45
+                Layout.preferredHeight: root.height * 0.6
 
                 radius: root.colors.radiusMedium
                 border.color: root.colors.border
@@ -222,8 +220,8 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                Layout.preferredWidth: parent.width * 0.45
-                Layout.preferredHeight: parent.height * 0.6
+                Layout.preferredWidth: root.width * 0.45
+                Layout.preferredHeight: root.height * 0.6
                 color: "transparent"
 
                 FlexboxLayout {
@@ -393,8 +391,8 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                Layout.preferredWidth: parent.width * 0.45
-                Layout.preferredHeight: parent.height * 0.6
+                Layout.preferredWidth: root.width * 0.45
+                Layout.preferredHeight: root.height * 0.6
 
                 radius: root.colors.radiusMedium
                 color: "transparent"
@@ -544,30 +542,13 @@ Rectangle {
             }
 
             // RIGHT BOTTOM - MPRIS
-            Rectangle {
+            MprisControl {
                 Layout.column: 1
                 Layout.row: 1
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-
-                radius: root.colors.radiusMedium
-                border.color: root.colors.border
-                border.width: 2
-                color: root.colors.contrast
-                clip: true
-
-                property var player: root.context.media.activePlayer
-
-                // No Player State
-                Text {
-                    anchors.centerIn: parent
-                    text: "No Media Playing"
-                    visible: !parent.player
-                    color: root.colors.muted
-                    font.family: root.colors.fontFamily
-                    font.pixelSize: 16
-                    font.bold: true
-                }
+                colors: root.colors
+                context: root.context
             }
         }
 

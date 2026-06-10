@@ -15,7 +15,7 @@ Item {
 
         onEnabledChanged: {
             const title = enabled ? "Caffeine Activated" : "Caffeine Deactivated";
-            const icon = Icons.coffee;
+            const icon = enabled ? Icons.coffeeFilled : Icons.coffee;
             root.statusChanged(icon, title, enabled ? "System will not sleep" : "System can sleep");
         }
     }

@@ -6,6 +6,7 @@ Item {
     id: root
 
     property real value: .0
+    readonly property alias pressed: sliderEvent.pressed
 
     signal changeRequested(real newValue)
 
