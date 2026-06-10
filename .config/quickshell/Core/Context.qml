@@ -30,6 +30,7 @@ Item {
     }
 
     signal popup(string message, var actions, string defaultAction)
+    signal passwordPrompt(string title, var callback)
     signal osd(string icon, string title, string subtitle)
     signal notificationReceived(Notification notification)
 
@@ -57,6 +58,9 @@ Item {
 
     Network {
         id: net
+        onConnectionFailed: (name, reasonStr) => {
+            root.popup("Failed to connect to " + name + ". " + (reasonStr === "NoSecrets" ? "Incorrect password." : "Please check your network settings."), [{id: "ok", text: "OK", _signal: () => {}}], "ok");
+        }
     }
 
     Blue {

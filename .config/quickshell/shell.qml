@@ -105,19 +105,26 @@ ShellRoot {
 
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.exclusiveZone: -1
-        WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
+        WlrLayershell.keyboardFocus: popupWindow.visible ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
         WlrLayershell.namespace: "qs-pop"
 
         MouseArea {
             anchors.fill: parent
-            onClicked: popupWindow.visible = false
+            onClicked: popupContent.close()
         }
 
         Popup {
             id: popupContent
             anchors.centerIn: parent
             colors: colors
-            onClosed: popupWindow.visible = false
+            onClosed: {
+                popupWindow.visible = false;
+                if (popupContent.shouldRestoreDashboard) {
+                    restoreTimer.start();
+                }
+                popupContent.isPasswordPrompt = false;
+                popupContent.shouldRestoreDashboard = false;
+            }
         }
     }
 
@@ -142,8 +149,42 @@ ShellRoot {
             popupContent.text = message;
             popupContent.actions = actions || [];
             popupContent.defaultAction = defaultAction || "";
+            popupContent.shouldRestoreDashboard = message.indexOf("Failed to connect") !== -1;
             popupWindow.visible = true;
             popupContent.open();
+        }
+        function onPasswordPrompt(title, callback) {
+            dashboard.close();
+            popupContent.text = title;
+            popupContent.isPasswordPrompt = true;
+            popupContent.shouldRestoreDashboard = true;
+            popupContent.actions = [
+                {
+                    id: "cancel",
+                    text: "Cancel",
+                    _signal: () => { }
+                },
+                {
+                    id: "connect",
+                    text: "Connect",
+                    _signal: () => {
+                        callback(popupContent.enteredPassword);
+                    }
+                }
+            ];
+            popupContent.defaultAction = "connect";
+            popupWindow.visible = true;
+            popupContent.open();
+        }
+    }
+
+    Timer {
+        id: restoreTimer
+        interval: 50
+        repeat: false
+        onTriggered: {
+            dashboardWindow.visible = true;
+            dashboard.open();
         }
     }
 }

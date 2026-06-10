@@ -14,6 +14,7 @@ Rectangle {
     property bool isActive: false
     property bool expansion: true
     property string details: ""
+    property bool isExpanded: false
 
     signal clicked
     signal arrowClicked
@@ -134,10 +135,18 @@ Rectangle {
             visible: root.expansion
 
             CImage {
+                id: chevronImage
                 anchors.centerIn: parent
                 width: 32
                 height: 32
                 iconSource: Icons.chevronRight
+                rotation: root.isExpanded ? 90 : 0
+                Behavior on rotation {
+                    NumberAnimation {
+                        duration: 150
+                        easing.type: Easing.InOutQuad
+                    }
+                }
             }
 
             MouseArea {

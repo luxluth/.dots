@@ -8,6 +8,8 @@ import Quickshell.Io
 Item {
     id: root
 
+    signal connectionFailed(string name, string reasonStr)
+
     property bool wifiEnabled: Networking.wifiEnabled
     property bool wifiConnected: _wifiDevice ? _wifiDevice.connected : false
     property string wifiSsid: _currentWifiNetwork ? _currentWifiNetwork.name : ""
@@ -122,6 +124,17 @@ Item {
 
     property var _currentWifiNetwork: null
 
+    property bool wifiConnecting: false
+
+    function updateConnectingStatus() {
+        if (!root._wifiDevice) {
+            root.wifiConnecting = false;
+            return;
+        }
+        const list = root._wifiDevice.networks.values;
+        root.wifiConnecting = list.some(n => n.state === ConnectionState.Connecting || n.stateChanging);
+    }
+
     Instantiator {
         active: root._wifiDevice !== null
         model: root._wifiDevice ? root._wifiDevice.networks : null
@@ -132,17 +145,32 @@ Item {
 
             property Connections conn: Connections {
                 target: ntwrk.network
+                ignoreUnknownSignals: true
                 function onConnectedChanged() {
                     if (ntwrk.network.connected)
                         root._currentWifiNetwork = ntwrk.network;
                     else if (root._currentWifiNetwork === ntwrk.network)
                         root._currentWifiNetwork = null;
                 }
+                function onStateChanged() {
+                    root.updateConnectingStatus();
+                }
+                function onStateChangingChanged() {
+                    root.updateConnectingStatus();
+                }
+                function onConnectionFailed(reason) {
+                    root.connectionFailed(ntwrk.network.name || "network", ConnectionFailReason.toString(reason));
+                }
             }
 
             Component.onCompleted: {
                 if (network.connected)
                     root._currentWifiNetwork = network;
+                root.updateConnectingStatus();
+            }
+
+            Component.onDestruction: {
+                Qt.callLater(root.updateConnectingStatus);
             }
         }
     }

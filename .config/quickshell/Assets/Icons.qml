@@ -18,6 +18,8 @@ QtObject {
     readonly property string sproot: Qt.resolvedUrl("./sprout.svg")
 
     readonly property string chevronRight: Qt.resolvedUrl("./chevron-right.svg")
+    readonly property string eye: Qt.resolvedUrl("./eye.svg")
+    readonly property string eyeOff: Qt.resolvedUrl("./eye-off.svg")
 
     readonly property string ethernetPort: Qt.resolvedUrl("./ethernet-port.svg")
 
@@ -51,6 +53,7 @@ QtObject {
     readonly property string forward: Qt.resolvedUrl("./fast-forward.svg")
     readonly property string pause: Qt.resolvedUrl("./pause.svg")
     readonly property string play: Qt.resolvedUrl("./play.svg")
-
     readonly property string audioLines: Qt.resolvedUrl("./audio-lines.svg")
+
+    readonly property string loaderCircle: Qt.resolvedUrl("./loader-circle.svg")
 }

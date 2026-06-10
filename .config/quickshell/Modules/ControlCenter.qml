@@ -148,6 +148,7 @@ Rectangle {
                     anchors.fill: parent
                     context: root.context
                     colors: root.colors
+                    active: root.statusVisible
                 }
             }
 

@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import "../Core"
+import "../Components"
 
 Rectangle {
     id: root
@@ -11,6 +12,9 @@ Rectangle {
     property string text: ""
     property var actions: []
     property string defaultAction: ""
+    property bool isPasswordPrompt: false
+    property bool shouldRestoreDashboard: false
+    property alias enteredPassword: passwordPromptInput.text
     signal closed
 
     width: 400
@@ -28,6 +32,10 @@ Rectangle {
     }
 
     function open() {
+        if (root.isPasswordPrompt) {
+            passwordPromptInput.clear();
+            passwordPromptInput.forceActiveFocus();
+        }
         enterAnim.start();
     }
 
@@ -109,6 +117,29 @@ Rectangle {
             font.pixelSize: 16
             wrapMode: Text.WordWrap
             horizontalAlignment: Text.AlignHCenter
+        }
+
+        InputBox {
+            id: passwordPromptInput
+            Layout.fillWidth: true
+            Layout.preferredWidth: 320
+            Layout.alignment: Qt.AlignHCenter
+            colors: root.colors
+            placeholderText: "Enter password..."
+            isPassword: true
+            visible: root.isPasswordPrompt
+
+            onAccepted: {
+                if (passwordPromptInput.text) {
+                    const connectAction = root.actions.find(a => a.id === root.defaultAction || a.id === "connect");
+                    if (connectAction) {
+                        try {
+                            connectAction._signal();
+                        } catch (e) {}
+                        root.close();
+                    }
+                }
+            }
         }
 
         ColumnLayout {
