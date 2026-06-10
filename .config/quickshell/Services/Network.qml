@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQml
 import Quickshell.Networking
+import Quickshell.Io
 
 Item {
     id: root
@@ -38,15 +39,32 @@ Item {
         return "";
     }
 
-    // NOTE: Quickshell.Networking does not strictly provide IP addresses on devices yet.
-    // 'address' property is usually the MAC address. Mapping it here for now.
-    property string ipv4: {
-        if (wifiConnected && _wifiDevice)
-            return _wifiDevice.address;
-        if (ethernetConnected && _ethernetDevice)
-            return _ethernetDevice.address;
-        return "";
+    property string localIp: ""
+
+    onIfaceNameChanged: updateIpAddress()
+    onWifiConnectedChanged: updateIpAddress()
+    onEthernetConnectedChanged: updateIpAddress()
+
+    function updateIpAddress() {
+        if (root.ifaceName === "") {
+            root.localIp = "";
+            return;
+        }
+        ipProc.command = ["sh", "-c", "ip -o -4 addr show dev " + root.ifaceName + " | awk '{print $4}' | cut -d/ -f1"];
+        ipProc.running = true;
     }
+
+    Process {
+        id: ipProc
+        running: false
+        stdout: SplitParser {
+            onRead: data => {
+                root.localIp = data.trim();
+            }
+        }
+    }
+
+    property string ipv4: localIp
     property string ipv6: ""
 
     property var availableNetworks: _wifiDevice ? _wifiDevice.networks : null

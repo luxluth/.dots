@@ -23,11 +23,29 @@ Item {
         brightness = v;
     }
 
-    readonly property string path: "/sys/class/backlight/intel_backlight"
+    property string backlightDevice: ""
+    readonly property string path: backlightDevice ? `/sys/class/backlight/${backlightDevice}` : ""
     property int maxBrightness: 96000
 
     Process {
+        id: discoverProc
+        command: ["sh", "-c", "ls /sys/class/backlight | head -n 1"]
+        running: true
+        stdout: SplitParser {
+            onRead: data => {
+                const dev = data.trim();
+                if (dev) {
+                    root.backlightDevice = dev;
+                    maxProc.running = true;
+                    monitorProc.running = true;
+                }
+            }
+        }
+    }
+
+    Process {
         id: maxProc
+        running: false
         command: ["cat", `${root.path}/max_brightness`]
         stdout: SplitParser {
             onRead: data => {
@@ -61,7 +79,7 @@ Item {
     Process {
         id: monitorProc
         command: ["udevadm", "monitor", "--udev", "--subsystem-match=backlight"]
-        running: true
+        running: false
 
         stdout: SplitParser {
             onRead: _ => brightProc.running = true

@@ -8,9 +8,13 @@ import "Core"
 import "Modules"
 
 ShellRoot {
+    id: root
+
+    property alias rootColors: colors
+
     Context {
         id: ctx
-        window: bar
+        window: bars.instances.length > 0 ? bars.instances[0] : null
     }
     Colors {
         id: colors
@@ -21,7 +25,7 @@ ShellRoot {
         id: dashboardWindow
 
         visible: false
-        screen: bar.screen
+        screen: bars.instances.length > 0 ? bars.instances[0].screen : null
         anchors {
             top: true
             bottom: true
@@ -55,35 +59,41 @@ ShellRoot {
         }
     }
 
-    Connections {
-        target: bar.ccBtn
+    Variants {
+        id: bars
+        model: Quickshell.screens
+        delegate: Bar {
+            id: barInstance
+            required property var modelData
+            screen: modelData
+            context: ctx
+            colors: root.rootColors
+            cc: dashboardWindow
+            WlrLayershell.namespace: "qs-bar"
 
-        function onClicked() {
-            if (dashboardWindow.visible) {
-                dashboard.close();
-            } else {
-                const pos = bar.ccBtn.mapToGlobal(0, 0);
+            Connections {
+                target: barInstance.ccBtn
+                function onClicked() {
+                    if (dashboardWindow.visible && dashboardWindow.screen === barInstance.screen) {
+                        dashboard.close();
+                    } else {
+                        dashboardWindow.screen = barInstance.screen;
+                        const pos = barInstance.ccBtn.mapToGlobal(0, 0);
 
-                dashboardWindow.popupX = pos.x - dashboard.width + bar.ccBtn.width - 2;
-                dashboardWindow.popupY = pos.y + bar.ccBtn.height + 10;
+                        dashboardWindow.popupX = pos.x - dashboard.width + barInstance.ccBtn.width - 2;
+                        dashboardWindow.popupY = pos.y + barInstance.ccBtn.height + 10;
 
-                dashboardWindow.visible = true;
-                dashboard.open();
+                        dashboardWindow.visible = true;
+                        dashboard.open();
+                    }
+                }
             }
         }
     }
 
-    Bar {
-        id: bar
-        context: ctx
-        colors: colors
-        cc: dashboardWindow
-        WlrLayershell.namespace: "qs-bar"
-    }
-
     PanelWindow {
         id: popupWindow
-        screen: bar.screen
+        screen: bars.instances.length > 0 ? bars.instances[0].screen : null
         anchors {
             top: true
             bottom: true

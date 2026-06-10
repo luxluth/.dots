@@ -4,7 +4,11 @@ import Quickshell.Io
 
 Item {
     id: root
-    property UPowerDevice battery: UPower.devices.values[0]
+    property UPowerDevice battery: {
+        const list = UPower.devices.values;
+        const found = list.find(d => d.type === UPowerDeviceType.Battery);
+        return found || (list.length > 0 ? list[0] : null);
+    }
     property var batteryCharging: battery.state == UPowerDeviceState.Charging
     property var batteryPercentage: `${(battery.percentage * 100).toFixed(batteryCharging ? 1 : 0)}${getIcon()}`
     property var batteryLow: battery.percentage <= 0.2
@@ -57,23 +61,23 @@ Item {
     }
 
     function secondsToFormat(secs) {
-        let time = {
-            seconds: 0,
-            minutes: 0,
-            hours: 0
+        if (!secs || isNaN(secs))
+            return {
+                hours: 0,
+                minutes: 0,
+                seconds: 0
+            };
+        return {
+            hours: Math.floor(secs / 3600),
+            minutes: Math.floor((secs % 3600) / 60),
+            seconds: Math.floor(secs % 60)
         };
-
-        time.minutes = Math.floor((secs / 60) % secs);
-        time.seconds = secs - (time.minutes * 60);
-        time.hours = Math.floor((time.minutes / 60) % time.minutes);
-        time.minutes = time.minutes - (time.hours * 60);
-        return time;
     }
 
     Process {
         id: getPowerProfile
         running: true
-        command: ["fish", "-c", "powerprofilesctl get"]
+        command: ["powerprofilesctl", "get"]
         stdout: SplitParser {
             onRead: data => {
                 let d = data.trim();
@@ -90,6 +94,6 @@ Item {
 
     Process {
         id: setPowerProfile
-        command: ["fish", "-c", `powerprofilesctl set ${root.profileToText(root.profile)}`]
+        command: ["powerprofilesctl", "set", root.profileToText(root.profile)]
     }
 }

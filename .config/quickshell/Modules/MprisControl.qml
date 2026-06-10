@@ -548,6 +548,34 @@ ClippingRectangle {
                 Layout.fillWidth: true
                 spacing: 6
 
+                // Time Labels
+                RowLayout {
+                    Layout.fillWidth: true
+                    visible: !mprisRoot.isLive
+
+                    Text {
+                        text: mprisRoot.player ? mprisRoot.context.media.formatTime(mprisRoot.player.position) : "0:00"
+                        color: Qt.rgba(mprisRoot.colors.fg.r, mprisRoot.colors.fg.g, mprisRoot.colors.fg.b, 0.8)
+                        font {
+                            family: mprisRoot.colors.fontFamily
+                            pixelSize: 11
+                        }
+                    }
+
+                    Item {
+                        Layout.fillWidth: true
+                    }
+
+                    Text {
+                        text: (mprisRoot.player && mprisRoot.player.length > 0) ? "-" + mprisRoot.context.media.formatTime(Math.max(0, mprisRoot.player.length - mprisRoot.player.position)) : "0:00"
+                        color: Qt.rgba(mprisRoot.colors.fg.r, mprisRoot.colors.fg.g, mprisRoot.colors.fg.b, 0.8)
+                        font {
+                            family: mprisRoot.colors.fontFamily
+                            pixelSize: 11
+                        }
+                    }
+                }
+
                 // Track Slider (Interactive Seeking - Thinner unified SliderControl style)
                 Item {
                     id: progressSlider
@@ -636,34 +664,6 @@ ClippingRectangle {
                                 progressSlider.value = ratio;
                                 mprisRoot.player.position = ratio * mprisRoot.player.length;
                             }
-                        }
-                    }
-                }
-
-                // Time Labels
-                RowLayout {
-                    Layout.fillWidth: true
-                    visible: !mprisRoot.isLive
-
-                    Text {
-                        text: mprisRoot.player ? mprisRoot.context.media.formatTime(mprisRoot.player.position) : "0:00"
-                        color: Qt.rgba(mprisRoot.colors.fg.r, mprisRoot.colors.fg.g, mprisRoot.colors.fg.b, 0.8)
-                        font {
-                            family: mprisRoot.colors.fontFamily
-                            pixelSize: 11
-                        }
-                    }
-
-                    Item {
-                        Layout.fillWidth: true
-                    }
-
-                    Text {
-                        text: (mprisRoot.player && mprisRoot.player.length > 0) ? "-" + mprisRoot.context.media.formatTime(Math.max(0, mprisRoot.player.length - mprisRoot.player.position)) : "0:00"
-                        color: Qt.rgba(mprisRoot.colors.fg.r, mprisRoot.colors.fg.g, mprisRoot.colors.fg.b, 0.8)
-                        font {
-                            family: mprisRoot.colors.fontFamily
-                            pixelSize: 11
                         }
                     }
                 }
