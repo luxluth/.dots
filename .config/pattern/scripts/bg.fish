@@ -14,4 +14,4 @@ else
     dconf write /org/gnome/desktop/background/picture-uri-dark "'file://$image'"
 end
 
-~/.config/pattern/scripts/nvim.fish
+# ~/.config/pattern/scripts/nvim.fish
