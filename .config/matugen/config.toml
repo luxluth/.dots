@@ -6,7 +6,7 @@ set = true
 command = "pgrep -x awww-daemon && awww img {{ image }} --transition-type fade --transition-fps 60 --transition-duration 0.5"
 
 [templates.quickshell]
-input_path = "~/.config/matugen/quickshell.json"
+input_path = "~/.config/matugen/templates/quickshell.json"
 output_path = "~/.config/quickshell/colors.json"
 
 [templates.hyprlock]
@@ -16,3 +16,13 @@ output_path = "~/.config/hypr/hyprlock.conf"
 [templates.zed]
 input_path = '~/.config/matugen/templates/zed-colors.json'
 output_path = '~/.config/zed/themes/matugen.json'
+
+[templates.seekr]
+input_path = '~/.config/matugen/templates/seekr.css'
+output_path = '~/.config/seekr/style.css'
+post_hook = "seekr --stop"
+
+# [templates.kitty]
+# input_path = '~/.config/matugen/templates/kitty-colors.conf'
+# output_path = '~/.config/kitty/themes/Matugen.conf'
+# post_hook = "kitty +kitten themes --reload-in=all Matugen"

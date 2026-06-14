@@ -316,7 +316,14 @@ function test-wall --description "Test A Wallpaper"
         echo "Usage: test-wall <url>"
     else
         wget $argv[1] -O /tmp/test-wall
-        matugen image /tmp/test-wall --source-color-index 0 --verbose
+
+        set current_scheme (gsettings get org.gnome.desktop.interface color-scheme | string replace --all "'" "")
+        if string match -q default $current_scheme; or string match -q prefer-light $current_scheme
+            matugen image /tmp/test-wall --source-color-index 0 --verbose -m light
+        else
+            matugen image /tmp/test-wall --source-color-index 0 --verbose -m dark
+        end
+
     end
 end
 

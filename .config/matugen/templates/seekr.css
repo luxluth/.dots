@@ -1,17 +1,17 @@
 :root {
-  --theme-fg-color: #161d1d;
-  --theme-bg-color: #f4fafa;
-  --accent-color: #00696e;
+  --theme-fg-color: {{ colors.on_surface.default.hex }};
+  --theme-bg-color: {{ colors.surface.default.hex }};
+  --accent-color: {{ colors.primary.default.hex }};
 }
 
 * {
   font-family: "Fantasque Sans Mono", "IosevkaTerm NFP";
-  color: var(--theme-fg-color, #161d1d);
+  color: var(--theme-fg-color, {{ colors.on_surface.default.hex }});
 }
 
 window {
-  background: var(--theme-bg-color, #f4fafa);
-  color: var(--theme-fg-color, #161d1d);
+  background: var(--theme-bg-color, {{ colors.surface.default.hex }});
+  color: var(--theme-fg-color, {{ colors.on_surface.default.hex }});
 }
 
 window {
@@ -19,7 +19,7 @@ window {
 }
 
 window.gnome {
-  border: 1px solid #6f7979;
+  border: 1px solid {{ colors.outline.default.hex }};
   border-radius: 12px;
 }
 
@@ -36,12 +36,12 @@ completionLabel {
 
 input,
 completionLabel {
-  caret-color: var(--theme-fg-color, #161d1d);
+  caret-color: var(--theme-fg-color, {{ colors.on_surface.default.hex }});
   font-size: 32px;
 }
 
 input.has_input {
-  border-bottom: 1px solid #bec8c9;
+  border-bottom: 1px solid {{ colors.outline_variant.default.hex }};
 }
 
 input placeholder {
@@ -54,14 +54,14 @@ file {
   margin-top: 2.5px;
   margin-bottom: 2.5px;
   padding: 5px;
-  background: alpha(var(--theme-fg-color, #161d1d), 0.05);
+  background: alpha(var(--theme-fg-color, {{ colors.on_surface.default.hex }}), 0.05);
   border-radius: 8px;
   transition: background 0.1s ease-out;
 }
 
 entry:hover,
 file:hover {
-  background: alpha(var(--theme-fg-color, #161d1d), 0.1);
+  background: alpha(var(--theme-fg-color, {{ colors.on_surface.default.hex }}), 0.1);
 }
 
 file.focused {
@@ -99,7 +99,7 @@ tip {
 }
 
 mathResult {
-  background-color: alpha(var(--theme-fg-color, #161d1d), 0.1);
+  background-color: alpha(var(--theme-fg-color, {{ colors.on_surface.default.hex }}), 0.1);
   border-radius: 8px;
   padding: 5px;
 }
@@ -129,7 +129,7 @@ inputBox.macro_mode {
 /* MACRO HINTS
   These are left as hardcoded brand colors so they remain recognizable.
   If you prefer them to strictly follow Material You, replace the background-color
-  with #4e5f7d and color with #ffffff.
+  with {{ colors.tertiary.default.hex }} and color with {{ colors.on_tertiary.default.hex }}.
 */
 macroHint {
   margin-top: 2px;
@@ -183,14 +183,14 @@ infoBox .info_title {
 }
 
 infoBox .info_body {
-  background: alpha(var(--theme-fg-color, #161d1d), 0.1);
+  background: alpha(var(--theme-fg-color, {{ colors.on_surface.default.hex }}), 0.1);
   padding: 1em;
   border-radius: 8px;
   font-family: "IosevkaTerm NFP", monospace;
 }
 
 consoleBox .console_view {
-  background-color: alpha(var(--theme-fg-color, #161d1d), 0.1);
+  background-color: alpha(var(--theme-fg-color, {{ colors.on_surface.default.hex }}), 0.1);
   font-family: "IosevkaTerm NFP", monospace;
   font-weight: bold;
   padding: 1em;
