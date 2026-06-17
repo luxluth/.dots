@@ -559,12 +559,10 @@ PanelWindow {
                         implicitWidth: batText.implicitWidth + 20
                         antialiasing: true
                         radius: root.colors.radiusSmall
-                        border.width: 2
-                        border.color: root.context.power.batteryLow ? root.colors.red : root.colors.fg
                         color: {
                             if (root.context.power.batteryLow)
-                                return root.colors.bg;
-                            return root.colors.isDarkThemed ? Qt.darker(root.colors.fg, 1.5) : Qt.lighter(root.colors.fg, 7);
+                                return Qt.hsla(root.colors.red.hslHue, root.colors.red.hslSaturation, root.colors.red.hslLightness, .5);
+                            return Qt.hsla(root.colors.fg.hslHue, root.colors.fg.hslSaturation, root.colors.fg.hslLightness, .5);
                         }
 
                         Rectangle {
@@ -581,7 +579,7 @@ PanelWindow {
                         id: batText
                         anchors.centerIn: parent
                         text: root.context.power.batteryPercentage
-                        color: root.context.power.batteryLow ? root.colors.fg : root.colors.bg
+                        color: root.colors.bg
 
                         font {
                             family: "Inter"
