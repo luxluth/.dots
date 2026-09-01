@@ -36,6 +36,12 @@ hl.window_rule({
 })
 
 hl.window_rule({
+	name = "orchestre",
+	match = { class = "orchestre" },
+	float = true,
+})
+
+hl.window_rule({
 	name = "fullscreen-ignore",
 	match = { class = ".*" },
 	suppress_event = "maximize",
@@ -72,6 +78,7 @@ hl.layer_rule({
 	name = "qs-cc",
 	match = { namespace = "qs-cc" },
 	animation = "snapExtreme",
+	above_lock = 2,
 })
 
 hl.layer_rule({

@@ -56,4 +56,11 @@ QtObject {
     readonly property string audioLines: Qt.resolvedUrl("./audio-lines.svg")
 
     readonly property string loaderCircle: Qt.resolvedUrl("./loader-circle.svg")
+
+    readonly property string hardDrive: Qt.resolvedUrl("./hard-drive.svg")
+    readonly property string gamepad: Qt.resolvedUrl("./gamepad-2.svg")
+    readonly property string keyboard: Qt.resolvedUrl("./keyboard.svg")
+    readonly property string mouse: Qt.resolvedUrl("./mouse.svg")
+    readonly property string plug: Qt.resolvedUrl("./plug.svg")
+    readonly property string usb: Qt.resolvedUrl("./usb.svg")
 }

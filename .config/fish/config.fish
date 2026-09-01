@@ -20,6 +20,7 @@ alias wifi="nmtui"
 ## neovim
 alias vim="nvim"
 alias v="nvim"
+alias e="nvim"
 alias nv="neovide"
 set -gx EDITOR nvim
 set -gx MANPAGER "nvim +Man!"

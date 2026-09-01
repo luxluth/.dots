@@ -1,10 +1,4 @@
-local home = os.getenv("HOME")
-local VARS = {
-	terminal = home .. "/.local/bin/ghostty",
-	fileManager = "nautilus",
-	menu = "seekr",
-	scriptsDir = home .. "/.config/pattern/scripts",
-}
+local VARS = require("vars")
 
 local p = pattern
 
@@ -46,7 +40,7 @@ p.config({
 
 	gestures = {
 		workspace_swipe_invert = false,
-		workspace_swipe_threshold = 600,
+		workspace_swipe_threshold = 300,
 	},
 })
 
@@ -73,6 +67,7 @@ p.bind("SUPER + T", p.actions.exec_cmd(VARS.terminal))
 p.bind("SUPER + S", p.actions.exec_cmd(VARS.menu))
 p.bind("SUPER + E", p.actions.exec_cmd(VARS.fileManager))
 p.bind("SUPER + C", p.actions.exec_cmd("qs ipc call cc toggle"))
+p.bind("SUPER + R", p.actions.reload_config())
 
 p.bind("XF86AudioRaiseVolume", p.actions.exec_cmd(VARS.scriptsDir .. "/voldb.fish up"))
 p.bind("XF86AudioLowerVolume", p.actions.exec_cmd(VARS.scriptsDir .. "/voldb.fish down"))

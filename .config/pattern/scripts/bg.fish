@@ -9,7 +9,7 @@ if string match -q default $current_scheme; or string match -q prefer-light $cur
     dconf write /org/gnome/desktop/background/picture-uri "'file://$image'"
 else
     # dark mode
-    set image "$HOME/Pictures/walls/wallhaven-og28j9.png"
+    set image "$HOME/Pictures/walls/wallhaven-3q25r9.jpg"
     matugen image $image --source-color-index 0 -m dark
     dconf write /org/gnome/desktop/background/picture-uri-dark "'file://$image'"
 end

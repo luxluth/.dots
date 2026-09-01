@@ -22,7 +22,7 @@ input_path = '~/.config/matugen/templates/seekr.css'
 output_path = '~/.config/seekr/style.css'
 post_hook = "seekr --stop"
 
-# [templates.kitty]
-# input_path = '~/.config/matugen/templates/kitty-colors.conf'
-# output_path = '~/.config/kitty/themes/Matugen.conf'
+[templates.kitty]
+input_path = '~/.config/matugen/templates/kitty-colors.conf'
+output_path = '~/.config/kitty/themes/Matugen.conf'
 # post_hook = "kitty +kitten themes --reload-in=all Matugen"

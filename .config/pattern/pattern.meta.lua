@@ -107,3 +107,7 @@ function pattern.actions.quit() end
 ---@param cmd string The command to run (e.g., "seekr").
 ---@return fun() Callback function that executes the given command.
 function pattern.actions.exec_cmd(cmd) end
+
+---Action to reload the configuration.
+---@return fun() Callback function that performs the reload action.
+function pattern.actions.reload_config() end

@@ -17,7 +17,6 @@ return {
         tooltip = "flat assembler 1",
         type = "language",
       },
-
       ["Cargo.toml"] = {
         text = "Managing dependencies",
       },

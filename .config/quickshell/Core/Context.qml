@@ -22,6 +22,7 @@ Item {
     property Network network: net
     property Brightness brightness: bright
     property SystemInfo system: sysInfo
+    property Peripherals peripherals: periph
 
     property bool airplaneMode: !network.wifiEnabled && !blt.adapter.enabled
 
@@ -84,6 +85,11 @@ Item {
 
     Power {
         id: pwr
+    }
+
+    Peripherals {
+        id: periph
+        onOsd: (icon, title, subtitle) => root.osd(icon, title, subtitle)
     }
 
     SystemClock {

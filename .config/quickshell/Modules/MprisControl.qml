@@ -686,6 +686,7 @@ ClippingRectangle {
                         color: mprisRoot.colors.red
                         Layout.alignment: Qt.AlignVCenter
                         SequentialAnimation on opacity {
+                            running: mprisRoot.isLive && mprisRoot.context.media.activePlayer && mprisRoot.context.media.activePlayer.playbackState === MprisPlaybackState.Playing
                             loops: Animation.Infinite
                             NumberAnimation {
                                 from: 0.3
