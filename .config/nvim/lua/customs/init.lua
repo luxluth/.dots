@@ -8,7 +8,8 @@ return {
       vim.cmd("colorscheme alabaster")
       vim.notify("Light Theme", vim.log.levels.INFO, { title = "Background - " .. scheme })
     else
-      vim.cmd("colorscheme kanagawa")
+      vim.o.background = "dark"
+      vim.cmd("colorscheme alabaster")
       vim.notify("Dark theme", vim.log.levels.INFO, { title = "Background - " .. scheme })
     end
   end,

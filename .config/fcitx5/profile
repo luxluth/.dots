@@ -10,7 +10,7 @@ DefaultIM=pinyin
 # Name
 Name=keyboard-be-oss
 # Layout
-Layout=
+# Layout=
 
 [Groups/0/Items/1]
 # Name
@@ -22,7 +22,7 @@ Layout=be-oss
 # Name
 Name=anthy
 # Layout
-Layout=
+# Layout=
 
 [GroupOrder]
 0=Default

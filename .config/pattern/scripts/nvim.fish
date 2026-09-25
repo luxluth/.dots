@@ -1,10 +1,10 @@
 #!/usr/bin/env fish
 
-set DARK_SCHEME kanagawa
+# set DARK_SCHEME kanagawa
+set DARK_SCHEME alabaster
 set LIGHT_SCHEME alabaster
 
 function update_nvim -a mode colorscheme
-
     set -l runtime_dir $XDG_RUNTIME_DIR
     if test -z "$runtime_dir"
         set runtime_dir "/run/user/"(id -u)

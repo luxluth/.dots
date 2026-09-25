@@ -96,3 +96,11 @@ hl.layer_rule({
 	blur = true,
 	ignore_alpha = 0.1,
 })
+
+hl.window_rule({
+	name = "gf-chrome-inhibit",
+	match = {
+		class = "^chromium|^GeForce|^chrome-",
+	},
+	no_shortcuts_inhibit = true,
+})

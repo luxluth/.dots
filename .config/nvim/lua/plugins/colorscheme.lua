@@ -2,4 +2,5 @@ return {
   { "luxluth/alabaster.nvim", priority = 1000, config = true },
   { "luxluth/bamboo.nvim", priority = 1000, config = true },
   { "rebelot/kanagawa.nvim", priority = 1000, config = true },
+  { "e-ink-colorscheme/e-ink.nvim", priority = 1000, config = true },
 }

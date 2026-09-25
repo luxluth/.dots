@@ -27,6 +27,7 @@ hl.gesture({
 	fingers = 3,
 	direction = "horizontal",
 	action = "workspace",
+	disable_inhibit = true,
 })
 
 hl.device({
