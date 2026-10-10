@@ -11,8 +11,11 @@ return {
             ".env*",
             "wrangler.toml",
             ".dev.vars",
+            "*.tfvars",
+            "*.auto.tfvars",
           },
-          cloak_pattern = "=.+",
+          cloak_pattern = { "=.+", "(=%s*).+" },
+          replace = "%1",
         },
       },
     }

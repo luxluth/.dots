@@ -4,6 +4,7 @@ import Quickshell
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 import Quickshell.Services.SystemTray
 import Quickshell.Widgets
 
@@ -28,7 +29,7 @@ PanelWindow {
     property bool hasWindows: root.context.compositor.hasWindows
     property bool isHovered: barMouseArea.containsMouse
     property bool isHyprland: (Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase() === "hyprland"
-    property bool shouldShowFull: !isHyprland || hasWindows || isHovered || cc.visible
+    property bool shouldShowFull: !isHyprland || hasWindows || isHovered || cc.visible || trayContextMenu.visible
     property bool showFull: shouldShowFull
 
     onShouldShowFullChanged: {
@@ -89,73 +90,9 @@ PanelWindow {
                     }
                 }
                 anchors.left: parent.left
+                anchors.leftMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 15
-
-                // Workspaces
-                RowLayout {
-                    Rectangle {
-                        width: 5
-                    }
-
-                    Repeater {
-                        model: root.context.compositor.workspaces
-
-                        delegate: Rectangle {
-                            id: workspaceItem
-
-                            required property int index
-                            required property var modelData
-
-                            property var ws: modelData
-                            property bool isActive: root.context.compositor.focusedWorkspace?.id === (ws.id)
-
-                            color: isActive ? root.colors.fg : root.colors.transparentFg
-                            implicitWidth: isActive ? 30 : 20
-                            height: 20
-                            radius: root.colors.radiusExtraSmall
-
-                            Behavior on color {
-                                ColorAnimation {
-                                    duration: 200
-                                }
-                            }
-
-                            scale: workspaceMouse.containsPress ? 0.85 : 1.0
-                            Behavior on scale {
-                                NumberAnimation {
-                                    duration: 100
-                                }
-                            }
-
-                            Behavior on implicitWidth {
-                                NumberAnimation {
-                                    duration: 100
-                                }
-                            }
-
-                            MouseArea {
-                                id: workspaceMouse
-                                hoverEnabled: true
-                                anchors.fill: parent
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: root.context.compositor.gotoWorkspace(workspaceItem.ws.id)
-                                onWheel: wheel => {
-                                    const step = wheel.angleDelta.y / 120;
-                                    if (step !== 0)
-                                        root.context.compositor.gotoWorkspaceStep(-step);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                Rectangle {
-                    width: 1
-                    height: 16
-                    color: root.colors.muted
-                    opacity: 0.5
-                }
 
                 ColumnLayout {
                     spacing: 0
@@ -307,7 +244,7 @@ PanelWindow {
                             Layout.preferredHeight: trayRoot.iconSize + 8
 
                             radius: root.colors.radiusSmall
-                            color: itemMouse.containsMouse ? root.colors.muted : "transparent"
+                            color: itemMouse.containsMouse ? Qt.rgba(root.colors.accent.r, root.colors.accent.g, root.colors.accent.b, 0.15) : "transparent"
 
                             Image {
                                 id: trayIcon
@@ -319,6 +256,16 @@ PanelWindow {
                                 fillMode: Image.PreserveAspectFit
                                 smooth: true
                                 visible: status === Image.Ready || status === Image.Loading
+
+                                readonly property bool isSymbolic: {
+                                    const src = (trayItemWrapper.modelData.icon || "").toLowerCase();
+                                    return src.includes("symbolic") || src.includes("keyboard") || src.includes("fcitx");
+                                }
+
+                                layer.enabled: isSymbolic
+                                layer.effect: ColorOverlay {
+                                    color: itemMouse.containsMouse ? root.colors.accent : root.colors.fg
+                                }
                             }
 
                             Text {
@@ -338,16 +285,35 @@ PanelWindow {
                                 onClicked: mouse => {
                                     const pos = trayItemWrapper.mapToGlobal(0, 0);
 
-                                    if (mouse.button === Qt.LeftButton) {
-                                        trayItemWrapper.modelData.activate(pos.x, pos.y);
-                                    } else if (mouse.button === Qt.MiddleButton) {
-                                        trayItemWrapper.modelData.secondaryActivate(pos.x, pos.y);
-                                    } else if (mouse.button === Qt.RightButton) {
+                                    const toggleMenu = () => {
                                         const menu = trayItemWrapper.modelData.menu;
-                                        const hasMenu = trayItemWrapper.modelData.hasMenu;
-                                        if (hasMenu && menu) {
-                                            const relativePos = trayItemWrapper.mapToItem(root.contentItem, trayItemWrapper.x + trayItemWrapper.width, trayItemWrapper.y + trayItemWrapper.height);
-                                            trayItemWrapper.modelData.display(root, Math.round(relativePos.x), Math.round(relativePos.y));
+                                        if (trayContextMenu.visible && trayContextMenu.activeHandle === menu) {
+                                            trayContextMenu.close();
+                                        } else {
+                                            const appTitle = trayItemWrapper.modelData.title || trayItemWrapper.modelData.id || "";
+                                            const appIcon = trayItemWrapper.modelData.icon || "";
+                                            trayContextMenu.open(
+                                                menu,
+                                                pos.x,
+                                                pos.y + trayItemWrapper.height + 8,
+                                                trayItemWrapper.width,
+                                                appTitle,
+                                                appIcon
+                                            );
+                                        }
+                                    };
+
+                                    if (mouse.button === Qt.LeftButton) {
+                                        if (trayItemWrapper.modelData.onlyMenu && trayItemWrapper.modelData.hasMenu && trayItemWrapper.modelData.menu) {
+                                            toggleMenu();
+                                        } else {
+                                            trayItemWrapper.modelData.activate();
+                                        }
+                                    } else if (mouse.button === Qt.MiddleButton) {
+                                        trayItemWrapper.modelData.secondaryActivate();
+                                    } else if (mouse.button === Qt.RightButton) {
+                                        if (trayItemWrapper.modelData.hasMenu && trayItemWrapper.modelData.menu) {
+                                            toggleMenu();
                                         }
                                     }
                                 }
@@ -624,15 +590,9 @@ PanelWindow {
         }
     }
 
-    // Rectangle {
-    //     id: bottomBorder
-    //     anchors.bottom: parent.bottom
-    //     anchors.left: parent.left
-    //     anchors.right: parent.right
-    //
-    //     height: 0
-    //     color: root.colors.border
-    //
-    //     z: 99
-    // }
+    TrayContextMenu {
+        id: trayContextMenu
+        colors: root.colors
+        screen: root.screen
+    }
 }

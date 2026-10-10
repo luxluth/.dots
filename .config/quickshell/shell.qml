@@ -15,6 +15,7 @@ ShellRoot {
     Context {
         id: ctx
         window: bars.instances.length > 0 ? bars.instances[0] : null
+        colors: colors
     }
     Colors {
         id: colors
@@ -135,6 +136,12 @@ ShellRoot {
     }
 
     NotificationOsd {
+        colors: colors
+        context: ctx
+    }
+
+    WorkspaceIndicator {
+        id: workspaceIndicator
         colors: colors
         context: ctx
     }

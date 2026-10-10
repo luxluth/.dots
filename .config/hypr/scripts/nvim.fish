@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-set DARK_SCHEME kanagawa
+set DARK_SCHEME alabaster
 set LIGHT_SCHEME alabaster
 
 function update_nvim -a mode colorscheme

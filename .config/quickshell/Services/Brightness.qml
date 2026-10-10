@@ -8,19 +8,34 @@ import Quickshell.Wayland
 
 import "../Components/"
 import "../Assets/"
+import "../Core"
 
 Item {
     id: root
-    property real brightness: 0
 
+    property Colors colors: null
+    property Context context: null
+
+    property real brightness: 0
     property bool shouldShowOsd: false
     property bool closing: false
+    property bool _ready: false
+    property real pendingBrightness: -1
 
     function setBrightness(v) {
-        const percent = Math.round(v * 100);
-        setProc.command = ["brightnessctl", "s", percent + "%"];
+        const percent = Math.max(1, Math.min(100, Math.round(v * 100)));
+        brightness = percent / 100.0;
+        pendingBrightness = percent;
+        applyBrightness();
+    }
+
+    function applyBrightness() {
+        if (pendingBrightness < 0 || setProc.running)
+            return;
+        const val = pendingBrightness;
+        pendingBrightness = -1;
+        setProc.command = ["brightnessctl", "s", val + "%"];
         setProc.running = true;
-        brightness = v;
     }
 
     property string backlightDevice: ""
@@ -52,7 +67,6 @@ Item {
                 const val = parseInt(data.trim());
                 if (!isNaN(val) && val > 0) {
                     root.maxBrightness = val;
-                    // console.log("max", root.maxBrightness);
                     brightProc.running = true;
                 }
             }
@@ -67,6 +81,11 @@ Item {
                 const val = parseInt(data.trim());
                 if (!isNaN(val)) {
                     brightness = val / root.maxBrightness;
+                    if (!root._ready) {
+                        Qt.callLater(() => {
+                            root._ready = true;
+                        });
+                    }
                 }
             }
         }
@@ -74,6 +93,11 @@ Item {
 
     Process {
         id: setProc
+        onExited: {
+            if (pendingBrightness >= 0) {
+                applyBrightness();
+            }
+        }
     }
 
     Process {
@@ -90,6 +114,7 @@ Item {
         target: root
 
         function onBrightnessChanged() {
+            if (!root._ready) return;
             root.shouldShowOsd = true;
             root.closing = false;
             hideTimer.restart();
@@ -111,14 +136,14 @@ Item {
     }
 
     LazyLoader {
-        active: root.shouldShowOsd
+        active: root.shouldShowOsd && root.colors !== null
 
         PanelWindow {
+            screen: root.context?.window ? root.context.window.screen : (Quickshell.screens.length > 0 ? Quickshell.screens[0] : null)
             anchors.bottom: true
             anchors.left: true
             margins.bottom: 20
             margins.left: 20
-            exclusiveZone: 0
 
             WlrLayershell.namespace: "qs-osd"
             WlrLayershell.layer: WlrLayer.Overlay
@@ -196,10 +221,10 @@ Item {
                 Rectangle {
                     id: outer
                     anchors.fill: parent
-                    radius: colors.radiusOsd
-                    color: Qt.rgba(colors.bg.r, colors.bg.g, colors.bg.b, 0.9)
+                    radius: root.colors.radiusOsd
+                    color: Qt.rgba(root.colors.bg.r, root.colors.bg.g, root.colors.bg.b, 0.9)
                     border.width: 1
-                    border.color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.1)
+                    border.color: Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.1)
 
                     RowLayout {
                         anchors {
@@ -210,6 +235,7 @@ Item {
 
                         CImage {
                             iconSource: root.getBrightnessIcon()
+                            coloring: root.colors.fg
                         }
 
                         ColumnLayout {
@@ -218,12 +244,14 @@ Item {
                             Rectangle {
                                 // Stretches to fill all left-over space
                                 Layout.fillWidth: true
+                                Layout.alignment: Qt.AlignHCenter
 
                                 implicitHeight: 7
-                                radius: colors.radiusBase
-                                color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.1)
+                                implicitWidth: 120
+                                radius: root.colors.radiusBase
+                                color: Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.1)
                                 border.width: 1
-                                border.color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.1)
+                                border.color: Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.1)
 
                                 Rectangle {
                                     anchors {
@@ -231,9 +259,9 @@ Item {
                                         top: parent.top
                                         bottom: parent.bottom
                                     }
-                                    color: colors.fg
+                                    color: root.colors.fg
 
-                                    implicitWidth: parent.width * (root.brightness)
+                                    implicitWidth: Math.min(parent.width, Math.max(0, parent.width * root.brightness))
                                     radius: parent.radius
 
                                     Behavior on implicitWidth {
@@ -242,6 +270,15 @@ Item {
                                         }
                                     }
                                 }
+                            }
+
+                            Text {
+                                Layout.fillWidth: true
+                                horizontalAlignment: Text.AlignHCenter
+                                text: `${Math.round(root.brightness * 100)}%`
+                                color: Qt.lighter(root.colors.fg, 2.1)
+                                font.family: root.colors.fontFamily
+                                font.pixelSize: 13
                             }
                         }
                     }

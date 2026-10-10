@@ -84,14 +84,14 @@ hl.layer_rule({
 hl.layer_rule({
 	name = "qs-pop",
 	match = { namespace = "qs-pop" },
-	animation = "snapExtreme",
+	animation = "snapextreme",
 
 	dim_around = true,
 })
 
 hl.layer_rule({
 	name = "qs",
-	match = { namespace = "qs-osd|qs-notification|qs-bar|qs-cc" },
+	match = { namespace = "qs-osd|qs-notification|qs-bar|qs-cc|qs-tray-menu|qs-workspace-indicator|qs-global-menu" },
 	animation = "snapExtreme",
 	blur = true,
 	ignore_alpha = 0.1,

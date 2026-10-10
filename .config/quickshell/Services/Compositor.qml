@@ -43,7 +43,7 @@ Item {
             }
             if (event.name == "activewindow") {
                 compositor.focused = event.parse(2);
-            } else if (event.name == "workspace" || event.name == "openwindow" || event.name == "closewindow" || event.name == "movewindow") {
+            } else if (event.name.startsWith("workspace") || event.name == "openwindow" || event.name == "closewindow" || event.name == "movewindow") {
                 getWorkspaces.running = true;
                 focusedWorkspaceProc.running = true;
             }

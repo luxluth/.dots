@@ -4,9 +4,21 @@ end
 
 function fish_greeting
     if set -q PIPENV_ACTIVE
-    else
-        fortune -as
+        return
     end
+
+    # Fallback identifier if XDG_SESSION_ID is unset
+    set -l session_id (set -q XDG_SESSION_ID; and echo $XDG_SESSION_ID; or echo "default")
+    set -l greeted_file "/run/user/"(id -u)"/fish_greeted_"$session_id
+
+    # Display greeting only if this session has not seen it yet
+    if not test -f $greeted_file
+        touch $greeted_file
+        lastin
+        echo ""
+    end
+
+    fortune -as
 end
 
 ######################################### Alias #########################################

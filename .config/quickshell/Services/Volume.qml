@@ -8,34 +8,41 @@ import Quickshell.Services.Pipewire
 
 import "../Components/"
 import "../Assets/"
+import "../Core"
 
 Item {
     id: root
 
+    property Colors colors: null
+    property Context context: null
+
     property Pipewire pw: Pipewire
     property PwNode sink: pw.defaultAudioSink
     property PwNode source: pw.defaultAudioSource
-    property bool defaultSinkMuted: sink.audio.muted
-    property bool defaultSourceMuted: source?.audio.muted ?? true
-    property real volume: Pipewire.defaultAudioSink?.audio.volume ?? 0
+    property bool defaultSinkMuted: sink?.audio ? sink.audio.muted : false
+    property bool defaultSourceMuted: source?.audio ? source.audio.muted : true
+    property real volume: sink?.audio ? sink.audio.volume : 0
 
     property bool shouldShowOsd: false
     property bool closing: false
 
     PwObjectTracker {
-        objects: [Pipewire.defaultAudioSink, Pipewire.defaultAudioSource]
+        objects: [root.sink, root.source].filter(o => o !== null)
     }
 
     Connections {
-        target: Pipewire.defaultAudioSink?.audio
+        target: root.sink ? root.sink.audio : null
+        ignoreUnknownSignals: true
 
-        function onVolumeChanged() {
+        function onVolumesChanged() {
+            if (!root._ready) return;
             root.shouldShowOsd = true;
             root.closing = false;
             hideTimer.restart();
         }
 
         function onMutedChanged() {
+            if (!root._ready) return;
             root.shouldShowOsd = true;
             root.closing = false;
             hideTimer.restart();
@@ -43,36 +50,40 @@ Item {
     }
 
     Connections {
-        target: root.source?.audio
+        target: root.source ? root.source.audio : null
+        ignoreUnknownSignals: true
 
         function onMutedChanged() {
-            if (root.parent && root.parent.osd) {
-                root.parent.osd(root.defaultSourceMuted ? Icons.micOff : Icons.micOn, root.defaultSourceMuted ? "Microphone Muted" : "Microphone Unmuted", root.source?.description ?? "Default Source");
+            if (!root._ready) return;
+            if (root.context && root.context.osd) {
+                root.context.osd(root.defaultSourceMuted ? Icons.micOff : Icons.micOn, root.defaultSourceMuted ? "Microphone Muted" : "Microphone Unmuted", root.source?.description ?? "Default Source");
             }
         }
     }
 
     property bool _ready: false
-    Component.onCompleted: _ready = true
+    Component.onCompleted: {
+        Qt.callLater(() => {
+            root._ready = true;
+        });
+    }
 
     onSourceChanged: {
         if (_ready && source) {
-            if (root.parent && root.parent.osd) {
-                root.parent.osd(source.audio.muted ? Icons.micOff : Icons.micOn, "Microphone Changed", source.description ?? "Default Source");
+            if (root.context && root.context.osd) {
+                root.context.osd(source.audio?.muted ? Icons.micOff : Icons.micOn, "Microphone Changed", source.description ?? "Default Source");
             }
         }
     }
 
-    function getDefaultSinkVolumeIcon() {
-        const icons = ["", "", ""];
-
-        return defaultSinkMuted ? "" : icons[Math.ceil(sink.audio.volume * 2)];
-    }
-
     function getDefaultSinkVolumeSvg() {
-        const icons = [Icons.volumeZero, Icons.volumeLow, Icons.volumeHigh];
-
-        return defaultSinkMuted ? Icons.volumeMute : icons[Math.ceil(sink.audio.volume * 2)];
+        if (root.defaultSinkMuted)
+            return Icons.volumeMute;
+        if (root.volume <= 0.01)
+            return Icons.volumeZero;
+        if (root.volume < 0.5)
+            return Icons.volumeLow;
+        return Icons.volumeHigh;
     }
 
     Timer {
@@ -82,14 +93,14 @@ Item {
     }
 
     LazyLoader {
-        active: root.shouldShowOsd
+        active: root.shouldShowOsd && root.colors !== null
 
         PanelWindow {
+            screen: root.context?.window ? root.context.window.screen : (Quickshell.screens.length > 0 ? Quickshell.screens[0] : null)
             anchors.bottom: true
             anchors.left: true
             margins.bottom: 20
             margins.left: 20
-            exclusiveZone: 0
 
             WlrLayershell.namespace: "qs-osd"
             WlrLayershell.layer: WlrLayer.Overlay
@@ -167,10 +178,10 @@ Item {
                 Rectangle {
                     id: outer
                     anchors.fill: parent
-                    radius: colors.radiusOsd
-                    color: Qt.rgba(colors.bg.r, colors.bg.g, colors.bg.b, 0.9)
+                    radius: root.colors.radiusOsd
+                    color: Qt.rgba(root.colors.bg.r, root.colors.bg.g, root.colors.bg.b, 0.9)
                     border.width: 1
-                    border.color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.1)
+                    border.color: Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.1)
 
                     RowLayout {
                         anchors {
@@ -181,6 +192,7 @@ Item {
 
                         CImage {
                             iconSource: root.getDefaultSinkVolumeSvg()
+                            coloring: root.colors.fg
                         }
 
                         ColumnLayout {
@@ -193,10 +205,10 @@ Item {
 
                                 implicitHeight: 7
                                 implicitWidth: 120
-                                radius: colors.radiusBase
-                                color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.1)
+                                radius: root.colors.radiusBase
+                                color: Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.1)
                                 border.width: 1
-                                border.color: Qt.rgba(colors.fg.r, colors.fg.g, colors.fg.b, 0.1)
+                                border.color: Qt.rgba(root.colors.fg.r, root.colors.fg.g, root.colors.fg.b, 0.1)
 
                                 Rectangle {
                                     anchors {
@@ -204,9 +216,9 @@ Item {
                                         top: parent.top
                                         bottom: parent.bottom
                                     }
-                                    color: colors.fg
+                                    color: root.colors.fg
 
-                                    implicitWidth: parent.width * (root.volume)
+                                    implicitWidth: Math.min(parent.width, Math.max(0, parent.width * root.volume))
                                     radius: parent.radius
 
                                     Behavior on implicitWidth {
@@ -220,11 +232,11 @@ Item {
                             Text {
                                 Layout.fillWidth: true
                                 horizontalAlignment: Text.AlignHCenter
-                                text: root.pw.defaultAudioSink.description || root.pw.defaultAudioSink.nickname
-                                color: Qt.lighter(colors.fg, 2.1)
+                                text: root.sink ? (root.sink.description || root.sink.nickname || "Default Output") : "Default Output"
+                                color: Qt.lighter(root.colors.fg, 2.1)
                                 elide: Text.ElideRight
 
-                                font.family: colors.fontFamily
+                                font.family: root.colors.fontFamily
                                 font.pixelSize: 13
                             }
                         }

@@ -227,8 +227,12 @@ Rectangle {
                                 SliderControl {
                                     id: volSlider
                                     Layout.fillWidth: true
-                                    value: (root.context.pw.sink?.audio.volume ?? 0)
-                                    onChangeRequested: v => root.context.pw.sink.audio.volume = v
+                                    value: (root.context.pw.sink?.audio?.volume ?? 0)
+                                    onChangeRequested: v => {
+                                        if (root.context.pw.sink?.audio) {
+                                            root.context.pw.sink.audio.volume = v;
+                                        }
+                                    }
                                 }
 
                                 Rectangle {
@@ -237,7 +241,7 @@ Rectangle {
                                     radius: root.colors.radiusBase
                                     border.color: root.colors.border
                                     border.width: 2
-                                    color: root.context.pw.sink.audio.muted ? root.colors.fg : root.colors.contrast
+                                    color: (root.context.pw.sink?.audio?.muted ?? false) ? root.colors.fg : root.colors.contrast
 
                                     scale: muteButtonMouse.containsPress ? 0.95 : 1
 
@@ -247,7 +251,7 @@ Rectangle {
                                         }
                                     }
                                     CImage {
-                                        coloring: root.context.pw.sink.audio.muted ? root.colors.bg : root.colors.fg
+                                        coloring: (root.context.pw.sink?.audio?.muted ?? false) ? root.colors.bg : root.colors.fg
                                         anchors.centerIn: parent
                                         iconSource: Icons.volumeMute
                                     }
@@ -256,16 +260,23 @@ Rectangle {
                                         id: muteButtonMouse
                                         anchors.fill: parent
 
-                                        onClicked: root.context.pw.sink.audio.muted = !root.context.pw.sink.audio.muted
+                                        onClicked: {
+                                            if (root.context.pw.sink?.audio) {
+                                                root.context.pw.sink.audio.muted = !root.context.pw.sink.audio.muted;
+                                            }
+                                        }
                                     }
                                 }
                             }
 
                             Connections {
-                                target: root.context.pw.sink.audio
+                                target: root.context.pw.sink ? root.context.pw.sink.audio : null
+                                ignoreUnknownSignals: true
 
-                                function onVolumeChanged() {
-                                    volSlider.value = root.context.pw.sink.audio.volume;
+                                function onVolumesChanged() {
+                                    if (root.context.pw.sink?.audio) {
+                                        volSlider.value = root.context.pw.sink.audio.volume;
+                                    }
                                 }
                             }
                         }

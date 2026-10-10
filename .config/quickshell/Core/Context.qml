@@ -11,6 +11,7 @@ Item {
     id: root
 
     property QtObject window: null
+    property Colors colors: null
     property string theme: "prefer-dark"
     property string time: Qt.formatTime(clock.date, "hh:mm AP")
     property string date: Qt.formatDate(clock.date, "dddd, d MMMM yyyy")
@@ -24,7 +25,7 @@ Item {
     property SystemInfo system: sysInfo
     property Peripherals peripherals: periph
 
-    property bool airplaneMode: !network.wifiEnabled && !blt.adapter.enabled
+    property bool airplaneMode: !network.wifiEnabled && !(blt.adapter?.enabled ?? false)
 
     onAirplaneModeChanged: {
         root.osd(Icons.plane, airplaneMode ? "Airplane Mode On" : "Airplane Mode Off", airplaneMode ? "Wireless communications disabled" : "Wireless communications enabled");
@@ -51,6 +52,8 @@ Item {
 
     Brightness {
         id: bright
+        colors: root.colors
+        context: root
     }
 
     MediaPlayer {
@@ -77,6 +80,8 @@ Item {
 
     Volume {
         id: pipewire
+        colors: root.colors
+        context: root
     }
 
     Compositor {
