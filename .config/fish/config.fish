@@ -448,6 +448,7 @@ fish_add_path $GOPATH/bin
 
 # flutter/dart
 fish_add_path $HOME/.bin/flutter/bin/
+fish_add_path $HOME/.pub-cache/bin
 
 # android sdk
 set --export ANDROID_HOME "$HOME/Android/Sdk"
