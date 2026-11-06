@@ -13,7 +13,11 @@ hl.bind("SUPER + J", hl.dsp.layout("togglesplit"))
 hl.bind("SUPER + P", hl.dsp.window.pin())
 hl.bind("SUPER + SHIFT + T", hl.dsp.exec_cmd("~/.bin/theme-switch.fish"))
 hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("XDG_CURRENT_DESKTOP=GNOME gnome-control-center"))
-hl.bind("PRINT", hl.dsp.exec_cmd("qs -c ~/.config/quickshell/HyprQuickFrame/ -n"))
+-- hl.bind("PRINT", hl.dsp.exec_cmd("qs -c ~/.config/quickshell/HyprQuickFrame/ -n"))
+hl.bind("PRINT", hl.plugin.hyprcapture.open)
+hl.bind("SHIFT + PRINT", function()
+	hl.plugin.hyprcapture.open_editor("window")
+end)
 
 -- bind = $mainMod, left, movefocus, l
 -- bind = $mainMod, right, movefocus, r

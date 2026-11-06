@@ -9,11 +9,12 @@ vim.opt.showmode = false
 -- vim.opt.winborder = "rounded"
 
 if vim.g.neovide then
-  vim.o.guifont = "IosevkaTerm Nerd Font Mono:h12"
+  vim.o.guifont = "IosevkaTerm Nerd Font Mono:h15:#e-subpixelantialias:#h-none"
   vim.g.neovide_padding_top = 10
   vim.g.neovide_padding_bottom = 10
   vim.g.neovide_padding_right = 10
   vim.g.neovide_padding_left = 10
+  -- vim.g.neovide_corner_preference = "round"
 end
 
 vim.filetype.add({ extension = { flm = "flame" } })

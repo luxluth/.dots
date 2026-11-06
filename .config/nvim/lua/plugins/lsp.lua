@@ -3,11 +3,11 @@ return {
 
   opts = {
     servers = {
-      zls = {
-        cmd = { "/home/luxluth/.bin/zls/zig-out/bin/zls" },
-        filetypes = { "zig" },
-        root_markers = { "build.zig" },
-      },
+      -- zls = {
+      --   cmd = { "/home/luxluth/.bin/zls/zig-out/bin/zls" },
+      --   filetypes = { "zig" },
+      --   root_markers = { "build.zig" },
+      -- },
       mojo = {},
       ty = {},
       pyright = {

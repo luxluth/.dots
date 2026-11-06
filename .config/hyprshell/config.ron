@@ -5,16 +5,7 @@
         scale: 8.5,
         items_per_row: 5,
         overview: None,
-        switch: (
-            modifier: "super",
-            key: "Tab",
-            filter_by: [
-                current_monitor,
-            ],
-            switch_workspaces: false,
-            exclude_workspaces: "",
-            kill_key: 'q',
-        ),
+        switch: None,
         switch_2: None,
     ),
 )
